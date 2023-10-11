@@ -1,24 +1,45 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useNavigate } from 'react-router-dom'; 
-import { Button, TextField, Paper, Typography, Grid } from '@mui/material';
-import { useState } from 'react';
+
+import { useState } from "react";
+import { Grid, Paper, Typography, TextField, Button } from "../../../node_modules/@mui/material/index";
+import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
+import { useAuthStore } from "../../state/auth/authStore";
 
 const LoginForm = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const navigate = useNavigate();
+  const { setIsAuthenticated, setData, isAuthenticated } = useAuthStore();
 
-  const handleSubmit = (event : any) => {
-    event.preventDefault(); // Prevent the form from refreshing the page
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-    // TODO: Add your authentication logic here
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    // Mark as authenticated for now
-    setIsAuthenticated(true);
-    if (isAuthenticated) {
-      navigate('/dashboard'); // Navigate to the dashboard
+    // Now you directly use the email and password state variables.
+
+    try {
+      const response = await fetch('http://3.10.176.181:5001/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'accept': 'text/plain'
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      console.log(response.json)
+      const data = await response.json();
+      data.userId = "894ce6d3-6990-454d-ba92-17a61d518d8c";
+
+      setData(data);
+      console.log(data)
+      if (data.idToken) {
+        setIsAuthenticated(true);
+        navigate('/dashboard');
+      }
+
+    } catch (error) {
+      console.error('Error during authentication:', error);
     }
   };
-
 
   return (
     <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
@@ -29,10 +50,25 @@ const LoginForm = () => {
         <form onSubmit={handleSubmit}>
           <Grid container direction="column" spacing={2}>
             <Grid item>
-              <TextField required fullWidth label="Email" variant="outlined" />
+              <TextField
+                required
+                fullWidth
+                label="Email"
+                variant="outlined"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} // <-- Controlled component
+              />
             </Grid>
             <Grid item>
-              <TextField required fullWidth label="Password" type="password" variant="outlined" />
+              <TextField
+                required
+                fullWidth
+                label="Password"
+                type="password"
+                variant="outlined"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)} // <-- Controlled component
+              />
             </Grid>
             <Grid item>
               <Button type="submit" variant="contained" color="primary">

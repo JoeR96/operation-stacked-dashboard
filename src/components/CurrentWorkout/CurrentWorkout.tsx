@@ -1,6 +1,6 @@
 // CurrentWorkout.tsx
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useApi } from '../../api/constants/hooks/useApi';
 import { ERROR, PENDING } from '../../api/constants/apiStatus';
 import { EquipmentType } from '../../types/types';
@@ -37,6 +37,7 @@ const CurrentWorkout = () => {
                         <TableCell>Day</TableCell>
                         <TableCell>Minimum Reps</TableCell>
                         <TableCell>Maximum Reps</TableCell>
+                        <TableCell>Completed Reps</TableCell>
                         <TableCell>Sets</TableCell>
                         <TableCell>Working Weight</TableCell>
                         <TableCell>Equipment Type</TableCell>
@@ -50,6 +51,7 @@ const CurrentWorkout = () => {
                             <TableCell>{exercise.LiftDay}</TableCell>
                             <TableCell>{exercise.MinimumReps}</TableCell>
                             <TableCell>{exercise.MaximumReps}</TableCell>
+                            <TableCell>{exercise.CompletedReps}</TableCell>
                             <TableCell>{exercise.Sets}</TableCell>
                             <TableCell>{exercise.WorkingWeight}KG</TableCell>
                             <TableCell>{EquipmentType[exercise.EquipmentType]}</TableCell>
