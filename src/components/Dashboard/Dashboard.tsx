@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import TabbedDisplay from '../TabbedDisplay/TabbedDisplay';
 
 const Dashboard: React.FC = () => {
     return (
@@ -8,6 +9,7 @@ const Dashboard: React.FC = () => {
             <Link to="/workoutcalendar">
                 <button>Go to Tones</button>
             </Link>
+            <TabbedDisplay/>
         </div>
     );
 };
