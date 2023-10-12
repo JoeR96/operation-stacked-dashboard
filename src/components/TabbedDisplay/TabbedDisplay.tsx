@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Tabs, Tab, Card, CardContent, Box } from '@mui/material';
 import WorkoutCalendar from '../Workout/WorkoutCalendar';
 import CurrentWorkout from '../CurrentWorkout/CurrentWorkout';
+import EquipmentStacks from '../LoginForm/EquipmentStack';
 
 const TabbedDisplay = () => {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -16,7 +17,8 @@ const TabbedDisplay = () => {
                 return <CurrentWorkout />;
             case 1:
                 return <WorkoutCalendar />;
-            // Add more cases here for other tabs/components
+            case 2:
+                return <EquipmentStacks />;  // 2. Add a new case for the EquipmentStacks component
             default:
                 return null;
         }
@@ -39,7 +41,8 @@ const TabbedDisplay = () => {
             <Box mt={3}>
                 <Tabs value={selectedTab} onChange={handleTabChange} centered>
                     <Tab label="Current Workout" />
-                    <Tab label="Workout Calendar" />                 
+                    <Tab label="Workout Calendar" />
+                    <Tab label="Equipment Stacks" />  // 3. Add the new tab here
                 </Tabs>
                 <Box mt={2}>
                     {renderTabContent()}
