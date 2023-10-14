@@ -3,6 +3,7 @@ import { Tabs, Tab, Card, CardContent, Box } from '@mui/material';
 import WorkoutCalendar from '../Workout/WorkoutCalendar';
 import CurrentWorkout from '../CurrentWorkout/CurrentWorkout';
 import EquipmentStacks from '../LoginForm/EquipmentStack';
+import EquipmentStackTable from '../LoginForm/EquipmentStackTable';
 
 const TabbedDisplay = () => {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -18,7 +19,9 @@ const TabbedDisplay = () => {
             case 1:
                 return <WorkoutCalendar />;
             case 2:
-                return <EquipmentStacks />;  // 2. Add a new case for the EquipmentStacks component
+                return <EquipmentStackTable />;  
+            case 3:
+                return <EquipmentStacks />;  
             default:
                 return null;
         }
@@ -43,6 +46,7 @@ const TabbedDisplay = () => {
                     <Tab label="Current Workout" />
                     <Tab label="Workout Calendar" />
                     <Tab label="Equipment Stacks" />  // 3. Add the new tab here
+                    <Tab label="Equipment Stacks Table" />  // 3. Add the new tab here
                 </Tabs>
                 <Box mt={2}>
                     {renderTabContent()}
