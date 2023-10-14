@@ -1,18 +1,15 @@
-// EquipmentStackComponent.tsx
-
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApi } from '../../api/constants/hooks/useApi';
 import { ERROR, PENDING } from '../../api/constants/apiStatus';
-import { Table, TableBody, TableCell, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog } from '@mui/material';
 import { apiRequest } from '../../api/constants/apiClient';
+import EquipmentStack from './EquipmentStack';
 
 const EquipmentStackTable = () => {
-  // Assuming no default values for fetching an EquipmentStack
-  
-  const defaultUserId = "08dba696-0efb-43d1-869f-4a32c72da3d3";
-  const defaultWeek = 1;
-  const defaultDay = 1;
-  const defaultCompleted = true;
+
+  const [selectedStack, setSelectedStack] = useState(null);
+  const [open, setOpen] = useState(false);
+
   const {
     data: equipmentStack,
     apiStatus,
@@ -39,6 +36,7 @@ const EquipmentStackTable = () => {
             <TableCell>Increment Count</TableCell>
             <TableCell>Equipment Stack Key</TableCell>
             <TableCell>User ID</TableCell>
+            <TableCell>Edit</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -46,26 +44,41 @@ const EquipmentStackTable = () => {
             <TableRow key={equipment.Id}>
               <TableCell>{equipment.Id}</TableCell>
               <TableCell>{equipment.StartWeight}</TableCell>
-              <TableCell>{equipment.InitialIncrements && equipment.InitialIncrements.length > 0 ? equipment.InitialIncrements.join(', ') : '0'}</TableCell>
+              <TableCell>{equipment.InitialIncrements?.join(', ') || '0'}</TableCell>
               <TableCell>{equipment.IncrementValue}</TableCell>
               <TableCell>{equipment.IncrementCount}</TableCell>
               <TableCell>{equipment.EquipmentStackKey}</TableCell>
               <TableCell>{equipment.UserID}</TableCell>
+              <TableCell>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => {
+                    setSelectedStack(equipment);
+                    setOpen(true);
+                  }}>
+                  Edit
+                </Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <EquipmentStack stackData={selectedStack} />
+      </Dialog>
     </Paper>
   );
 }
 
 const fetchEquipmentStack = async () => {
-  try {
-    const defaultUserId = "894ce6d3-6990-454d-ba92-17a61d518d8c";
-    const defaultWeek = 1;
-    const defaultDay = 1;
-    const defaultCompleted = true;
+  const defaultUserId = "894ce6d3-6990-454d-ba92-17a61d518d8c";
+  const defaultWeek = 1;
+  const defaultDay = 1;
+  const defaultCompleted = true;
 
+  try {
     const response = await apiRequest(
       "GET",
       `/equipment-stack/${defaultUserId}/all`,
@@ -74,7 +87,7 @@ const fetchEquipmentStack = async () => {
     return response;
   } catch (error) {
     console.error("Error fetching equipment stack:", error);
-    throw error;  // Re-throwing the error for useApi hook to catch it.
+    throw error;
   }
 };
 
