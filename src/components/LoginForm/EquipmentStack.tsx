@@ -6,7 +6,7 @@ import { ERROR, PENDING } from '../../api/constants/apiStatus';
 import { Paper, Box, Typography } from '@mui/material';
 import { apiRequest } from '../../api/constants/apiClient';
 
-const EquipmentStack = () => {
+const EquipmentStack = ({ stackData }) => {
     const {
         data: equipmentData,
         apiStatus,
@@ -22,6 +22,12 @@ const EquipmentStack = () => {
         }
     }, [equipmentData]);
 
+    useEffect(() => {
+        if (stackData) {
+            setStack(generateStack(stackData));
+        }
+    }, [stackData]);
+    
     useEffect(() => {
         exec();
     }, []);

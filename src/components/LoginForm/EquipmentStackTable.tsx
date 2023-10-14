@@ -1,22 +1,24 @@
-import React, { useEffect } from 'react';
+// EquipmentStackComponent.tsx
+
+import { useEffect } from 'react';
 import { useApi } from '../../api/constants/hooks/useApi';
 import { ERROR, PENDING } from '../../api/constants/apiStatus';
 import { Table, TableBody, TableCell, TableHead, TableRow, Paper } from '@mui/material';
 import { apiRequest } from '../../api/constants/apiClient';
 
 const EquipmentStackTable = () => {
-  // Default values
+  // Assuming no default values for fetching an EquipmentStack
+  
   const defaultUserId = "08dba696-0efb-43d1-869f-4a32c72da3d3";
   const defaultWeek = 1;
   const defaultDay = 1;
   const defaultCompleted = true;
-
   const {
     data: equipmentStack,
     apiStatus,
     error,
     exec
-  } = useApi(() => fetchEquipmentStack(defaultUserId, defaultWeek, defaultDay, defaultCompleted));
+  } = useApi(fetchEquipmentStack);
 
   useEffect(() => {
     exec();
@@ -30,60 +32,49 @@ const EquipmentStackTable = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Property</TableCell>
-            <TableCell>Value</TableCell>
+            <TableCell>Id</TableCell>
+            <TableCell>Start Weight</TableCell>
+            <TableCell>Initial Increments</TableCell>
+            <TableCell>Increment Value</TableCell>
+            <TableCell>Increment Count</TableCell>
+            <TableCell>Equipment Stack Key</TableCell>
+            <TableCell>User ID</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {equipmentStack && (
-            <>
-              <TableRow>
-                <TableCell>Id</TableCell>
-                <TableCell>{equipmentStack.Id}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Start Weight</TableCell>
-                <TableCell>{equipmentStack.StartWeight}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Initial Increments</TableCell>
-                <TableCell>{JSON.stringify(equipmentStack.InitialIncrements)}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Increment Value</TableCell>
-                <TableCell>{equipmentStack.IncrementValue}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Increment Count</TableCell>
-                <TableCell>{equipmentStack.IncrementCount}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Equipment Stack Key</TableCell>
-                <TableCell>{equipmentStack.EquipmentStackKey}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>User ID</TableCell>
-                <TableCell>{equipmentStack.UserID}</TableCell>
-              </TableRow>
-            </>
-          )}
+          {equipmentStack?.map((equipment) => (
+            <TableRow key={equipment.Id}>
+              <TableCell>{equipment.Id}</TableCell>
+              <TableCell>{equipment.StartWeight}</TableCell>
+              <TableCell>{equipment.InitialIncrements && equipment.InitialIncrements.length > 0 ? equipment.InitialIncrements.join(', ') : '0'}</TableCell>
+              <TableCell>{equipment.IncrementValue}</TableCell>
+              <TableCell>{equipment.IncrementCount}</TableCell>
+              <TableCell>{equipment.EquipmentStackKey}</TableCell>
+              <TableCell>{equipment.UserID}</TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </Paper>
   );
-};
+}
 
-const fetchEquipmentStack = async (userId: string, week: number, day: number, completed: boolean) => {
+const fetchEquipmentStack = async () => {
   try {
+    const defaultUserId = "894ce6d3-6990-454d-ba92-17a61d518d8c";
+    const defaultWeek = 1;
+    const defaultDay = 1;
+    const defaultCompleted = true;
+
     const response = await apiRequest(
       "GET",
-      `/equipment-stack/${userId}/all`,
+      `/equipment-stack/${defaultUserId}/all`,
       5002
     );
     return response;
   } catch (error) {
     console.error("Error fetching equipment stack:", error);
-    throw error;
+    throw error;  // Re-throwing the error for useApi hook to catch it.
   }
 };
 
