@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Tabs, Tab, Card, CardContent, Box } from '@mui/material';
 import WorkoutCalendar from '../Workout/WorkoutCalendar';
 import CurrentWorkout from '../CurrentWorkout/CurrentWorkout';
-import EquipmentStacks from '../LoginForm/EquipmentStack';
-import EquipmentStackTable from '../LoginForm/EquipmentStackTable';
+import EquipmentStacks from '../EquipmentStack/EquipmentStack';
+import EquipmentStackTable from '../EquipmentStack/EquipmentStackTable';
 
 const TabbedDisplay = () => {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -20,8 +20,6 @@ const TabbedDisplay = () => {
                 return <WorkoutCalendar />;
             case 2:
                 return <EquipmentStackTable />;  
-            case 3:
-                return <EquipmentStacks />;  
             default:
                 return null;
         }

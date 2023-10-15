@@ -4,6 +4,7 @@ import { ERROR, PENDING } from '../../api/constants/apiStatus';
 import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog } from '@mui/material';
 import { apiRequest } from '../../api/constants/apiClient';
 import EquipmentStack from './EquipmentStack';
+import EditEquipmentStackContainer from './EditEquipmentStackContainer';
 
 const EquipmentStackTable = () => {
 
@@ -65,8 +66,8 @@ const EquipmentStackTable = () => {
         </TableBody>
       </Table>
 
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <EquipmentStack stackData={selectedStack} />
+      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md">
+        {selectedStack && <EditEquipmentStackContainer stackData={selectedStack} />}
       </Dialog>
     </Paper>
   );
