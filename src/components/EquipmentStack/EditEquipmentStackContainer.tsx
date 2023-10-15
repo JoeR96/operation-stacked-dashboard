@@ -1,11 +1,12 @@
 import React from 'react';
-import { TextField, Button, Box } from '@mui/material';
+import { Box } from '@mui/material';
 import { useState } from 'react';
 import EquipmentStack from './EquipmentStack';
+import EditEquipmentStack from './EditEquipmentStack';
 
-const EditEquipmentStackContainer = ({ initialStackData, onStackUpdate }) => {
-
-    const [localStack, setLocalStack] = useState(initialStackData);
+const EditEquipmentStackContainer = ({ stackData, onStackUpdate }) => {
+    console.log('init stack', stackData)
+    const [localStack, setLocalStack] = useState(stackData);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -19,6 +20,17 @@ const EditEquipmentStackContainer = ({ initialStackData, onStackUpdate }) => {
         }
     };
 
+    const handleStackUpdate = (updatedStack) => {
+        // You can do something with the updated stack here.
+        // For now, just updating the local state.
+        setLocalStack(updatedStack);
+
+        // Call the onStackUpdate prop to notify parent components or save to a database
+        if (onStackUpdate) {
+            onStackUpdate(updatedStack);
+        }
+    };
+
     return (
         <Box display="flex">
             {/* EquipmentStack on the left */}
@@ -28,54 +40,10 @@ const EditEquipmentStackContainer = ({ initialStackData, onStackUpdate }) => {
 
             {/* Edit fields on the right */}
             <Box flex="1" p={2}>
-                <TextField
-                    label="Id"
-                    name="Id"
-                    value={localStack.Id}
-                    onChange={handleChange}
+                <EditEquipmentStack
+                    stackData={localStack}
+                    onStackUpdate={handleStackUpdate}
                 />
-                <TextField
-                    label="Start Weight"
-                    name="StartWeight"
-                    value={localStack.StartWeight}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label="Initial Increments (comma-separated)"
-                    name="InitialIncrements"
-                    value={localStack.InitialIncrements.join(', ')}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label="Increment Value"
-                    name="IncrementValue"
-                    value={localStack.IncrementValue}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label="Increment Count"
-                    name="IncrementCount"
-                    value={localStack.IncrementCount}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label="Equipment Stack Key"
-                    name="EquipmentStackKey"
-                    value={localStack.EquipmentStackKey}
-                    onChange={handleChange}
-                />
-                <TextField
-                    label="User ID"
-                    name="UserID"
-                    value={localStack.UserID}
-                    onChange={handleChange}
-                />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => onStackUpdate(localStack)}>
-                    Update Stack
-                </Button>
             </Box>
         </Box>
     );

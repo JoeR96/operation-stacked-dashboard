@@ -21,6 +21,12 @@ const EquipmentStackTable = () => {
   useEffect(() => {
     exec();
   }, []);
+  useEffect(() => {
+    console.log(selectedStack)
+    if (selectedStack) {
+      setOpen(true);
+    }
+  }, [selectedStack]);
 
   if (apiStatus === PENDING) return <div>Loading...</div>;
   if (apiStatus === ERROR) return <div>Error fetching equipment stack: {error?.message}</div>;
@@ -55,8 +61,8 @@ const EquipmentStackTable = () => {
                   variant="outlined"
                   color="primary"
                   onClick={() => {
+                    console.log("equipment object:", equipment);
                     setSelectedStack(equipment);
-                    setOpen(true);
                   }}>
                   Edit
                 </Button>
@@ -65,6 +71,7 @@ const EquipmentStackTable = () => {
           ))}
         </TableBody>
       </Table>
+      {console.log("selectedStack value:", selectedStack)}
 
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md">
         {selectedStack && <EditEquipmentStackContainer stackData={selectedStack} />}
