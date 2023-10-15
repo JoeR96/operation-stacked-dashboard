@@ -6,6 +6,7 @@ import { useApi } from '../../api/constants/hooks/useApi';
 import { apiRequest } from '../../api/constants/apiClient';
 import { Button, Table, TableBody, TableCell, TableHead, TableRow, Paper } from '@mui/material';
 import { EquipmentType } from '../../types/types';
+import Spinner from '../spinner/Spinner';
 
 const WorkoutCalendar = () => {
     const pageSize = 10;
@@ -51,7 +52,7 @@ const WorkoutCalendar = () => {
         setPageIndex(prevIndex => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
     };
 
-    if (apiStatus === PENDING) return <div>Loading...</div>;
+    if (apiStatus === PENDING) return <Spinner />;
     if (apiStatus === ERROR) return <div>Error fetching exercises: {error?.message}</div>;
     if (!exercises) return <div>No exercises found</div>;
 

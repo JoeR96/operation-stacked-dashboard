@@ -5,9 +5,7 @@ import CurrentWorkout from '../CurrentWorkout/CurrentWorkout';
 import EquipmentStacks from '../EquipmentStack/EquipmentStack';
 import EquipmentStackTable from '../EquipmentStack/EquipmentStackTable';
 
-const TabbedDisplay = () => {
-    const [selectedTab, setSelectedTab] = useState(0);
-
+const TabbedDisplay = ({ selectedTab, setSelectedTab }) => {
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
     };
@@ -19,7 +17,7 @@ const TabbedDisplay = () => {
             case 1:
                 return <WorkoutCalendar />;
             case 2:
-                return <EquipmentStackTable />;  
+                return <EquipmentStackTable />;
             default:
                 return null;
         }
@@ -28,23 +26,18 @@ const TabbedDisplay = () => {
     return (
         <div>
             {/* Top half with empty cards */}
-            <Box display="flex" justifyContent="space-between" flexWrap="wrap" gap={2} p={2}>
-                {[1, 2, 3, 4].map(i => (
-                    <Card key={i} variant="outlined" sx={{ width: '23%' }}>
-                        <CardContent>
-                            {/* Empty card content for now */}
-                        </CardContent>
-                    </Card>
-                ))}
-            </Box>
 
             {/* Bottom half with tabs */}
             <Box mt={3}>
-                <Tabs value={selectedTab} onChange={handleTabChange} centered>
-                    <Tab label="Current Workout" />
-                    <Tab label="Workout Calendar" />
-                    <Tab label="Equipment Stacks" />  // 3. Add the new tab here
-                    <Tab label="Equipment Stacks Table" />  // 3. Add the new tab here
+                <Tabs
+                    value={selectedTab}
+                    onChange={handleTabChange}
+                    centered
+                    sx={{ backgroundColor: 'transparent' }}  // Set the background color for the Tabs container
+                >
+                    <Tab label="Current Workout" sx={{ backgroundColor: 'white' }} />
+                    <Tab label="Workout Calendar" sx={{ backgroundColor: 'white' }} />
+                    <Tab label="Equipment Stacks" sx={{ backgroundColor: 'white' }} />
                 </Tabs>
                 <Box mt={2}>
                     {renderTabContent()}

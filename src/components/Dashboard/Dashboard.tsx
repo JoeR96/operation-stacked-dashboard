@@ -1,15 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+// Dashboard.tsx
+import React, { useState } from 'react';
 import TabbedDisplay from '../TabbedDisplay/TabbedDisplay';
+import { DashboardMainContent } from './DashboardMainContent';
 
 const Dashboard: React.FC = () => {
+    const [selectedTab, setSelectedTab] = useState(0);
+
     return (
         <div>
-            <h1>Dashboard</h1>
-            <Link to="/workoutcalendar">
-                <button>Go to Tones</button>
-            </Link>
-            <TabbedDisplay/>
+            <DashboardMainContent selectedTab={selectedTab} />
+            <TabbedDisplay selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         </div>
     );
 };

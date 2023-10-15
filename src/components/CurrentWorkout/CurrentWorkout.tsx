@@ -6,11 +6,17 @@ import { ERROR, PENDING } from '../../api/constants/apiStatus';
 import { EquipmentType } from '../../types/types';
 import { Table, TableBody, TableCell, TableHead, TableRow, Paper } from '@mui/material';
 import { apiRequest } from '../../api/constants/apiClient';
+import { useAuthStore } from '../../state/auth/authStore';
+import { useUserStore } from '../../state/userStore';
+import Spinner from '../spinner/Spinner';
 
 const CurrentWorkout = () => {
-    // Default values
-    const defaultWeek = 1;
-    const defaultDay = 1;
+    const { Week: userWeek, Day: userDay } = useUserStore();
+    const userId = useAuthStore((state) => state.data?.userId);
+
+    // Use values from the store or fallback to defaults
+    const week = userWeek || 1;
+    const day = userDay || 1;
     const defaultCompleted = true;
 
     const {
@@ -18,13 +24,13 @@ const CurrentWorkout = () => {
         apiStatus,
         error,
         exec
-    } = useApi(() => fetchCurrentWorkout("894ce6d3-6990-454d-ba92-17a61d518d8c", defaultWeek, defaultDay, defaultCompleted));
+    } = useApi(() => fetchCurrentWorkout(userId, week, day, defaultCompleted));
 
     useEffect(() => {
         exec();
     }, []);
 
-    if (apiStatus === PENDING) return <div>Loading...</div>;
+    if (apiStatus === PENDING) return <Spinner />;
     if (apiStatus === ERROR) return <div>Error fetching exercises: {error?.message}</div>;
 
     return (
@@ -41,6 +47,7 @@ const CurrentWorkout = () => {
                         <TableCell>Sets</TableCell>
                         <TableCell>Working Weight</TableCell>
                         <TableCell>Equipment Type</TableCell>
+                        <TableCell>Edit</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

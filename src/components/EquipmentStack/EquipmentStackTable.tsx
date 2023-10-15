@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useApi } from '../../api/constants/hooks/useApi';
 import { ERROR, PENDING } from '../../api/constants/apiStatus';
-import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog, Box } from '@mui/material';
 import { apiRequest } from '../../api/constants/apiClient';
 import EquipmentStack from './EquipmentStack';
 import EditEquipmentStackContainer from './EditEquipmentStackContainer';
+import Spinner from '../spinner/Spinner';
 
 const EquipmentStackTable = () => {
 
@@ -28,49 +29,51 @@ const EquipmentStackTable = () => {
     }
   }, [selectedStack]);
 
-  if (apiStatus === PENDING) return <div>Loading...</div>;
+  if (apiStatus === PENDING) return <Spinner />;
   if (apiStatus === ERROR) return <div>Error fetching equipment stack: {error?.message}</div>;
 
   return (
     <Paper elevation={3}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Id</TableCell>
-            <TableCell>Start Weight</TableCell>
-            <TableCell>Initial Increments</TableCell>
-            <TableCell>Increment Value</TableCell>
-            <TableCell>Increment Count</TableCell>
-            <TableCell>Equipment Stack Key</TableCell>
-            <TableCell>User ID</TableCell>
-            <TableCell>Edit</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {equipmentStack?.map((equipment) => (
-            <TableRow key={equipment.Id}>
-              <TableCell>{equipment.Id}</TableCell>
-              <TableCell>{equipment.StartWeight}</TableCell>
-              <TableCell>{equipment.InitialIncrements?.join(', ') || '0'}</TableCell>
-              <TableCell>{equipment.IncrementValue}</TableCell>
-              <TableCell>{equipment.IncrementCount}</TableCell>
-              <TableCell>{equipment.EquipmentStackKey}</TableCell>
-              <TableCell>{equipment.UserID}</TableCell>
-              <TableCell>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => {
-                    console.log("equipment object:", equipment);
-                    setSelectedStack(equipment);
-                  }}>
-                  Edit
-                </Button>
-              </TableCell>
+      <Box style={{ maxHeight: '400px', overflowY: 'auto' }}>
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell>Start Weight</TableCell>
+              <TableCell>Initial Increments</TableCell>
+              <TableCell>Increment Value</TableCell>
+              <TableCell>Increment Count</TableCell>
+              <TableCell>Equipment Stack Key</TableCell>
+              <TableCell>User ID</TableCell>
+              <TableCell>Edit</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {equipmentStack?.map((equipment) => (
+              <TableRow key={equipment.Id}>
+                <TableCell>{equipment.Id}</TableCell>
+                <TableCell>{equipment.StartWeight}</TableCell>
+                <TableCell>{equipment.InitialIncrements?.join(', ') || '0'}</TableCell>
+                <TableCell>{equipment.IncrementValue}</TableCell>
+                <TableCell>{equipment.IncrementCount}</TableCell>
+                <TableCell>{equipment.EquipmentStackKey}</TableCell>
+                <TableCell>{equipment.UserID}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => {
+                      console.log("equipment object:", equipment);
+                      setSelectedStack(equipment);
+                    }}>
+                    Edit
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
       {console.log("selectedStack value:", selectedStack)}
 
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md">
@@ -78,6 +81,7 @@ const EquipmentStackTable = () => {
       </Dialog>
     </Paper>
   );
+
 }
 
 const fetchEquipmentStack = async () => {

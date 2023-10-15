@@ -1,47 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box } from '@mui/material';
-import { useState } from 'react';
 import EquipmentStack from './EquipmentStack';
 import EditEquipmentStack from './EditEquipmentStack';
 
 const EditEquipmentStackContainer = ({ stackData, onStackUpdate }) => {
-    console.log('init stack', stackData)
-    const [localStack, setLocalStack] = useState(stackData);
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        if (name === "InitialIncrements") {
-            setLocalStack(prevState => ({
-                ...prevState,
-                [name]: value.split(',').map(num => parseInt(num.trim()))
-            }));
-        } else {
-            setLocalStack(prevState => ({ ...prevState, [name]: value }));
-        }
-    };
-
     const handleStackUpdate = (updatedStack) => {
-        // You can do something with the updated stack here.
-        // For now, just updating the local state.
-        setLocalStack(updatedStack);
+        // Notify parent components or save to a database
+        setUpdatedStackData(updatedStack);
 
-        // Call the onStackUpdate prop to notify parent components or save to a database
         if (onStackUpdate) {
             onStackUpdate(updatedStack);
         }
     };
+    const [updatedStackData, setUpdatedStackData] = useState(stackData);
 
     return (
-        <Box display="flex">
-            {/* EquipmentStack on the left */}
-            <Box flex="1">
-                <EquipmentStack stackData={localStack} />
+        <Box display="flex" height="100vh"> {/* Assuming you want it to take the full viewport height */}
+            <Box width="50%" height="100%" overflowY="auto">
+                <EquipmentStack stackData={stackData} />
             </Box>
-
-            {/* Edit fields on the right */}
-            <Box flex="1" p={2}>
+            <Box
+                width="50%"
+                height="100vh"
+                p={2}
+                position="fixed"
+                right={0}
+                top={0}
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+            >
                 <EditEquipmentStack
-                    stackData={localStack}
+                    stackData={stackData}
                     onStackUpdate={handleStackUpdate}
                 />
             </Box>
