@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Tabs, Tab, Card, CardContent, Box } from '@mui/material';
-import WorkoutCalendar from '../Workout/WorkoutCalendar';
+import { Tabs, Tab, Box } from '@mui/material';
+import WorkoutCalendar from '../WorkoutCalendar/WorkoutCalendar';
 import CurrentWorkout from '../CurrentWorkout/CurrentWorkout';
 import EquipmentStacks from '../EquipmentStack/EquipmentStack';
 import EquipmentStackTable from '../EquipmentStack/EquipmentStackTable';
 
-const TabbedDisplay = ({ selectedTab, setSelectedTab }) => {
+const TabbedDisplay = ({ selectedTab, setSelectedTab, selectedStack, setSelectedStack }) => {
+
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
     };
@@ -17,29 +18,74 @@ const TabbedDisplay = ({ selectedTab, setSelectedTab }) => {
             case 1:
                 return <WorkoutCalendar />;
             case 2:
-                return <EquipmentStackTable />;
+                return <EquipmentStackTable 
+                          selectedStack={selectedStack}   // Pass down as props
+                          setSelectedStack={setSelectedStack}  // Pass down setter as props
+                       />;
             default:
                 return null;
         }
     };
 
     return (
-        <div>
-            {/* Top half with empty cards */}
-
-            {/* Bottom half with tabs */}
+        <div style={{ backgroundColor: '#242424', color: 'white', padding: '16px' }}>
             <Box mt={3}>
                 <Tabs
                     value={selectedTab}
                     onChange={handleTabChange}
                     centered
-                    sx={{ backgroundColor: 'transparent' }}  // Set the background color for the Tabs container
+                    sx={{ 
+                        backgroundColor: '#242424', 
+                        color: 'white',
+                        '& .MuiTabs-indicator': {
+                            backgroundColor: '#ff8c00',
+                        }
+                    }}
                 >
-                    <Tab label="Current Workout" sx={{ backgroundColor: 'white' }} />
-                    <Tab label="Workout Calendar" sx={{ backgroundColor: 'white' }} />
-                    <Tab label="Equipment Stacks" sx={{ backgroundColor: 'white' }} />
+                    <Tab 
+                        label="Current Workout" 
+                        sx={{ 
+                            backgroundColor: '#ff8c00', 
+                            color: 'white',
+                            fontWeight: 'bold',
+                            '&:hover': {
+                                backgroundColor: '#e77b00'
+                            },
+                            '&.Mui-selected': {
+                                backgroundColor: '#e77b00',
+                            }
+                        }} 
+                    />
+                    <Tab 
+                        label="Workout Calendar" 
+                        sx={{ 
+                            backgroundColor: '#ff8c00', 
+                            color: 'white',
+                            fontWeight: 'bold',
+                            '&:hover': {
+                                backgroundColor: '#e77b00'
+                            },
+                            '&.Mui-selected': {
+                                backgroundColor: '#e77b00',
+                            }
+                        }} 
+                    />
+                    <Tab 
+                        label="Equipment Stacks" 
+                        sx={{ 
+                            backgroundColor: '#ff8c00', 
+                            color: 'white',
+                            fontWeight: 'bold',
+                            '&:hover': {
+                                backgroundColor: '#e77b00'
+                            },
+                            '&.Mui-selected': {
+                                backgroundColor: '#e77b00',
+                            }
+                        }} 
+                    />
                 </Tabs>
-                <Box mt={2}>
+                <Box mt={2} sx={{ color: 'white', padding: '16px' }}>
                     {renderTabContent()}
                 </Box>
             </Box>

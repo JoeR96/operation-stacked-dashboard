@@ -1,12 +1,18 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Grid, Paper, Typography, TextField, Button } from "../../../node_modules/@mui/material/index";
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
 import { useAuthStore } from "../../state/auth/authStore";
 
 const LoginForm = () => {
-  const navigate = useNavigate();
   const { setIsAuthenticated, setData, isAuthenticated } = useAuthStore();
+  const navigate = useNavigate();
+  console.log(isAuthenticated)
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate]);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,6 +38,7 @@ const LoginForm = () => {
       setData(data);
       console.log(data)
       if (data.idToken) {
+        console.log('setting authenticated to true')
         setIsAuthenticated(true);
         navigate('/dashboard');
       }

@@ -1,8 +1,4 @@
-// authStore.ts
-
 import { create } from "zustand";
-
-
 
 type AuthState = {
     isAuthenticated: boolean;

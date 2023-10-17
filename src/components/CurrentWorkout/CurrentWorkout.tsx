@@ -1,5 +1,3 @@
-// CurrentWorkout.tsx
-
 import { useEffect } from 'react';
 import { useApi } from '../../api/constants/hooks/useApi';
 import { ERROR, PENDING } from '../../api/constants/apiStatus';
@@ -34,34 +32,34 @@ const CurrentWorkout = () => {
     if (apiStatus === ERROR) return <div>Error fetching exercises: {error?.message}</div>;
 
     return (
-        <Paper elevation={3}>
+        <Paper elevation={3} style={{ backgroundColor: "#242424" }}>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Exercise</TableCell>
-                        <TableCell>Week</TableCell>
-                        <TableCell>Day</TableCell>
-                        <TableCell>Minimum Reps</TableCell>
-                        <TableCell>Maximum Reps</TableCell>
-                        <TableCell>Completed Reps</TableCell>
-                        <TableCell>Sets</TableCell>
-                        <TableCell>Working Weight</TableCell>
-                        <TableCell>Equipment Type</TableCell>
-                        <TableCell>Edit</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>Exercise</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>Week</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>Day</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>Minimum Reps</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>Maximum Reps</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>Completed Reps</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>Sets</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>Working Weight</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>Equipment Type</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>Edit</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {exercises?.Exercises.map((exercise) => (
                         <TableRow key={exercise.Id}>
-                            <TableCell>{exercise.ExerciseName}</TableCell>
-                            <TableCell>{exercise.LiftWeek}</TableCell>
-                            <TableCell>{exercise.LiftDay}</TableCell>
-                            <TableCell>{exercise.MinimumReps}</TableCell>
-                            <TableCell>{exercise.MaximumReps}</TableCell>
-                            <TableCell>{exercise.CompletedReps}</TableCell>
-                            <TableCell>{exercise.Sets}</TableCell>
-                            <TableCell>{exercise.WorkingWeight}KG</TableCell>
-                            <TableCell>{EquipmentType[exercise.EquipmentType]}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.ExerciseName}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.LiftWeek}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.LiftDay}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.MinimumReps}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.MaximumReps}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.CompletedReps}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.Sets}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.WorkingWeight}KG</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{EquipmentType[exercise.EquipmentType]}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

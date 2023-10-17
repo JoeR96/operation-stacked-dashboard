@@ -13,7 +13,12 @@
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.12",
     "axios": "^1.5.1",
+    "chance": "^1.1.11",
+    "chart.js": "^4.4.0",
+    "faker": "^6.6.6",
     "react": "^18.2.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0",
     "zustand": "^4.4.3"

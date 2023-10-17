@@ -7,10 +7,8 @@ import EquipmentStack from './EquipmentStack';
 import EditEquipmentStackContainer from './EditEquipmentStackContainer';
 import Spinner from '../spinner/Spinner';
 
-const EquipmentStackTable = () => {
+const EquipmentStackTable = ({ selectedStack, setSelectedStack }) => {
 
-  const [selectedStack, setSelectedStack] = useState(null);
-  const [open, setOpen] = useState(false);
 
   const {
     data: equipmentStack,
@@ -22,65 +20,42 @@ const EquipmentStackTable = () => {
   useEffect(() => {
     exec();
   }, []);
-  useEffect(() => {
-    console.log(selectedStack)
-    if (selectedStack) {
-      setOpen(true);
-    }
-  }, [selectedStack]);
+
 
   if (apiStatus === PENDING) return <Spinner />;
   if (apiStatus === ERROR) return <div>Error fetching equipment stack: {error?.message}</div>;
 
   return (
-    <Paper elevation={3}>
-      <Box style={{ maxHeight: '400px', overflowY: 'auto' }}>
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell>Start Weight</TableCell>
-              <TableCell>Initial Increments</TableCell>
-              <TableCell>Increment Value</TableCell>
-              <TableCell>Increment Count</TableCell>
-              <TableCell>Equipment Stack Key</TableCell>
-              <TableCell>User ID</TableCell>
-              <TableCell>Edit</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {equipmentStack?.map((equipment) => (
-              <TableRow key={equipment.Id}>
-                <TableCell>{equipment.Id}</TableCell>
-                <TableCell>{equipment.StartWeight}</TableCell>
-                <TableCell>{equipment.InitialIncrements?.join(', ') || '0'}</TableCell>
-                <TableCell>{equipment.IncrementValue}</TableCell>
-                <TableCell>{equipment.IncrementCount}</TableCell>
-                <TableCell>{equipment.EquipmentStackKey}</TableCell>
-                <TableCell>{equipment.UserID}</TableCell>
-                <TableCell>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => {
-                      console.log("equipment object:", equipment);
-                      setSelectedStack(equipment);
-                    }}>
-                    Edit
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+    <Paper elevation={3} style={{ backgroundColor: "#242424" }}>
+        <Table>
+            <TableHead>
+                <TableRow>
+                    {['Id', 'Start Weight', 'Initial Increments', 'Increment Value', 'Increment Count', 'Equipment Stack Key', 'User ID', 'Edit'].map(header => (
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }} key={header}>{header}</TableCell>
+                    ))}
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                {equipmentStack?.map((equipment) => (
+                    <TableRow key={equipment.Id}>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.Id}</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.StartWeight}</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.InitialIncrements?.join(', ') || '0'}</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.IncrementValue}</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.IncrementCount}</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.EquipmentStackKey}</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.UserID}</TableCell>
+                        <TableCell>
+                            <Button variant="outlined" color="primary" onClick={() => setSelectedStack(equipment)}>
+                                Edit
+                            </Button>
+                        </TableCell>
+                    </TableRow>
+                ))}
+            </TableBody>
         </Table>
-      </Box>
-      {console.log("selectedStack value:", selectedStack)}
-
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="md">
-        {selectedStack && <EditEquipmentStackContainer stackData={selectedStack} />}
-      </Dialog>
     </Paper>
-  );
+);
 
 }
 

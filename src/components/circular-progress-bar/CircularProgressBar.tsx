@@ -1,41 +1,41 @@
 // CircularProgressBar.tsx
 import React from 'react';
+import { Typography } from '@mui/material';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 interface Props {
-    value: number;    // Current value
-    maxValue: number; // Max value
-    title: string;    // Title to display in the center
-    size?: number;    // Size of the circle
-    strokeWidth?: number;  // Width of the circle stroke
+    value: number;        // Current value
+    maxValue: number;     // Max value
+    title: string;        // Title to display above the circle
+    strokeWidth?: number; // Width of the circle stroke (as percentage of diameter)
 }
 
-const CircularProgressBar: React.FC<Props> = ({ value, maxValue, title, size = 100, strokeWidth = 10 }) => {
-    const radius = (size - strokeWidth) / 2;
-    const circumference = 2 * Math.PI * radius;
-    const offset = circumference - ((value / maxValue) * circumference);
-
+const CircularProgressBar: React.FC<Props> = ({ 
+    value, 
+    maxValue, 
+    title, 
+    strokeWidth = 10 
+}) => {
     return (
-        <svg width={size} height={size}>
-            <circle
-                stroke="gray"
-                fill="transparent"
-                strokeWidth={strokeWidth}
-                r={radius}
-                cx={size / 2}
-                cy={size / 2}
+        <div style={{ width: '75%', height: '75%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', color: 'white', letterSpacing: '1px', marginBottom: '10px' }}>{title}</Typography>
+            <CircularProgressbar
+                value={(value / maxValue) * 100}
+                text={`${value}/${maxValue}`}
+                styles={buildStyles({
+                    textSize: '40px',  // Roughly match the h5 variant size
+                    textColor: 'white',
+                    fontWeight: 'bold', // Bold text as in Typography
+                    textAnchor: 'middle', // Ensure centered text
+                    pathColor: 'white',
+                    trailColor: 'black',
+                    strokeLinecap: 'round',
+                    pathTransitionDuration: 0.5,
+                    strokeWidth: strokeWidth
+                })}
             />
-            <circle
-                stroke="blue"
-                fill="transparent"
-                strokeWidth={strokeWidth}
-                strokeDasharray={circumference}
-                strokeDashoffset={offset}
-                r={radius}
-                cx={size / 2}
-                cy={size / 2}
-            />
-            <text x="50%" y="50%" textAnchor="middle" dy=".3em" fill="black">{title}</text>
-        </svg>
+        </div>
     );
 };
 

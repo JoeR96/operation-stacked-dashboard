@@ -1,16 +1,26 @@
 import CardSplashScreen from "../card-splash-screen/CardSplashScreen";
-import WorkoutCalendar from "../Workout/WorkoutCalendar";
+import EditEquipmentStackContainer from "../EquipmentStack/EditEquipmentStackContainer";
+import MultiAxis from "../Workout/MultiAxis";
 
 // DashboardMainContent.tsx
-export const DashboardMainContent: React.FC<{ selectedTab: number }> = ({ selectedTab }) => {
+export const DashboardMainContent: React.FC<{ selectedTab: number, selectedStack: any }> = ({ selectedTab, selectedStack }) => {
     if (selectedTab === 0) {
         return <CardSplashScreen />;
     }
     if (selectedTab === 1) {
-        return <WorkoutCalendar />;
+        return <MultiAxis />;
+    }
+    if (selectedTab === 2) {
+        if (selectedStack) {
+            return <EditEquipmentStackContainer stackData={selectedStack} />;
+        } else {
+            return (
+                <div style={{ padding: '20px', textAlign: 'center' }}>
+                    Please select a stack
+                </div>
+            );
+        }
     }
 
-    // If there are other views for other tabs, you can add them similarly
     return null;
 };
-

@@ -36,15 +36,21 @@ const EquipmentStack = ({ stackData }) => {
 
 
     return (
-        <Paper elevation={3} style={{ padding: '20px' }}>
+        <Paper elevation={3} style={{ padding: '2px', backgroundColor: 'gray' }}>
             {stack.map((weight, index) => (
-                <Box key={index} style={{
-                    border: '1px solid black',
-                    padding: '10px',
-                    margin: '5px 0',
-                    backgroundColor: weight % 2 === 0 ? 'lightgray' : 'white'
-                }}>
-                    <Typography variant="h6">
+                <Box 
+                    key={index} 
+                    style={{
+                        border: '1px solid black',
+                        padding: '1px',
+                        margin: '1px 0',
+                        backgroundColor: 'black',
+                        display: 'flex',
+                        justifyContent: 'center', 
+                        alignItems: 'center'
+                    }}
+                >
+                    <Typography variant="h7" style={{ fontWeight: 'bold',color:'white' }}>
                         {weight} KG
                     </Typography>
                 </Box>

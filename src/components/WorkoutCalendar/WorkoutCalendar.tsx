@@ -57,46 +57,51 @@ const WorkoutCalendar = () => {
     if (!exercises) return <div>No exercises found</div>;
 
     return (
-        <Paper elevation={3}>
+        <Paper elevation={3} style={{ backgroundColor: "#242424" }}>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Exercise</TableCell>
-                        <TableCell onClick={() => handleSort('LiftWeek')}>Week</TableCell>
-                        <TableCell onClick={() => handleSort('LiftDay')}>Day</TableCell>
-                        <TableCell>Minimum Reps</TableCell>
-                        <TableCell>Maximum Reps</TableCell>
-                        <TableCell>Sets</TableCell>
-                        <TableCell>Working Weight</TableCell>
-                        <TableCell>Equipment Type</TableCell>
+                        {['Exercise', 'Week', 'Day', 'Minimum Reps', 'Maximum Reps', 'Sets', 'Working Weight', 'Equipment Type'].map(header => (
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }} key={header}>{header}</TableCell>
+                        ))}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {sortedExercises.map((exercise) => (
                         <TableRow key={exercise.Id}>
-                            <TableCell>{exercise.ExerciseName}</TableCell>
-                            <TableCell>{exercise.LiftWeek}</TableCell>
-                            <TableCell>{exercise.LiftDay}</TableCell>
-                            <TableCell>{exercise.MinimumReps}</TableCell>
-                            <TableCell>{exercise.MaximumReps}</TableCell>
-                            <TableCell>{exercise.Sets}</TableCell>
-                            <TableCell>{exercise.WorkingWeight}</TableCell>
-                            <TableCell>{EquipmentType[exercise.EquipmentType]}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.ExerciseName}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.LiftWeek}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.LiftDay}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.MinimumReps}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.MaximumReps}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold'}}>{exercise.Sets}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.WorkingWeight}</TableCell>
+                            <TableCell style={{ color: "white",fontWeight: 'bold'}}>{EquipmentType[exercise.EquipmentType]}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
             <div style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0' }}>
-                <Button variant="contained" color="secondary" onClick={loadPreviousExercises} disabled={pageIndex <= 0}>
+            <Button 
+                    variant="contained" 
+                    style={{ backgroundColor: '#ff8c00' }} 
+                    onClick={loadPreviousExercises} 
+                    disabled={pageIndex <= 0}
+                >
                     Load Previous 20 Exercises
                 </Button>
-                <Button variant="contained" color="primary" onClick={loadMoreExercises}>
+                <Button 
+                    variant="contained" 
+                    style={{ backgroundColor: '#ff8c00' }} 
+                    onClick={loadMoreExercises}
+                >
                     Load Next 20 Exercises
                 </Button>
             </div>
         </Paper>
     );
 }
+
 
 const getWorkout = async (userId: string, pageIndex: number, pageSize: number) => {
     try {

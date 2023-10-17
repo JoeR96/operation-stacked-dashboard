@@ -18,12 +18,21 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
 
         const updatedStack = { ...localStack, [name]: updatedValue };
         setLocalStack(updatedStack);  // Update local state
-        onStackUpdate(updatedStack);  // Update in real-time to parent
-    };
+        if(updatedStack){
+            onStackUpdate(updatedStack);  // Update in real-time to parent
 
+        }
+    };
+    if (!localStack) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" p={2}>
+                <Box color="error.main">Please select a stack</Box>
+            </Box>
+        );
+    }
+    
     return (
         <Box display="flex" flexDirection="column" alignItems="center" p={2}>
-            {/* Each TextField is now wrapped with a Box for spacing */}
             <Box mb={2}>
                 <TextField
                     fullWidth
@@ -94,7 +103,8 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
                 Update Stack
             </Button>
         </Box>
-    );§
+    );
+    
 }
 
 export default EditEquipmentStack;
