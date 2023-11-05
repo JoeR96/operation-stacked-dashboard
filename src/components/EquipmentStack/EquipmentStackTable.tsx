@@ -30,15 +30,13 @@ const EquipmentStackTable = ({ selectedStack, setSelectedStack }) => {
 
   useEffect(() => {
     exec();
-  }, [exec]);
+  });
 
 
   if (apiStatus === PENDING) return <Spinner />;
   if (apiStatus === ERROR) return <div>Error fetching equipment stack: {error?.message}</div>;
 
     console.log(equipmentStack)
-    let equipmentStacks = equipmentStack;
-    console.log(equipmentStacks.data.$values);
 
   return (
     <Paper elevation={3} style={{ backgroundColor: "#242424" }}>
@@ -51,7 +49,7 @@ const EquipmentStackTable = ({ selectedStack, setSelectedStack }) => {
                 </TableRow>
             </TableHead>
             <TableBody>
-                {equipmentStacks?.map((equipment) => (
+                {equipmentStack?.map((equipment) => (
                     <TableRow key={equipment.Id}>
                         <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.Id}</TableCell>
                         <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.StartWeight}</TableCell>

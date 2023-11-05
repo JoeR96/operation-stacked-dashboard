@@ -9,6 +9,7 @@ const TabbedDisplay = ({ selectedTab, setSelectedTab, selectedStack, setSelected
 
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
+        console.log(newValue)
     };
 
     const renderTabContent = () => {
