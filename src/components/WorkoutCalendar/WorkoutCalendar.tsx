@@ -1,23 +1,35 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
-import { useApiStatus } from '../../api/constants/hooks/useApiStatus';
 import { ERROR, IDLE, PENDING, SUCCESS } from '../../api/constants/apiStatus';
 import { useApi } from '../../api/constants/hooks/useApi';
-import { apiRequest } from '../../api/constants/apiClient';
 import { Button, Table, TableBody, TableCell, TableHead, TableRow, Paper } from '@mui/material';
 import { EquipmentType } from '../../types/types';
 import Spinner from '../spinner/Spinner';
+import {WorkoutApi} from "../../services/api";
 
 const WorkoutCalendar = () => {
     const pageSize = 10;
     const [pageIndex, setPageIndex] = useState(0);
+    const workoutApi = new WorkoutApi();
+
+    const fetchWorkouts = async (userId, pageIndex, pageSize) => {
+        try {
+            const response = await workoutApi.workoutUserIdAllGet(userId, pageIndex, pageSize);
+            console.log(response); // Logs the actual response
+            return response.data.Exercises;
+        } catch (error) {
+            console.error("Error fetching workouts:", error);
+            throw error;
+        }
+    };
+
 
     const {
         data: exercises,
         apiStatus,
         error,
         exec
-    } = useApi(() => getWorkout("894ce6d3-6990-454d-ba92-17a61d518d8c", pageIndex, pageSize));
+    } = useApi(async () => await fetchWorkouts("5af5dae7-801e-47c0-bfc9-3eac5b25491c", pageIndex, pageSize));
 
     useEffect(() => {
         exec();
@@ -55,7 +67,8 @@ const WorkoutCalendar = () => {
     if (apiStatus === PENDING) return <Spinner />;
     if (apiStatus === ERROR) return <div>Error fetching exercises: {error?.message}</div>;
     if (!exercises) return <div>No exercises found</div>;
-
+    let exercisesArray = exercises.$values;
+    console.log(exercisesArray);
     return (
         <Paper elevation={3} style={{ backgroundColor: "#242424" }}>
             <Table>
@@ -67,19 +80,31 @@ const WorkoutCalendar = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {sortedExercises.map((exercise) => (
-                        <TableRow key={exercise.Id}>
-                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.ExerciseName}</TableCell>
-                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.LiftWeek}</TableCell>
-                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.LiftDay}</TableCell>
-                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.MinimumReps}</TableCell>
-                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.MaximumReps}</TableCell>
-                            <TableCell style={{ color: "white",fontWeight: 'bold'}}>{exercise.Sets}</TableCell>
-                            <TableCell style={{ color: "white",fontWeight: 'bold' }}>{exercise.WorkingWeight}</TableCell>
-                            <TableCell style={{ color: "white",fontWeight: 'bold'}}>{EquipmentType[exercise.EquipmentType]}</TableCell>
-                        </TableRow>
-                    ))}
+                    {exercisesArray.map((workoutExercise) => {
+                        console.log(workoutExercise);
+                        console.log(workoutExercise.LinearProgressionExercise)
+                        return (
+                            <TableRow key={workoutExercise.Id}>
+                                <TableCell style={{ color: "white", fontWeight: 'bold' }}>{workoutExercise.Exercise?.ExerciseName}</TableCell>
+                                <TableCell style={{ color: "white", fontWeight: 'bold' }}>
+                                    {workoutExercise.LinearProgressionExercises?.$values[0].LiftWeek}
+                                </TableCell>
+                                <TableCell style={{ color: "white", fontWeight: 'bold' }}>{workoutExercise.LiftDay}</TableCell>
+                                <TableCell style={{ color: "white", fontWeight: 'bold' }}>{workoutExercise.MinimumReps}</TableCell>
+                                <TableCell style={{ color: "white", fontWeight: 'bold' }}>{workoutExercise.MaximumReps}</TableCell>
+                                <TableCell style={{ color: "white", fontWeight: 'bold'}}>{workoutExercise.Sets}</TableCell>
+                                <TableCell style={{ color: "white", fontWeight: 'bold' }}>
+                                    {workoutExercise.LinearProgressionExercises?.$values[0].WorkingWeight}
+                                </TableCell>
+                                <TableCell style={{ color: "white", fontWeight: 'bold'}}>
+                                    {EquipmentType[workoutExercise.Exercise.EquipmentType]}
+                                </TableCell>
+                            </TableRow>
+                        );
+                    })}
                 </TableBody>
+
+
             </Table>
             <div style={{ display: 'flex', justifyContent: 'space-between', margin: '10px 0' }}>
             <Button 
@@ -100,21 +125,6 @@ const WorkoutCalendar = () => {
             </div>
         </Paper>
     );
-}
-
-
-const getWorkout = async (userId: string, pageIndex: number, pageSize: number) => {
-    try {
-        const response = await apiRequest(
-            "GET",
-            `/workout-creation/${userId}/all?pageIndex=${pageIndex}&pageSize=${pageSize}`,
-            5002
-        );
-        return response;
-    } catch (error) {
-        console.error("Error fetching workout:", error);
-        throw error;
-    }
 }
 
 export default WorkoutCalendar;

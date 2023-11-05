@@ -19,8 +19,8 @@ export const apiRequest = async (
     const config: AxiosRequestConfig = {
         method,
         url, // use the port number here
-         baseURL: `http://3.10.176.181:${port}`, // set baseURL here dynamically
-        //baseURL: 'https://localhost:44382',
+         //baseURL: `http://3.10.176.181:${port}`, // set baseURL here dynamically
+        baseURL: 'https://localhost:44382',
         data,
         headers,
     };
