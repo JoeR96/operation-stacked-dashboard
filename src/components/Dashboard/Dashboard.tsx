@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import TabbedDisplay from '../TabbedDisplay/TabbedDisplay';
 import { DashboardMainContent } from './DashboardMainContent';
+import {DashboardButtonLayout} from "./DashboardButtonLayout.tsx";
 
 const Dashboard: React.FC = () => {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -15,6 +16,7 @@ const Dashboard: React.FC = () => {
                 selectedStack={selectedStack}
                 setSelectedStack={setSelectedStack}
             />
+            <DashboardButtonLayout/>
         </div>
     );
 };

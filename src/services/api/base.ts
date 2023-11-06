@@ -19,7 +19,7 @@ import type { Configuration } from './configuration';
 import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 
-export const BASE_PATH = "https://localhost:44382".replace(/\/+$/, "");
+export const BASE_PATH = "https://3.10.176.18:5002".replace(/\/+$/, "");
 
 /**
  *
