@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Grid, Paper } from '@mui/material';
 import { useApi } from '../../api/constants/hooks/useApi';
 import Spinner from '../spinner/Spinner';
+import { ERROR, PENDING } from "../../api/constants/apiStatus";
 
 export const NewExerciseForm = () => {
     const [exerciseName, setExerciseName] = useState('');
@@ -40,7 +41,22 @@ export const NewExerciseForm = () => {
                             onChange={(e) => setExerciseName(e.target.value)}
                         />
                     </Grid>
-                    {/* ... other fields */}
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            label="Category"
+                            value={category}
+                            onChange={(e) => setCategory(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            label="Equipment Type"
+                            value={equipmentType}
+                            onChange={(e) => setEquipmentType(e.target.value)}
+                        />
+                    </Grid>
                     <Grid item xs={12}>
                         <Button variant="contained" color="primary" type="submit">
                             Add Exercise

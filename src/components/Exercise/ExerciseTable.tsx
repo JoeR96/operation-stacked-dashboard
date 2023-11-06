@@ -42,7 +42,7 @@ export const ExercisesTable = ({ userId }) => {
 
     useEffect(() => {
         exec();
-    }, [exec, pageIndex, pageSize]);
+    }, []);
 
     if (apiStatus === PENDING) return <Spinner />;
     if (apiStatus === ERROR) return <div>Error fetching exercises: {error?.message}</div>;
