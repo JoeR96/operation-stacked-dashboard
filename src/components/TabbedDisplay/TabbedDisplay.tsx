@@ -5,7 +5,7 @@ import CurrentWorkout from '../CurrentWorkout/CurrentWorkout';
 import EquipmentStacks from '../EquipmentStack/EquipmentStack';
 import EquipmentStackTable from '../EquipmentStack/EquipmentStackTable';
 
-const TabbedDisplay = ({ selectedTab, setSelectedTab, selectedStack, setSelectedStack }) => {
+const TabbedDisplay = ({ selectedTab, setSelectedTab }) => {
 
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
@@ -18,11 +18,6 @@ const TabbedDisplay = ({ selectedTab, setSelectedTab, selectedStack, setSelected
                 return <CurrentWorkout />;
             case 1:
                 return <WorkoutCalendar />;
-            case 2:
-                return <EquipmentStackTable 
-                          selectedStack={selectedStack}   // Pass down as props
-                          setSelectedStack={setSelectedStack}  // Pass down setter as props
-                       />;
             default:
                 return null;
         }

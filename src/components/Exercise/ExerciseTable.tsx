@@ -2,52 +2,40 @@ import React, { useState, useEffect } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, Paper } from '@mui/material';
 import { useApi } from '../../api/constants/hooks/useApi'; // Ensure useApi is correctly imported
 import Spinner from '../spinner/Spinner';
-import {ERROR, PENDING} from "../../api/constants/apiStatus.ts"; // Ensure Spinner is correctly imported
+import {ERROR, PENDING} from "../../api/constants/apiStatus.ts";
+import {ExerciseApi} from "../../services/api"; // Ensure Spinner is correctly imported
 
 export const ExercisesTable = ({ userId }) => {
     const [pageIndex, setPageIndex] = useState(0);
     const pageSize = 10;
+    const exercisApi : ExerciseApi = new ExerciseApi();
 
-    // Mock API response
-    const mockApiResponse = [
-        {
-            Id: '1',
-            ExerciseName: 'Bench Press',
-            Category: 'Chest',
-            EquipmentType: 'Barbell',
-            UserId: '894ce6d3-6990-454d-ba92-17a61d518d8c',
-            ExerciseHistories: [],
-        },
-        {
-            Id: '2',
-            ExerciseName: 'Squat',
-            Category: 'Legs',
-            EquipmentType: 'Barbell',
-            UserId: '894ce6d3-6990-454d-ba92-17a61d518d8c',
-            ExerciseHistories: [],
-        },
-    ];
-
+    const fetchExercises = async () => {
+        try {
+            const response = await exercisApi.exerciseUserIdAllGet("5af5dae7-801e-47c0-bfc9-3eac5b25491c")
+            console.log(response.data.$values
+            )            
+            return response.data.$values;
+        } catch (error) {
+            console.error("Error fetching workouts:", error);
+            throw error;
+        }
+    }
     const {
         data: exercises,
         apiStatus,
         error,
         exec
-    } = useApi(async () => {
-        // Simulate an API call
-        return new Promise((resolve) => {
-            setTimeout(() => resolve(mockApiResponse), 1000);
-        });
-    });
+    } = useApi(async () =>  await fetchExercises());
 
     useEffect(() => {
+        console.log('retrieving')
         exec();
-    }, []);
+    },[] );
 
     if (apiStatus === PENDING) return <Spinner />;
     if (apiStatus === ERROR) return <div>Error fetching exercises: {error?.message}</div>;
     if (!exercises || exercises.length === 0) return <div>No exercises found</div>;
-
     return (
         <Paper style={{ backgroundColor: "#242424" }}>
             <Table>

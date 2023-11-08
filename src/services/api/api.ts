@@ -310,6 +310,36 @@ export interface CreateWorkoutExerciseRequest {
      * @memberof CreateWorkoutExerciseRequest
      */
     'EquipmentStackId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateWorkoutExerciseRequest
+     */
+    'WeightProgression'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateWorkoutExerciseRequest
+     */
+    'MinimumReps'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateWorkoutExerciseRequest
+     */
+    'MaximumReps'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateWorkoutExerciseRequest
+     */
+    'Sets'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateWorkoutExerciseRequest
+     */
+    'AttemptsBeforeDeload'?: number;
 }
 
 
@@ -1340,6 +1370,39 @@ export const ExerciseApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        exerciseUserIdAllGet: async (userId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userId' is not null or undefined
+            assertParamExists('exerciseUserIdAllGet', 'userId', userId)
+            const localVarPath = `/exercise/{userId}/all`
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         exerciseUserIdDeleteAllDelete: async (userId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'userId' is not null or undefined
             assertParamExists('exerciseUserIdDeleteAllDelete', 'userId', userId)
@@ -1413,6 +1476,16 @@ export const ExerciseApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
+        async exerciseUserIdAllGet(userId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.exerciseUserIdAllGet(userId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
         async exerciseUserIdDeleteAllDelete(userId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.exerciseUserIdDeleteAllDelete(userId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
@@ -1453,6 +1526,15 @@ export const ExerciseApiFactory = function (configuration?: Configuration, baseP
          */
         exerciseExerciseIdGet(exerciseId: string, options?: any): AxiosPromise<GetExerciseResult> {
             return localVarFp.exerciseExerciseIdGet(exerciseId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exerciseUserIdAllGet(userId: string, options?: any): AxiosPromise<void> {
+            return localVarFp.exerciseUserIdAllGet(userId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1504,6 +1586,17 @@ export class ExerciseApi extends BaseAPI {
      */
     public exerciseExerciseIdGet(exerciseId: string, options?: AxiosRequestConfig) {
         return ExerciseApiFp(this.configuration).exerciseExerciseIdGet(exerciseId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} userId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseApi
+     */
+    public exerciseUserIdAllGet(userId: string, options?: AxiosRequestConfig) {
+        return ExerciseApiFp(this.configuration).exerciseUserIdAllGet(userId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

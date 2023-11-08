@@ -386,6 +386,29 @@
         }
       }
     },
+    "/exercise/{userId}/all": {
+      "get": {
+        "tags": [
+          "Exercise"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
     "/user/updateWeekAndDay": {
       "post": {
         "tags": [
@@ -1056,6 +1079,26 @@
           "EquipmentStackId": {
             "type": "string",
             "format": "uuid"
+          },
+          "WeightProgression": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "MinimumReps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "MaximumReps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Sets": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "AttemptsBeforeDeload": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false

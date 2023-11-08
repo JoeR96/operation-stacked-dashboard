@@ -12,9 +12,9 @@ const EquipmentStackTable = ({ selectedStack, setSelectedStack }) => {
         try {
             console.log("boobs");
             const response = await equipmentStackApi.equipmentStackUserIdAllGet("894ce6d3-6990-454d-ba92-17a61d518d8c");
-            console.log(response);
+            console.log(response.data.$values);
 
-            return response;
+            return response.data.$values;
         } catch (err) {
             console.error("Error fetching workouts:", error);
             throw error;
@@ -30,7 +30,7 @@ const EquipmentStackTable = ({ selectedStack, setSelectedStack }) => {
 
   useEffect(() => {
     exec();
-  });
+  }, []);
 
 
   if (apiStatus === PENDING) return <Spinner />;
@@ -53,7 +53,9 @@ const EquipmentStackTable = ({ selectedStack, setSelectedStack }) => {
                     <TableRow key={equipment.Id}>
                         <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.Id}</TableCell>
                         <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.StartWeight}</TableCell>
-                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.InitialIncrements?.join(', ') || '0'}</TableCell>
+                        <TableCell style={{ color: "white", fontWeight: 'bold' }}>
+                            {equipment.InitialIncrements.$values ? equipment.InitialIncrements.$values.join(', ') : '0'}
+                        </TableCell>
                         <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.IncrementValue}</TableCell>
                         <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.IncrementCount}</TableCell>
                         <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.EquipmentStackKey}</TableCell>

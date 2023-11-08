@@ -9,6 +9,7 @@
     import { useAuthStore } from '../../state/auth/authStore';
     import { useUserStore } from '../../state/userStore';
     import Spinner from '../spinner/Spinner';
+    import {WorkoutApi} from "../../services/api";
     
     const CurrentWorkout = () => {
         const { Week: userWeek, Day: userDay } = useUserStore();
@@ -17,14 +18,15 @@
     
         const week = userWeek || 1;
         const day = userDay || 1;
-        const defaultCompleted = false;
-    
+        const defaultCompleted = true;
+        const workoutApi = new WorkoutApi();
+
         const {
             data: fetchedExercises,
             apiStatus,
             error,
             exec
-        } = useApi(() => fetchCurrentWorkout(userId, week, day, defaultCompleted));
+        } = useApi(async () => await fetchWorkout(week,day,defaultCompleted));
         
         useEffect(() => {
             exec();
@@ -35,7 +37,17 @@
                 setExercises(fetchedExercises);
             }
         }, [fetchedExercises]);
-        
+        const fetchWorkout = async (week,day,defaultCompleted) => {
+            try {
+                const response = await workoutApi.workoutUserIdWeekDayCompletedGet(userId,week,day,defaultCompleted);
+                console.log(response.data.Exercises.$values); // Logs the actual response
+                return response.data.Exercises.$values;
+            } catch (error) {
+                console.error("Error fetching workouts:", error);
+                throw error;
+            }
+        };
+
         const [editingId, setEditingId] = useState(null);
         const [tempData, setTempData] = useState({});
     
@@ -124,7 +136,7 @@
     
         if (apiStatus === PENDING) return <Spinner />;
         if (apiStatus === ERROR) return <div>Error fetching exercises: {error?.message}</div>;
-    
+    return(<div>s</div>)
     return (
         <Paper elevation={3} style={{ backgroundColor: "#242424" }}>
             <Table>

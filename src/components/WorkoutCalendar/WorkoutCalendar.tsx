@@ -22,8 +22,7 @@ const WorkoutCalendar = () => {
             throw error;
         }
     };
-
-
+    
     const {
         data: exercises,
         apiStatus,

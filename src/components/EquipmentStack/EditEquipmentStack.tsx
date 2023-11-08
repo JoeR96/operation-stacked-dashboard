@@ -5,7 +5,8 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
     const [localStack, setLocalStack] = useState(stackData);
 
     useEffect(() => {
-        setLocalStack(stackData); // Ensure local state updates if stackData prop changes
+        setLocalStack(stackData);
+        console.log(localStack)// Ensure local state updates if stackData prop changes
     }, [stackData]);
 
     const handleChange = (event) => {
@@ -56,7 +57,7 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
                     fullWidth
                     label="Initial Increments (comma-separated)"
                     name="InitialIncrements"
-                    value={localStack.InitialIncrements.join(', ')}
+                    value={localStack.InitialIncrements}
                     onChange={handleChange}
                 />
             </Box>

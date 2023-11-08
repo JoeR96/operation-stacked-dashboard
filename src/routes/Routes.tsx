@@ -4,7 +4,8 @@ import Dashboard from '../components/Dashboard/Dashboard';
 import LoginForm from '../components/LoginForm/LoginForm';
 import WorkoutCalendar from '../components/WorkoutCalendar/WorkoutCalendar';
 import PrivateRoute from './PrivateRoute';
-import ExercisePage from "../pages/Login/ExercisePage.tsx"; // Import PrivateRoute
+import ExercisePage from "../pages/Login/ExercisePage.tsx";
+import EquipmentStackPage from "../pages/EquipmentStack/EquipmentStackPage.tsx"; // Import PrivateRoute
 
 const AppRoutes: React.FC = () => {
   return (
@@ -19,7 +20,10 @@ const AppRoutes: React.FC = () => {
         <Route path="/exercises" element={<PrivateRoute />} >
             <Route index element={<ExercisePage />} />
         </Route>
-    </Routes>
+        <Route path="/equipment-stacks" element={<PrivateRoute />} >
+            <Route index element={<EquipmentStackPage />} />
+        </Route>
+    </Routes>   
   );
 };
 
