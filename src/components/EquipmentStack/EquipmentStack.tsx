@@ -10,6 +10,7 @@ const EquipmentStack = ({ stackData }) => {
     const [stack, setStack] = useState([]);
 
     useEffect(() => {
+        console.log(stackData)
         if (stackData) {
             setStack(generateStack(stackData));
         }
@@ -18,9 +19,10 @@ const EquipmentStack = ({ stackData }) => {
 
 
     const generateStack = (e) => {
+        console.log(stack)
         let stackArray = [Number(e.StartWeight)];
 
-        for (let increment of (e.InitialIncrements || [])) {
+        for (let increment of (e.InitialIncrements.$values || [])) {
             const t = Number(stackArray[stackArray.length - 1]);
             stackArray.push(t + Number(increment));
         }

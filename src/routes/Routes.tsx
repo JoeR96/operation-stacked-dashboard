@@ -5,7 +5,8 @@ import LoginForm from '../components/LoginForm/LoginForm';
 import WorkoutCalendar from '../components/WorkoutCalendar/WorkoutCalendar';
 import PrivateRoute from './PrivateRoute';
 import ExercisePage from "../pages/Login/ExercisePage.tsx";
-import EquipmentStackPage from "../pages/EquipmentStack/EquipmentStackPage.tsx"; // Import PrivateRoute
+import EquipmentStackPage from "../pages/EquipmentStack/EquipmentStackPage.tsx";
+import WorkoutPage from "../pages/WorkoutPage/WorkoutPage"; // Import PrivateRoute
 
 const AppRoutes: React.FC = () => {
   return (
@@ -22,6 +23,9 @@ const AppRoutes: React.FC = () => {
         </Route>
         <Route path="/equipment-stacks" element={<PrivateRoute />} >
             <Route index element={<EquipmentStackPage />} />
+        </Route>
+        <Route path="/workout" element={<PrivateRoute />} >
+            <Route index element={<WorkoutPage />} />
         </Route>
     </Routes>   
   );

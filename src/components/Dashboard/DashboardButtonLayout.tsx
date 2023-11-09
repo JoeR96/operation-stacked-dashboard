@@ -18,7 +18,7 @@ export const DashboardButtonLayout = () => {
 
     // Handler functions for button clicks
     const goToExercises = () => navigate('/exercises');
-    const goToWorkouts = () => navigate('/workouts');
+    const goToWorkouts = () => navigate('/workout');
     const goToEquipmentStacks = () => navigate('/equipment-stacks');
     const goToHistory = () => navigate('/history');
 

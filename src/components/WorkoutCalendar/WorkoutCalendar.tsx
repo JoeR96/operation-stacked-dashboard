@@ -93,7 +93,7 @@ const WorkoutCalendar = () => {
                                 <TableCell style={{ color: "white", fontWeight: 'bold' }}>{workoutExercise.MaximumReps}</TableCell>
                                 <TableCell style={{ color: "white", fontWeight: 'bold'}}>{workoutExercise.Sets}</TableCell>
                                 <TableCell style={{ color: "white", fontWeight: 'bold' }}>
-                                    {workoutExercise.LinearProgressionExercises?.$values[0].WorkingWeight}
+                                    {workoutExercise.LinearProgressionExercises?.$values[0].WorkingWeight} KG
                                 </TableCell>
                                 <TableCell style={{ color: "white", fontWeight: 'bold'}}>
                                     {EquipmentType[workoutExercise.Exercise.EquipmentType]}

@@ -18,7 +18,7 @@
     
         const week = userWeek || 1;
         const day = userDay || 1;
-        const defaultCompleted = true;
+        const defaultCompleted = false;
         const workoutApi = new WorkoutApi();
 
         const {
@@ -34,12 +34,15 @@
         
         useEffect(() => {
             if (fetchedExercises) {
+                console.log(fetchedExercises)
                 setExercises(fetchedExercises);
             }
         }, [fetchedExercises]);
+
+
         const fetchWorkout = async (week,day,defaultCompleted) => {
             try {
-                const response = await workoutApi.workoutUserIdWeekDayCompletedGet(userId,week,day,defaultCompleted);
+                const response = await workoutApi.workoutUserIdWeekDayCompletedGet("5af5dae7-801e-47c0-bfc9-3eac5b25491c",week,day,defaultCompleted);
                 console.log(response.data.Exercises.$values); // Logs the actual response
                 return response.data.Exercises.$values;
             } catch (error) {
@@ -136,7 +139,6 @@
     
         if (apiStatus === PENDING) return <Spinner />;
         if (apiStatus === ERROR) return <div>Error fetching exercises: {error?.message}</div>;
-    return(<div>s</div>)
     return (
         <Paper elevation={3} style={{ backgroundColor: "#242424" }}>
             <Table>
@@ -156,10 +158,10 @@
                 </TableHead>
 
                 <TableBody>
-    {exercises?.Exercises.map((exercise) => (
+                    {}    {exercises?.map((exercise) => (
         <TableRow key={exercise.Id} style={exercise.Id === editingId ? { backgroundColor: '#333333' } : {}}>
-            <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.ExerciseName}</TableCell>
-            <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.LiftWeek}</TableCell>
+            <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.Exercise.ExerciseName}</TableCell>
+            <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.LinearProgressionExercises.$values[0].LiftWeek}</TableCell>
             <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.LiftDay}</TableCell>
 
             {exercise.Id === editingId ? (
@@ -238,12 +240,12 @@
                     <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.MinimumReps}</TableCell>
                     <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.MaximumReps}</TableCell>
                     <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.Sets}</TableCell>
-                    <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.WorkingWeight}KG</TableCell>
+                    <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.LinearProgressionExercises.$values[0].WorkingWeight} KG</TableCell>
                 </>
             )}
 
             <TableCell style={{ color: "white", fontWeight: 'bold' }}>
-                {EquipmentType[exercise.EquipmentType]}
+                {EquipmentType[exercise.Exercise.EquipmentType]}
             </TableCell>
             <TableCell>
     {exercise.Id === editingId ? null : (
@@ -313,4 +315,3 @@
     };
     
     export default CurrentWorkout;
-    

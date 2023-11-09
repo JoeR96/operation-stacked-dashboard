@@ -2,14 +2,12 @@ import React, { useState } from 'react';
 import { Tabs, Tab, Box } from '@mui/material';
 import WorkoutCalendar from '../WorkoutCalendar/WorkoutCalendar';
 import CurrentWorkout from '../CurrentWorkout/CurrentWorkout';
-import EquipmentStacks from '../EquipmentStack/EquipmentStack';
-import EquipmentStackTable from '../EquipmentStack/EquipmentStackTable';
 
-const TabbedDisplay = ({ selectedTab, setSelectedTab }) => {
+const WorkoutTabbedDisplay: React.FC<{ selectedTab: number, setSelectedTab: Function }> = ({ selectedTab, setSelectedTab }) => {
 
     const handleTabChange = (event, newValue) => {
+        console.log(setSelectedTab)
         setSelectedTab(newValue);
-        console.log(newValue)
     };
 
     const renderTabContent = () => {
@@ -66,20 +64,6 @@ const TabbedDisplay = ({ selectedTab, setSelectedTab }) => {
                             }
                         }} 
                     />
-                    <Tab 
-                        label="Equipment Stacks" 
-                        sx={{ 
-                            backgroundColor: '#ff8c00', 
-                            color: 'white',
-                            fontWeight: 'bold',
-                            '&:hover': {
-                                backgroundColor: '#e77b00'
-                            },
-                            '&.Mui-selected': {
-                                backgroundColor: '#e77b00',
-                            }
-                        }} 
-                    />
                 </Tabs>
                 <Box mt={2} sx={{ color: 'white', padding: '16px' }}>
                     {renderTabContent()}
@@ -89,4 +73,4 @@ const TabbedDisplay = ({ selectedTab, setSelectedTab }) => {
     );
 }
 
-export default TabbedDisplay;
+export default WorkoutTabbedDisplay;

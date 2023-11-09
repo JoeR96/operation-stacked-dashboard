@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Paper } from '@mui/material';
+import {Box, Grid, Paper} from '@mui/material';
 import { NewExerciseForm } from './NewExerciseForm';
 import { ExercisesTable } from './ExerciseTable';
 
@@ -13,18 +13,13 @@ const ExerciseLayout = () => {
     };
 
     return (
-        <Grid container spacing={2} style={{ padding: 16 }}>
-            <Grid item xs={12} md={6}>
-                {/* Form for creating a new exercise */}
-                <Paper style={{ padding: 16, marginBottom: 16 }}>
-                    <NewExerciseForm addExercise={addExercise} />
-                </Paper>
-            </Grid>
-            <Grid item xs={12} md={6}>
-                {/* Table to list all exercises */}
-                <ExercisesTable userId={userId} />
-            </Grid>
-        </Grid>
+        <Box>
+            <Paper style={{ padding: 16, marginBottom: 16 }}>
+                <NewExerciseForm addExercise={addExercise} />
+            </Paper>
+            <ExercisesTable userId={userId} />
+        </Box>
+
     );
 };
 
