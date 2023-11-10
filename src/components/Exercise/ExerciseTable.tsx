@@ -5,7 +5,7 @@ import Spinner from '../spinner/Spinner';
 import {ERROR, PENDING} from "../../api/constants/apiStatus.ts";
 import {ExerciseApi} from "../../services/api"; // Ensure Spinner is correctly imported
 
-export const ExercisesTable = ({ userId }) => {
+export const ExercisesTable = ({ userId, onCompleteClick}) => {
     const [pageIndex, setPageIndex] = useState(0);
     const pageSize = 10;
     const exercisApi : ExerciseApi = new ExerciseApi();
@@ -52,6 +52,14 @@ export const ExercisesTable = ({ userId }) => {
                             <TableCell style={{ color: "white" }}>{exercise.ExerciseName}</TableCell>
                             <TableCell style={{ color: "white" }}>{exercise.Category}</TableCell>
                             <TableCell style={{ color: "white" }}>{exercise.EquipmentType}</TableCell>
+                            <TableCell>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => onCompleteClick(exercise.Id)}
+                                >
+                                    Complete
+                                </Button>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

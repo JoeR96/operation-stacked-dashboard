@@ -1,25 +1,41 @@
-import React from 'react';
-import {Box, Grid, Paper} from '@mui/material';
-import { NewExerciseForm } from './NewExerciseForm';
+// ExerciseLayout.js
+import React, { useState } from 'react';
+import { Box, Paper } from '@mui/material';
 import { ExercisesTable } from './ExerciseTable';
+import { NewExerciseForm } from './NewExerciseForm';
+import ExerciseCompletionForm from './ExerciseCompletionForm';
 
 const ExerciseLayout = () => {
-    const userId = 'user-id'; // This should be the actual user ID from your application's state or context
+    const userId = 'user-id'; // Replace with actual user ID
+    const [showCompletionForm, setShowCompletionForm] = useState(false);
+    const [selectedExerciseId, setSelectedExerciseId] = useState(null);
 
-    const addExercise = (exercise) => {
-        // Function to call API and add exercise
-        console.log('Adding exercise:', exercise);
-        // You would replace this console.log with the actual API call
+    const handleCompleteClick = (exerciseId) => {
+        setSelectedExerciseId(exerciseId);
+        setShowCompletionForm(true);
+    };
+
+    const handleCompleteExercise = (completeExerciseRequest) => {
+        console.log('Complete exercise with request:', completeExerciseRequest);
+        setShowCompletionForm(false);
     };
 
     return (
         <Box>
-            <Paper style={{ padding: 16, marginBottom: 16 }}>
-                <NewExerciseForm addExercise={addExercise} />
-            </Paper>
-            <ExercisesTable userId={userId} />
+            {showCompletionForm ? (
+                <ExerciseCompletionForm
+                    exerciseId={selectedExerciseId}
+                    onComplete={handleCompleteExercise}
+                />
+            ) : (
+                <>
+                    <Paper style={{ padding: 16, marginBottom: 16 }}>
+                        <NewExerciseForm />
+                    </Paper>
+                    <ExercisesTable userId={userId} onCompleteClick={handleCompleteClick} />
+                </>
+            )}
         </Box>
-
     );
 };
 
