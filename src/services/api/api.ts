@@ -518,7 +518,8 @@ export const ExerciseCompletedStatus = {
     NUMBER_2: 2,
     NUMBER_3: 3,
     NUMBER_4: 4,
-    NUMBER_5: 5
+    NUMBER_5: 5,
+    NUMBER_6: 6
 } as const;
 
 export type ExerciseCompletedStatus = typeof ExerciseCompletedStatus[keyof typeof ExerciseCompletedStatus];
@@ -593,12 +594,6 @@ export interface ExerciseHistory {
      * @memberof ExerciseHistory
      */
     'TemplateExerciseId'?: string | null;
-    /**
-     * 
-     * @type {LinearProgressionExercise}
-     * @memberof ExerciseHistory
-     */
-    'TemplateExercise'?: LinearProgressionExercise;
 }
 /**
  * 
@@ -1608,6 +1603,108 @@ export class ExerciseApi extends BaseAPI {
      */
     public exerciseUserIdDeleteAllDelete(userId: string, options?: AxiosRequestConfig) {
         return ExerciseApiFp(this.configuration).exerciseUserIdDeleteAllDelete(userId, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * ExerciseHistoryApi - axios parameter creator
+ * @export
+ */
+export const ExerciseHistoryApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {string} exerciseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exerciseHistoryExerciseIdGet: async (exerciseId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'exerciseId' is not null or undefined
+            assertParamExists('exerciseHistoryExerciseIdGet', 'exerciseId', exerciseId)
+            const localVarPath = `/exercise-history/{exerciseId}`
+                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ExerciseHistoryApi - functional programming interface
+ * @export
+ */
+export const ExerciseHistoryApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ExerciseHistoryApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {string} exerciseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async exerciseHistoryExerciseIdGet(exerciseId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExerciseResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.exerciseHistoryExerciseIdGet(exerciseId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * ExerciseHistoryApi - factory interface
+ * @export
+ */
+export const ExerciseHistoryApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ExerciseHistoryApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {string} exerciseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exerciseHistoryExerciseIdGet(exerciseId: string, options?: any): AxiosPromise<GetExerciseResult> {
+            return localVarFp.exerciseHistoryExerciseIdGet(exerciseId, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ExerciseHistoryApi - object-oriented interface
+ * @export
+ * @class ExerciseHistoryApi
+ * @extends {BaseAPI}
+ */
+export class ExerciseHistoryApi extends BaseAPI {
+    /**
+     * 
+     * @param {string} exerciseId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseHistoryApi
+     */
+    public exerciseHistoryExerciseIdGet(exerciseId: string, options?: AxiosRequestConfig) {
+        return ExerciseHistoryApiFp(this.configuration).exerciseHistoryExerciseIdGet(exerciseId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

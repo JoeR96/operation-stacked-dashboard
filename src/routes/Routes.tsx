@@ -6,7 +6,8 @@ import WorkoutCalendar from '../components/WorkoutCalendar/WorkoutCalendar';
 import PrivateRoute from './PrivateRoute';
 import ExercisePage from "../pages/Login/ExercisePage.tsx";
 import EquipmentStackPage from "../pages/EquipmentStack/EquipmentStackPage.tsx";
-import WorkoutPage from "../pages/WorkoutPage/WorkoutPage"; // Import PrivateRoute
+import WorkoutPage from "../pages/WorkoutPage/WorkoutPage";
+import ExerciseHistoryPage from "../pages/ExerciseHistory/ExerciseHistoryPage.tsx"; // Import PrivateRoute
 
 const AppRoutes: React.FC = () => {
   return (
@@ -26,6 +27,9 @@ const AppRoutes: React.FC = () => {
         </Route>
         <Route path="/workout" element={<PrivateRoute />} >
             <Route index element={<WorkoutPage />} />
+        </Route>
+        <Route path="/history" element={<PrivateRoute />} >
+            <Route index element={<ExerciseHistoryPage />} />
         </Route>
     </Routes>   
   );

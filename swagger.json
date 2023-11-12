@@ -409,6 +409,46 @@
         }
       }
     },
+    "/exercise-history/{exerciseId}": {
+      "get": {
+        "tags": [
+          "ExerciseHistory"
+        ],
+        "parameters": [
+          {
+            "name": "exerciseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExerciseResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExerciseResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExerciseResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/updateWeekAndDay": {
       "post": {
         "tags": [
@@ -1228,7 +1268,8 @@
           2,
           3,
           4,
-          5
+          5,
+          6
         ],
         "type": "integer",
         "format": "int32"
@@ -1281,9 +1322,6 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
-          },
-          "TemplateExercise": {
-            "$ref": "#/components/schemas/LinearProgressionExercise"
           }
         },
         "additionalProperties": false
