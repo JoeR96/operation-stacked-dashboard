@@ -1,98 +1,72 @@
 import React from 'react';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import 'chartjs-adapter-moment';
 import { Line } from 'react-chartjs-2';
-import Chance from 'chance';
-
-const chance = new Chance();
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Dataset 1',
-      data: labels.map(() => chance.integer({ min: -1000, max: 1000 })),
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      yAxisID: 'y',
-    },
-    {
-      label: 'Dataset 2',
-      data: labels.map(() => chance.integer({ min: -1000, max: 1000 })),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-      yAxisID: 'y1',
-    },
-  ],
-};
+import { TimeScale } from 'chart.js';
 
 interface MultiAxisProps {
+    data: {
+        labels: string[];
+        datasets: {
+            label: string;
+            data: { x: string, y: number }[];
+            borderColor: string;
+            backgroundColor: string;
+        }[];
+    };
     maintainAspectRatio?: boolean;
 }
 
-export function MultiAxis({ maintainAspectRatio = false }: MultiAxisProps) {
+export function MultiAxis({ data, maintainAspectRatio = false }: MultiAxisProps) {
+    // Determine the maximum weight
+    let maxWeight = 0;
+    data.datasets.forEach(dataset => {
+        dataset.data.forEach(point => {
+            if (point.y > maxWeight) {
+                maxWeight = point.y;
+            }
+        });
+    });
 
     const options = {
         responsive: true,
-        maintainAspectRatio: !maintainAspectRatio,
-        interaction: {
-          mode: 'index' as const,
-          intersect: false,
-        },
-        stacked: false,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Chart.js Line Chart - Multi Axis',
-            color: 'white', // Set title text color to white
-          },
-        },
+        maintainAspectRatio: maintainAspectRatio,
         scales: {
-          y: {
-            type: 'linear' as const,
-            display: true,
-            position: 'left' as const,
-            ticks: {
-              color: 'white', // Set Y-axis ticks color to white
+            x: {
+                type: 'time',
+                time: {
+                    unit: 'day', // Adjusted to 'day' for more granularity
+                },
+                title: {
+                    display: true,
+                    text: 'Date'
+                }
             },
-          },
-          y1: {
-            type: 'linear' as const,
-            display: true,
-            position: 'right' as const,
-            grid: {
-              drawOnChartArea: false,
-            },
-            ticks: {
-              color: 'white', // Set Y1-axis ticks color to white
-            },
-          },
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                title: {
+                    display: true,
+                    text: 'Weight'
+                },
+                min: 0, // Start from 0
+                max: maxWeight, // Maximum weight from the data
+            }
         },
-      };
-      
+        plugins: {
+            legend: {
+                position: 'top' as const, // Adding 'as const' ensures the type is narrowed to the literal 'top'
+            },
+            title: {
+                display: true,
+                text: 'Exercise Progress Over Time',
+            },
+        },
+    };
 
     return (
-        <Line options={options} data={data} />
+            <Line options={options} data={data} />
     );
 }
 

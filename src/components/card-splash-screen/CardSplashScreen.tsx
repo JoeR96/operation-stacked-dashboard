@@ -51,7 +51,6 @@ const CardSplashScreen: React.FC<CardSplashScreen> = () => {
       variant="outlined" 
       sx={{backgroundColor: '#242424', width: '23%', height: '200px', display: 'flex', flexDirection: 'column', marginBottom: '10px' }}
     >
-<MultiAxis maintainAspectRatio={true} />
     </Card>
     
             <Card variant="outlined" sx={{backgroundColor: '#242424', width: '23%', height: '200px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginBottom: '10px' }}>
