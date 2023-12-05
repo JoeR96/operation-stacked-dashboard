@@ -3,16 +3,18 @@ import {Table, TableBody, TableCell, TableHead, TableRow, Paper, Button} from '@
 import { useApi } from '../../api/constants/hooks/useApi'; // Ensure useApi is correctly imported
 import Spinner from '../spinner/Spinner';
 import {ERROR, PENDING} from "../../api/constants/apiStatus.ts";
-import {ExerciseApi} from "../../services/api"; // Ensure Spinner is correctly imported
+import {ExerciseApi} from "../../services/api";
+import {useAuthStore} from "../../state/auth/authStore"; // Ensure Spinner is correctly imported
 
-export const ExercisesTable = ({ userId, onCompleteClick}) => {
+export const ExercisesTable = ({ onCompleteClick }) => {
     const [pageIndex, setPageIndex] = useState(0);
     const pageSize = 10;
     const exercisApi : ExerciseApi = new ExerciseApi();
+    const userId = useAuthStore(state => state.getUserId()); // Using the selector to get userId
 
     const fetchExercises = async () => {
         try {
-            const response = await exercisApi.exerciseUserIdAllGet("5af5dae7-801e-47c0-bfc9-3eac5b25491c")
+            const response = await exercisApi.exerciseUserIdAllGet(userId)
             console.log(response.data.$values
             )            
             return response.data.$values;

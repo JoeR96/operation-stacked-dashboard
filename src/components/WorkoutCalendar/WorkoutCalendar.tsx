@@ -6,11 +6,13 @@ import { Button, Table, TableBody, TableCell, TableHead, TableRow, Paper } from 
 import { EquipmentType } from '../../types/types';
 import Spinner from '../spinner/Spinner';
 import {WorkoutApi} from "../../services/api";
+import {useAuthStore} from "../../state/auth/authStore";
 
 const WorkoutCalendar = () => {
     const pageSize = 10;
     const [pageIndex, setPageIndex] = useState(0);
     const workoutApi = new WorkoutApi();
+    const userId = useAuthStore(state => state.getUserId());
 
     const fetchWorkouts = async (userId, pageIndex, pageSize) => {
         try {
@@ -28,7 +30,7 @@ const WorkoutCalendar = () => {
         apiStatus,
         error,
         exec
-    } = useApi(async () => await fetchWorkouts("5af5dae7-801e-47c0-bfc9-3eac5b25491c", pageIndex, pageSize));
+    } = useApi(async () => await fetchWorkouts(userId, pageIndex, pageSize));
 
     useEffect(() => {
         exec();

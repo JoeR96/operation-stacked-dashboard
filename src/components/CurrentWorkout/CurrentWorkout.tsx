@@ -13,9 +13,9 @@
     
     const CurrentWorkout = () => {
         const { Week: userWeek, Day: userDay } = useUserStore();
-        const userId = useAuthStore((state) => state.data?.userId);
         const [exercises, setExercises] = useState(null);
-    
+        const userId = useAuthStore(state => state.getUserId()); // Using the selector to get userId
+
         const week = userWeek || 1;
         const day = userDay || 1;
         const defaultCompleted = false;
@@ -39,10 +39,9 @@
             }
         }, [fetchedExercises]);
 
-
         const fetchWorkout = async (week,day,defaultCompleted) => {
             try {
-                const response = await workoutApi.workoutUserIdWeekDayCompletedGet("5af5dae7-801e-47c0-bfc9-3eac5b25491c",week,day,defaultCompleted);
+                const response = await workoutApi.workoutUserIdWeekDayCompletedGet(userId,week,day,defaultCompleted);
                 console.log(response.data.Exercises.$values); // Logs the actual response
                 return response.data.Exercises.$values;
             } catch (error) {

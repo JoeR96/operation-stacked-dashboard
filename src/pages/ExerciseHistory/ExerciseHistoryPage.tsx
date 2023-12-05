@@ -32,13 +32,13 @@ const handleCompleteClick = (exerciseId: string) => {
     return (
         <Box>
             <MultiAxis data={chartData} maintainAspectRatio={true} />
-            <ExercisesGrouped onCompleteClick={handleCompleteClick} userId={"5af5dae7-801e-47c0-bfc9-3eac5b25491c"} />
+            <ExercisesGrouped onCompleteClick={handleCompleteClick} />
         </Box>
     );
 };
 
 const transformDataForChart = (histories: ExerciseHistory[]) => {
-    // Group histories by ExerciseId
+
     const groupedByExerciseId = histories.reduce((acc, history) => {
         const id = history.ExerciseId;
         if (!acc[id]) {
@@ -48,7 +48,6 @@ const transformDataForChart = (histories: ExerciseHistory[]) => {
         return acc;
     }, {} as Record<string, ExerciseHistory[]>);
 
-    // Create a dataset for each group (each exercise)
     const datasets = Object.keys(groupedByExerciseId).map(exerciseId => {
         const exerciseData = groupedByExerciseId[exerciseId];
         const dataPoints = exerciseData.map(history => ({
@@ -60,7 +59,7 @@ const transformDataForChart = (histories: ExerciseHistory[]) => {
             label: exerciseData[0].Exercise?.ExerciseName || `Exercise ${exerciseId}`,
             data: dataPoints,
             borderColor: getRandomColor(),
-            backgroundColor: 'rgba(0, 0, 0, 0)', // Transparent background
+            backgroundColor: 'rgba(0, 0, 0, 0)',
             fill: false
         };
     });

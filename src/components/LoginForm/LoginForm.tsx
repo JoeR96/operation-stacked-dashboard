@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { Grid, Paper, Typography, TextField, Button } from "../../../node_modules/@mui/material/index";
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
@@ -20,8 +19,6 @@ const LoginForm = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Now you directly use the email and password state variables.
-
     try {
       const response = await fetch('http://3.10.176.181:5001/login', {
         method: 'POST',
@@ -33,7 +30,8 @@ const LoginForm = () => {
       });
       console.log(response.json)
       const data = await response.json();
-      data.userId = "5af5dae7-801e-47c0-bfc9-3eac5b25491c";
+      console.log(data,"it should be 5af5dae7-801e-47c0-bfc9-3eac5b25491c")
+      // data.userId = "5af5dae7-801e-47c0-bfc9-3eac5b25491c";
       
       setData(data);
       console.log(data)
