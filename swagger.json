@@ -409,6 +409,46 @@
         }
       }
     },
+    "/exercise-history/{exerciseId}": {
+      "get": {
+        "tags": [
+          "ExerciseHistory"
+        ],
+        "parameters": [
+          {
+            "name": "exerciseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExerciseResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExerciseResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetExerciseResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/exercise-history": {
       "post": {
         "tags": [
@@ -451,26 +491,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ExerciseHistory"
-                  }
+                  "$ref": "#/components/schemas/HistoricalExerciseResults"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ExerciseHistory"
-                  }
+                  "$ref": "#/components/schemas/HistoricalExerciseResults"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ExerciseHistory"
-                  }
+                  "$ref": "#/components/schemas/HistoricalExerciseResults"
                 }
               }
             }
@@ -993,6 +1024,14 @@
           },
           "Template": {
             "$ref": "#/components/schemas/ExerciseTemplate"
+          },
+          "WorkingWeight": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "DummyTime": {
+            "type": "string",
+            "format": "date-time"
           }
         },
         "additionalProperties": false
@@ -1315,6 +1354,50 @@
         },
         "additionalProperties": false
       },
+      "ExerciseDto": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ExerciseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "EquipmentType": {
+            "$ref": "#/components/schemas/EquipmentType"
+          },
+          "UserId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExerciseDTO": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ExerciseName": {
+            "type": "string",
+            "nullable": true
+          },
+          "Category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "EquipmentType": {
+            "$ref": "#/components/schemas/EquipmentType"
+          }
+        },
+        "additionalProperties": false
+      },
       "ExerciseHistory": {
         "required": [
           "CompletedDate",
@@ -1351,6 +1434,44 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
+          },
+          "WorkingWeight": {
+            "type": "number",
+            "format": "decimal"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExerciseHistoryDTO": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "CompletedDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "CompletedSets": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "CompletedReps": {
+            "type": "string",
+            "nullable": true
+          },
+          "ExerciseId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Exercise": {
+            "$ref": "#/components/schemas/ExerciseDTO"
+          },
+          "TemplateExerciseId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1378,13 +1499,26 @@
           "Exercises": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/WorkoutExercise"
+              "$ref": "#/components/schemas/WorkoutExerciseDto"
             },
             "nullable": true
           },
           "TotalCount": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HistoricalExerciseResults": {
+        "type": "object",
+        "properties": {
+          "ExerciseHistories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExerciseHistoryDTO"
+            },
             "nullable": true
           }
         },
@@ -1399,6 +1533,40 @@
           },
           "WorkoutExercise": {
             "$ref": "#/components/schemas/WorkoutExercise"
+          },
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "CurrentAttempt": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ParentId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "LiftWeek": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WorkingWeight": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "WeightIndex": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LinearProgressionExerciseDto": {
+        "type": "object",
+        "properties": {
+          "WorkoutExerciseId": {
+            "type": "string",
+            "format": "uuid"
           },
           "Id": {
             "type": "string",
@@ -1562,6 +1730,76 @@
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/LinearProgressionExercise"
+            },
+            "nullable": true
+          },
+          "Template": {
+            "$ref": "#/components/schemas/ExerciseTemplate"
+          },
+          "LiftDay": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "LiftOrder": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Completed": {
+            "type": "boolean"
+          },
+          "RestTimer": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "MinimumReps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "MaximumReps": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Sets": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "WeightProgression": {
+            "type": "number",
+            "format": "decimal"
+          },
+          "AttemptsBeforeDeload": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "EquipmentStackId": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WorkoutExerciseDto": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "WorkoutId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "ExerciseId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "Exercise": {
+            "$ref": "#/components/schemas/ExerciseDto"
+          },
+          "LinearProgressionExercises": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LinearProgressionExerciseDto"
             },
             "nullable": true
           },

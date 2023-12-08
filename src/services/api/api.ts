@@ -77,6 +77,18 @@ export interface CompleteExerciseRequest {
      * @memberof CompleteExerciseRequest
      */
     'Template'?: ExerciseTemplate;
+    /**
+     * 
+     * @type {number}
+     * @memberof CompleteExerciseRequest
+     */
+    'WorkingWeight'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CompleteExerciseRequest
+     */
+    'DummyTime'?: string;
 }
 
 
@@ -549,6 +561,78 @@ export interface ExerciseCompletionResult {
 /**
  * 
  * @export
+ * @interface ExerciseDTO
+ */
+export interface ExerciseDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseDTO
+     */
+    'Id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseDTO
+     */
+    'ExerciseName'?: string | null;
+    /**
+     * 
+     * @type {Category}
+     * @memberof ExerciseDTO
+     */
+    'Category'?: Category;
+    /**
+     * 
+     * @type {EquipmentType}
+     * @memberof ExerciseDTO
+     */
+    'EquipmentType'?: EquipmentType;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface ExerciseDto
+ */
+export interface ExerciseDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseDto
+     */
+    'Id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseDto
+     */
+    'ExerciseName'?: string | null;
+    /**
+     * 
+     * @type {Category}
+     * @memberof ExerciseDto
+     */
+    'Category'?: Category;
+    /**
+     * 
+     * @type {EquipmentType}
+     * @memberof ExerciseDto
+     */
+    'EquipmentType'?: EquipmentType;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseDto
+     */
+    'UserId'?: string;
+}
+
+
+/**
+ * 
+ * @export
  * @interface ExerciseHistory
  */
 export interface ExerciseHistory {
@@ -594,6 +678,61 @@ export interface ExerciseHistory {
      * @memberof ExerciseHistory
      */
     'TemplateExerciseId'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ExerciseHistory
+     */
+    'WorkingWeight'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface ExerciseHistoryDTO
+ */
+export interface ExerciseHistoryDTO {
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseHistoryDTO
+     */
+    'Id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseHistoryDTO
+     */
+    'CompletedDate'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof ExerciseHistoryDTO
+     */
+    'CompletedSets'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseHistoryDTO
+     */
+    'CompletedReps'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseHistoryDTO
+     */
+    'ExerciseId'?: string;
+    /**
+     * 
+     * @type {ExerciseDTO}
+     * @memberof ExerciseHistoryDTO
+     */
+    'Exercise'?: ExerciseDTO;
+    /**
+     * 
+     * @type {string}
+     * @memberof ExerciseHistoryDTO
+     */
+    'TemplateExerciseId'?: string | null;
 }
 /**
  * 
@@ -630,16 +769,29 @@ export interface GetExerciseResult {
 export interface GetWorkoutResult {
     /**
      * 
-     * @type {Array<WorkoutExercise>}
+     * @type {Array<WorkoutExerciseDto>}
      * @memberof GetWorkoutResult
      */
-    'Exercises'?: Array<WorkoutExercise> | null;
+    'Exercises'?: Array<WorkoutExerciseDto> | null;
     /**
      * 
      * @type {number}
      * @memberof GetWorkoutResult
      */
     'TotalCount'?: number | null;
+}
+/**
+ * 
+ * @export
+ * @interface HistoricalExerciseResults
+ */
+export interface HistoricalExerciseResults {
+    /**
+     * 
+     * @type {Array<ExerciseHistoryDTO>}
+     * @memberof HistoricalExerciseResults
+     */
+    'ExerciseHistories'?: Array<ExerciseHistoryDTO> | null;
 }
 /**
  * 
@@ -693,6 +845,55 @@ export interface LinearProgressionExercise {
      * 
      * @type {number}
      * @memberof LinearProgressionExercise
+     */
+    'WeightIndex'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface LinearProgressionExerciseDto
+ */
+export interface LinearProgressionExerciseDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof LinearProgressionExerciseDto
+     */
+    'WorkoutExerciseId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LinearProgressionExerciseDto
+     */
+    'Id'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof LinearProgressionExerciseDto
+     */
+    'CurrentAttempt'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof LinearProgressionExerciseDto
+     */
+    'ParentId'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof LinearProgressionExerciseDto
+     */
+    'LiftWeek'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof LinearProgressionExerciseDto
+     */
+    'WorkingWeight'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof LinearProgressionExerciseDto
      */
     'WeightIndex'?: number;
 }
@@ -957,6 +1158,111 @@ export interface WorkoutExercise {
      * 
      * @type {string}
      * @memberof WorkoutExercise
+     */
+    'EquipmentStackId'?: string;
+}
+
+
+/**
+ * 
+ * @export
+ * @interface WorkoutExerciseDto
+ */
+export interface WorkoutExerciseDto {
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkoutExerciseDto
+     */
+    'Id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkoutExerciseDto
+     */
+    'WorkoutId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkoutExerciseDto
+     */
+    'ExerciseId'?: string;
+    /**
+     * 
+     * @type {ExerciseDto}
+     * @memberof WorkoutExerciseDto
+     */
+    'Exercise'?: ExerciseDto;
+    /**
+     * 
+     * @type {Array<LinearProgressionExerciseDto>}
+     * @memberof WorkoutExerciseDto
+     */
+    'LinearProgressionExercises'?: Array<LinearProgressionExerciseDto> | null;
+    /**
+     * 
+     * @type {ExerciseTemplate}
+     * @memberof WorkoutExerciseDto
+     */
+    'Template'?: ExerciseTemplate;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutExerciseDto
+     */
+    'LiftDay'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutExerciseDto
+     */
+    'LiftOrder'?: number;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof WorkoutExerciseDto
+     */
+    'Completed'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutExerciseDto
+     */
+    'RestTimer'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutExerciseDto
+     */
+    'MinimumReps'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutExerciseDto
+     */
+    'MaximumReps'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutExerciseDto
+     */
+    'Sets'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutExerciseDto
+     */
+    'WeightProgression'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof WorkoutExerciseDto
+     */
+    'AttemptsBeforeDeload'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof WorkoutExerciseDto
      */
     'EquipmentStackId'?: string;
 }
@@ -1616,6 +1922,39 @@ export const ExerciseHistoryApiAxiosParamCreator = function (configuration?: Con
     return {
         /**
          * 
+         * @param {string} exerciseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exerciseHistoryExerciseIdGet: async (exerciseId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'exerciseId' is not null or undefined
+            assertParamExists('exerciseHistoryExerciseIdGet', 'exerciseId', exerciseId)
+            const localVarPath = `/exercise-history/{exerciseId}`
+                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {Array<string>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1659,17 +1998,27 @@ export const ExerciseHistoryApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {string} exerciseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async exerciseHistoryExerciseIdGet(exerciseId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetExerciseResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.exerciseHistoryExerciseIdGet(exerciseId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {Array<string>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exerciseHistoryPost(requestBody?: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExerciseHistory>>> {
+        async exerciseHistoryPost(requestBody?: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<HistoricalExerciseResults>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.exerciseHistoryPost(requestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
-    
+
 /**
  * ExerciseHistoryApi - factory interface
  * @export
@@ -1679,11 +2028,20 @@ export const ExerciseHistoryApiFactory = function (configuration?: Configuration
     return {
         /**
          * 
+         * @param {string} exerciseId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exerciseHistoryExerciseIdGet(exerciseId: string, options?: any): AxiosPromise<GetExerciseResult> {
+            return localVarFp.exerciseHistoryExerciseIdGet(exerciseId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {Array<string>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exerciseHistoryPost(requestBody?: Array<string>, options?: any): AxiosPromise<Array<ExerciseHistory>> {
+        exerciseHistoryPost(requestBody?: Array<string>, options?: any): AxiosPromise<HistoricalExerciseResults> {
             return localVarFp.exerciseHistoryPost(requestBody, options).then((request) => request(axios, basePath));
         },
     };
@@ -1696,6 +2054,17 @@ export const ExerciseHistoryApiFactory = function (configuration?: Configuration
  * @extends {BaseAPI}
  */
 export class ExerciseHistoryApi extends BaseAPI {
+    /**
+     * 
+     * @param {string} exerciseId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseHistoryApi
+     */
+    public exerciseHistoryExerciseIdGet(exerciseId: string, options?: AxiosRequestConfig) {
+        return ExerciseHistoryApiFp(this.configuration).exerciseHistoryExerciseIdGet(exerciseId, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {Array<string>} [requestBody] 

@@ -4,7 +4,8 @@ import { useApi } from '../../api/constants/hooks/useApi'; // Ensure useApi is c
 import Spinner from '../spinner/Spinner';
 import {ERROR, PENDING} from "../../api/constants/apiStatus.ts";
 import {ExerciseApi} from "../../services/api";
-import {useAuthStore} from "../../state/auth/authStore"; // Ensure Spinner is correctly imported
+import {useAuthStore} from "../../state/auth/authStore";
+import {Category, EquipmentType} from "../../types/types"; // Ensure Spinner is correctly imported
 
 export const ExercisesTable = ({ onCompleteClick }) => {
     const [pageIndex, setPageIndex] = useState(0);
@@ -15,9 +16,8 @@ export const ExercisesTable = ({ onCompleteClick }) => {
     const fetchExercises = async () => {
         try {
             const response = await exercisApi.exerciseUserIdAllGet(userId)
-            console.log(response.data.$values
-            )            
-            return response.data.$values;
+            console.log(response.data)
+            return response.data;
         } catch (error) {
             console.error("Error fetching workouts:", error);
             throw error;
@@ -52,8 +52,9 @@ export const ExercisesTable = ({ onCompleteClick }) => {
                     {exercises.map((exercise) => (
                         <TableRow key={exercise.Id}>
                             <TableCell style={{ color: "white" }}>{exercise.ExerciseName}</TableCell>
-                            <TableCell style={{ color: "white" }}>{exercise.Category}</TableCell>
-                            <TableCell style={{ color: "white" }}>{exercise.EquipmentType}</TableCell>
+                            <TableCell style={{ color: "white" }}> {Category[exercise.Category]}</TableCell>
+                            <TableCell style={{ color: "white" }}> {EquipmentType[exercise.EquipmentType]}</TableCell>
+
                             <TableCell>
                                 <Button
                                     variant="contained"

@@ -143,7 +143,15 @@ export enum A2SBlocks {
     Machine,
     Cable,
 }
-  
+
+export enum Category{
+    Shoulders,
+    Chest,
+    Back,
+    Biceps,
+    Triceps,
+    Legs
+}
   export interface Exercise {
     /** @format uuid */
     Id?: string;

@@ -68,7 +68,7 @@ const WorkoutCalendar = () => {
     if (apiStatus === PENDING) return <Spinner />;
     if (apiStatus === ERROR) return <div>Error fetching exercises: {error?.message}</div>;
     if (!exercises) return <div>No exercises found</div>;
-    let exercisesArray = exercises.$values;
+    let exercisesArray = exercises;
     console.log(exercisesArray);
     return (
         <Paper elevation={3} style={{ backgroundColor: "#242424" }}>
@@ -88,14 +88,15 @@ const WorkoutCalendar = () => {
                             <TableRow key={workoutExercise.Id}>
                                 <TableCell style={{ color: "white", fontWeight: 'bold' }}>{workoutExercise.Exercise?.ExerciseName}</TableCell>
                                 <TableCell style={{ color: "white", fontWeight: 'bold' }}>
-                                    {workoutExercise.LinearProgressionExercises?.$values[0].LiftWeek}
+                                    {workoutExercise.LinearProgressionExercises?.[0].LiftWeek} KG
+
                                 </TableCell>
                                 <TableCell style={{ color: "white", fontWeight: 'bold' }}>{workoutExercise.LiftDay}</TableCell>
                                 <TableCell style={{ color: "white", fontWeight: 'bold' }}>{workoutExercise.MinimumReps}</TableCell>
                                 <TableCell style={{ color: "white", fontWeight: 'bold' }}>{workoutExercise.MaximumReps}</TableCell>
                                 <TableCell style={{ color: "white", fontWeight: 'bold'}}>{workoutExercise.Sets}</TableCell>
                                 <TableCell style={{ color: "white", fontWeight: 'bold' }}>
-                                    {workoutExercise.LinearProgressionExercises?.$values[0].WorkingWeight} KG
+                                    {workoutExercise.LinearProgressionExercises?.[0].WorkingWeight} KG
                                 </TableCell>
                                 <TableCell style={{ color: "white", fontWeight: 'bold'}}>
                                     {EquipmentType[workoutExercise.Exercise.EquipmentType]}

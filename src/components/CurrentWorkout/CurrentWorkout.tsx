@@ -42,8 +42,8 @@
         const fetchWorkout = async (week,day,defaultCompleted) => {
             try {
                 const response = await workoutApi.workoutUserIdWeekDayCompletedGet(userId,week,day,defaultCompleted);
-                console.log(response.data.Exercises.$values); // Logs the actual response
-                return response.data.Exercises.$values;
+                console.log(response.data.Exercises); // Logs the actual response
+                return response.data.Exercises;
             } catch (error) {
                 console.error("Error fetching workouts:", error);
                 throw error;
@@ -160,7 +160,7 @@
                     {}    {exercises?.map((exercise) => (
         <TableRow key={exercise.Id} style={exercise.Id === editingId ? { backgroundColor: '#333333' } : {}}>
             <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.Exercise.ExerciseName}</TableCell>
-            <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.LinearProgressionExercises.$values[0].LiftWeek}</TableCell>
+            <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.LinearProgressionExercises[0].LiftWeek}</TableCell>
             <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.LiftDay}</TableCell>
 
             {exercise.Id === editingId ? (
@@ -239,7 +239,7 @@
                     <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.MinimumReps}</TableCell>
                     <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.MaximumReps}</TableCell>
                     <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.Sets}</TableCell>
-                    <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.LinearProgressionExercises.$values[0].WorkingWeight} KG</TableCell>
+                    <TableCell style={{ color: "white", fontWeight: 'bold' }}>{exercise.LinearProgressionExercises[0].WorkingWeight} KG</TableCell>
                 </>
             )}
 

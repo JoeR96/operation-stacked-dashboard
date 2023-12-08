@@ -5,10 +5,10 @@ import MultiAxis from "../Workout/MultiAxis";
 export const WorkoutMainContent: React.FC<{ selectedTab: number }> = ({ selectedTab }) => {
 
     if (selectedTab === 0) {
-        return <MultiAxis />;
+        return <CardSplashScreen />;
     }
     if (selectedTab === 1) {
-        return <MultiAxis />;
+        return <CardSplashScreen />;
     }
 
     return null;

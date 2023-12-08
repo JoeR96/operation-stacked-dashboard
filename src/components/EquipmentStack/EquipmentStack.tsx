@@ -22,7 +22,7 @@ const EquipmentStack = ({ stackData }) => {
         console.log(stack)
         let stackArray = [Number(e.StartWeight)];
 
-        for (let increment of (e.InitialIncrements.$values || [])) {
+        for (let increment of (e.InitialIncrements || [])) {
             const t = Number(stackArray[stackArray.length - 1]);
             stackArray.push(t + Number(increment));
         }

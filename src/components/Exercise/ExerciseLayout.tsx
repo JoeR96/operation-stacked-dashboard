@@ -7,9 +7,10 @@ import { WorkoutApi } from '../../services/api';
 import { ExercisesTable } from './ExerciseTable';
 import { NewExerciseForm } from './NewExerciseForm';
 import ExerciseCompletionForm from './ExerciseCompletionForm';
+import {useAuthStore} from "../../state/auth/authStore";
 
 const ExerciseLayout = () => {
-    const userId = 'user-id'; // Replace with actual user ID
+    const userId = useAuthStore(state => state.getUserId()); // Using the selector to get userId
     const [showCompletionForm, setShowCompletionForm] = useState(false);
     const [selectedExerciseId, setSelectedExerciseId] = useState(null);
 

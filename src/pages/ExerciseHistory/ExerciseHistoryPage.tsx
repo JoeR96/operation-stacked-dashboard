@@ -1,77 +1,149 @@
-import React, { useState, useEffect } from 'react';
-import { Box } from "@mui/material";
-import MultiAxis from "../../components/Workout/MultiAxis";
-import {ExerciseHistory} from "../../services/api";
-import {ExercisesGrouped} from "./ExercisesGrouped.tsx";
+﻿import React, { useState, useEffect } from 'react';
+import { ExerciseApi } from "../../services/api";
+import { ERROR, PENDING } from "../../api/constants/apiStatus";
+import Spinner from "../../components/spinner/Spinner";
+import { useAuthStore } from "../../state/auth/authStore";
+import { ExerciseHistoryCategoryContainer } from "../../components/ExerciseHistory/ExerciseHistoryCategoryContainer";
+import { Card, Grid } from "@mui/material";
+import { ExerciseHistoryTable } from "../../components/Exercise/ExerciseHistoryTable";
+import ExerciseHistoryChart from "./ExerciseHistoryChart";
 
 const ExerciseHistoryPage = () => {
-    const [selectedExerciseId, setSelectedExerciseId] = useState<string | null>(null);
-    const [exerciseHistories, setExerciseHistories] = useState<ExerciseHistory[]>([]);
-    const mockExerciseHistories = [
-        {"Id": "ex1-1", "CompletedDate": "2023-10-22", "CompletedSets": 5, "CompletedReps": "12", "Weight": 65, "ExerciseId": "ex1", "Exercise": {"ExerciseName": "Bench Press"}},
-        {"Id": "ex2-1", "CompletedDate": "2023-10-22", "CompletedSets": 9, "CompletedReps": "13", "Weight": 147, "ExerciseId": "ex2", "Exercise": {"ExerciseName": "Deadlift"}},
-        {"Id": "ex1-2", "CompletedDate": "2023-10-29", "CompletedSets": 8, "CompletedReps": "11", "Weight": 125, "ExerciseId": "ex1", "Exercise": {"ExerciseName": "Bench Press"}},
-        {"Id": "ex2-2", "CompletedDate": "2023-10-29", "CompletedSets": 6, "CompletedReps": "13", "Weight": 169, "ExerciseId": "ex2", "Exercise": {"ExerciseName": "Deadlift"}},
-        {"Id": "ex1-3", "CompletedDate": "2023-11-05", "CompletedSets": 7, "CompletedReps": "14", "Weight": 55, "ExerciseId": "ex1", "Exercise": {"ExerciseName": "Bench Press"}},
-        {"Id": "ex2-3", "CompletedDate": "2023-11-05", "CompletedSets": 3, "CompletedReps": "9", "Weight": 144, "ExerciseId": "ex2", "Exercise": {"ExerciseName": "Deadlift"}},
-        {"Id": "ex1-4", "CompletedDate": "2023-11-12", "CompletedSets": 3, "CompletedReps": "15", "Weight": 121, "ExerciseId": "ex1", "Exercise": {"ExerciseName": "Bench Press"}},
-        {"Id": "ex2-4", "CompletedDate": "2023-11-12", "CompletedSets": 3, "CompletedReps": "14", "Weight": 167, "ExerciseId": "ex2", "Exercise": {"ExerciseName": "Deadlift"}},
-        {"Id": "ex1-5", "CompletedDate": "2023-11-19", "CompletedSets": 5, "CompletedReps": "10", "Weight": 181, "ExerciseId": "ex1", "Exercise": {"ExerciseName": "Bench Press"}},
-        {"Id": "ex2-5", "CompletedDate": "2023-11-19", "CompletedSets": 9, "CompletedReps": "8", "Weight": 141, "ExerciseId": "ex2", "Exercise": {"ExerciseName": "Deadlift"}}
-    ]
+    const [groupedExercises, setGroupedExercises] = useState({});
+    const [apiStatus, setApiStatus] = useState('idle');
+    const [error, setError] = useState(null);
+    const exerciseApi = new ExerciseApi();
+    const userId = useAuthStore(state => state.getUserId());
+    const [graphExerciseIds, setGraphExerciseIds] = useState<string[]>([]);
+    const [graphData, setGraphData] = useState(null);
+    const [activeExerciseId, setActiveExerciseId] = useState<string | null>(null);
 
-    useEffect(() => {
-        setExerciseHistories(mockExerciseHistories);
-    }, []);
+    // Function to simulate API call
+    const fetchGraphData = async (exerciseId) => {
+        // Simulate API call delay
+        await new Promise(resolve => setTimeout(resolve, Math.random() * 2000));
 
-const handleCompleteClick = (exerciseId: string) => {
+        // Generate mock data based on exerciseId
+        const mockData = generateMockDataForExercise(exerciseId);
+        setGraphData(mockData);
     };
 
-    const chartData = transformDataForChart(mockExerciseHistories);
-    console.log(chartData)
+    const toggleGraph = (exerciseId: string) => {
+        const isCurrentlyShown = graphExerciseIds.includes(exerciseId);
+        setGraphExerciseIds(isCurrentlyShown ? graphExerciseIds.filter(id => id !== exerciseId) : [...graphExerciseIds, exerciseId]);
+    };
+
+
+    const handleSetActiveInHistory = (exerciseId: string) => {
+        setActiveExerciseId(exerciseId);
+    };
+
+    const fetchExercises = async () => {
+        setApiStatus(PENDING);
+        try {
+            const response = await exerciseApi.exerciseUserIdAllGet(userId);
+            const fetchedExercises = response.data;
+            groupExercises(fetchedExercises);
+            setApiStatus('success');
+        } catch (error) {
+            console.error("Error fetching exercises:", error);
+            setError(error);
+            setApiStatus(ERROR);
+        }
+    };
+
+    const isAddedToGraph = (exerciseId: string) => {
+        return graphExerciseIds.includes(exerciseId);
+    };
+
+    const groupExercises = (exercises) => {
+        const grouped = exercises.reduce((acc, exercise) => {
+            const category = exercise.Category || 'Others';
+            if (!acc[category]) {
+                acc[category] = [];
+            }
+            acc[category].push(exercise);
+            return acc;
+        }, {});
+        setGroupedExercises(grouped);
+    };
+
+    useEffect(() => {
+        fetchExercises();
+    }, []);
+
+    if (apiStatus === PENDING) return <Spinner />;
+    if (apiStatus === ERROR) return <div>Error fetching exercises: {error?.message}</div>;
+    if (!groupedExercises) return <div>No exercises found</div>;
+
     return (
-        <Box>
-            <MultiAxis data={chartData} maintainAspectRatio={true} />
-            <ExercisesGrouped onCompleteClick={handleCompleteClick} />
-        </Box>
+        <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100vh' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', width: '50%', height: '100%', paddingRight: '16px' }}>
+                {/* Chart takes the space it needs */}
+                <div style={{ flex: 1 }}>
+                    <ExerciseHistoryChart maintainAspectRatio={true} exerciseIds={graphExerciseIds} />
+                </div>
+                {/* Table takes the remaining space */}
+                <div style={{ flex: 'auto' }}>
+                    <ExerciseHistoryTable exerciseId={activeExerciseId} />
+                </div>
+            </div>
+            {/* Category containers - a row with two columns */}
+            <div style={{ width: '50%', height: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', overflowY: 'auto' }}>
+                {Object.entries(groupedExercises).map(([category, exercises], index) => (
+                    <div key={category} style={{ width: '33.33%', marginBottom: '8px', flex: '0 0 33.33%' }}>
+                        <Card style={{ height: '100%', background: '#f0f0f0' }}>
+                            <ExerciseHistoryCategoryContainer
+                                exercises={exercises}
+                                category={category}
+                                onToggleGraph={toggleGraph}
+                                onSetActiveInHistory={handleSetActiveInHistory}
+                                isAddedToGraph={isAddedToGraph}
+                            />
+                        </Card>
+                    </div>
+                ))}
+            </div>
+        </div>
     );
+
+
 };
 
-const transformDataForChart = (histories: ExerciseHistory[]) => {
+// Function to generate mock data for a specific exercise ID
+const generateMockDataForExercise = (exerciseId) => {
+    const exerciseNames = {
+        'ex1': 'Bench Press',
+        'ex2': 'Deadlift'
+        // Add more mappings as needed
+    };
 
-    const groupedByExerciseId = histories.reduce((acc, history) => {
-        const id = history.ExerciseId;
-        if (!acc[id]) {
-            acc[id] = [];
-        }
-        acc[id].push(history);
-        return acc;
-    }, {} as Record<string, ExerciseHistory[]>);
-
-    const datasets = Object.keys(groupedByExerciseId).map(exerciseId => {
-        const exerciseData = groupedByExerciseId[exerciseId];
-        const dataPoints = exerciseData.map(history => ({
-            x: new Date(history.CompletedDate).toISOString(),
-            y: history.Weight
-        }));
-
-        return {
-            label: exerciseData[0].Exercise?.ExerciseName || `Exercise ${exerciseId}`,
-            data: dataPoints,
+    const mockData = {
+        labels: [],
+        datasets: [{
+            label: exerciseNames[exerciseId] || `Exercise ${exerciseId}`,
+            data: [],
             borderColor: getRandomColor(),
             backgroundColor: 'rgba(0, 0, 0, 0)',
             fill: false
-        };
-    });
-
-    return {
-        labels: histories.map(history => new Date(history.CompletedDate).toISOString()),
-        datasets
+        }]
     };
+
+    // Generate random data points
+    for (let i = 0; i < 10; i++) {
+        const date = new Date();
+        date.setDate(date.getDate() - i * 7); // Weekly data points
+        mockData.labels.push(date.toISOString());
+        mockData.datasets[0].data.push({
+            x: date.toISOString(),
+            y: Math.floor(Math.random() * 200) + 20 // Random weight between 20 and 220
+        });
+    }
+
+    return mockData;
 };
 
 const getRandomColor = () => {
-    // Function to generate a random color
     const letters = '0123456789ABCDEF';
     let color = '#';
     for (let i = 0; i < 6; i++) {
@@ -79,7 +151,6 @@ const getRandomColor = () => {
     }
     return color;
 };
-
 
 
 export default ExerciseHistoryPage;
