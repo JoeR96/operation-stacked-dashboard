@@ -6,12 +6,47 @@ import { useAuthStore } from "../../state/auth/authStore";
 const LoginForm = () => {
   const { setIsAuthenticated, setData, isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
-  console.log(isAuthenticated)
+  const [isVerified, setIsVerified] = useState(false);
+
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/dashboard");
-    }
-  }, [isAuthenticated, navigate]);
+    // Verify the session cookie is set/valid
+    const verifySession = async () => {
+      try {
+        const response = await fetch('https://localhost:7099/verify', {
+          method: 'GET',
+          credentials: 'include', // Important for including session cookies in the request
+          headers: {
+            'Accept': 'application/json', // Assuming your server responds with JSON
+          }
+        });
+
+        console.log(response)
+        if (response.ok) {
+          const data = await response.json(); // Parse the JSON response body
+          console.log(data); // Log the parsed data to see its structure
+
+          if(!data.userId){
+            return;
+          }
+          setIsVerified(true);
+          setIsAuthenticated(true);
+          setData({ userId: data.userId }); // Use 'data.userId', assuming 'data' has a 'userId' property
+          console.log("redirecting to dashboard")
+          navigate('/dashboard');
+        }  else {
+          // Handle cases where the session is not valid
+          // Possibly navigate to the login page or show a message
+        }
+      } catch (error) {
+        console.error('Error during session verification:', error);
+        // Handle network or server errors
+      }
+    };
+
+
+      verifySession();
+  }, [navigate]);
+
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,8 +55,11 @@ const LoginForm = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://3.10.176.181:5001/login', {
+      // const response = await fetch('http://3.10.176.181:5001/login', {
+      const response = await fetch('https://localhost:7099/login', {
+
         method: 'POST',
+        credentials: 'include', // Important for including session cookies in the request
         headers: {
           'Content-Type': 'application/json',
           'accept': 'text/plain'
@@ -30,14 +68,14 @@ const LoginForm = () => {
       });
       console.log(response.json)
       const data = await response.json();
-      console.log(data,"it should be 5af5dae7-801e-47c0-bfc9-3eac5b25491c")
-      // data.userId = "5af5dae7-801e-47c0-bfc9-3eac5b25491c";
-      
+
       setData(data);
       console.log(data)
-      if (data.idToken) {
+      if (data.userId) {
         console.log('setting authenticated to true')
         setIsAuthenticated(true);
+        setData({ userId: data.userId }); // Or use setUserId(data.userId)
+
         navigate('/dashboard');
       }
 

@@ -6,7 +6,7 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
 
     useEffect(() => {
         setLocalStack(stackData);
-        console.log(localStack)// Ensure local state updates if stackData prop changes
+        console.log(localStack) // Ensure local state updates if stackData prop changes
     }, [stackData]);
 
     const handleChange = (event) => {
@@ -19,21 +19,42 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
 
         const updatedStack = { ...localStack, [name]: updatedValue };
         setLocalStack(updatedStack);  // Update local state
-        if(updatedStack){
+        if (updatedStack) {
             onStackUpdate(updatedStack);  // Update in real-time to parent
-
         }
     };
     if (!localStack) {
         return (
-            <Box display="flex" justifyContent="center" alignItems="center" p={2}>
+            <Box
+                margin = '1px 0'
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                p={2}
+                style={{ color: 'white' }} // Set the text color to white
+            >
                 <Box color="error.main">Please select a stack</Box>
             </Box>
         );
     }
-    
+
+    const inputLabelProps = {
+        style: { color: 'white' }, // Set label text color to white
+    };
+
+    const textFieldStyle = {
+        color: 'white', // Set input text color to white
+        border: '1px solid white', // Set input border color to white
+    };
+
     return (
-        <Box display="flex" flexDirection="column" alignItems="center" p={2}>
+        <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            p={2}
+            style={{ color: 'white' }} // Set the text color to white
+        >
             <Box mb={2}>
                 <TextField
                     fullWidth
@@ -41,6 +62,8 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
                     name="Id"
                     value={localStack.Id}
                     onChange={handleChange}
+                    InputProps={{ style: textFieldStyle }}
+                    InputLabelProps={inputLabelProps}
                 />
             </Box>
             <Box mb={2}>
@@ -50,6 +73,8 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
                     name="StartWeight"
                     value={localStack.StartWeight}
                     onChange={handleChange}
+                    InputProps={{ style: textFieldStyle }}
+                    InputLabelProps={inputLabelProps}
                 />
             </Box>
             <Box mb={2}>
@@ -59,6 +84,8 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
                     name="InitialIncrements"
                     value={localStack.InitialIncrements}
                     onChange={handleChange}
+                    InputProps={{ style: textFieldStyle }}
+                    InputLabelProps={inputLabelProps}
                 />
             </Box>
             <Box mb={2}>
@@ -68,6 +95,8 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
                     name="IncrementValue"
                     value={localStack.IncrementValue}
                     onChange={handleChange}
+                    InputProps={{ style: textFieldStyle }}
+                    InputLabelProps={inputLabelProps}
                 />
             </Box>
             <Box mb={2}>
@@ -77,6 +106,8 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
                     name="IncrementCount"
                     value={localStack.IncrementCount}
                     onChange={handleChange}
+                    InputProps={{ style: textFieldStyle }}
+                    InputLabelProps={inputLabelProps}
                 />
             </Box>
             <Box mb={2}>
@@ -86,6 +117,8 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
                     name="EquipmentStackKey"
                     value={localStack.EquipmentStackKey}
                     onChange={handleChange}
+                    InputProps={{ style: textFieldStyle }}
+                    InputLabelProps={inputLabelProps}
                 />
             </Box>
             <Box mb={2}>
@@ -95,17 +128,19 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
                     name="UserID"
                     value={localStack.UserID}
                     onChange={handleChange}
+                    InputProps={{ style: textFieldStyle }}
+                    InputLabelProps={inputLabelProps}
                 />
             </Box>
             <Button
                 variant="contained"
                 color="primary"
-                onClick={() => onStackUpdate(localStack)}>
+                onClick={() => onStackUpdate(localStack)}
+            >
                 Update Stack
             </Button>
         </Box>
     );
-    
 }
 
 export default EditEquipmentStack;

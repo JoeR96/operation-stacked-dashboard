@@ -5,8 +5,8 @@ import Spinner from "../../components/spinner/Spinner";
 import { useAuthStore } from "../../state/auth/authStore";
 import { ExerciseHistoryCategoryContainer } from "../../components/ExerciseHistory/ExerciseHistoryCategoryContainer";
 import { Card, Grid } from "@mui/material";
-import { ExerciseHistoryTable } from "../../components/Exercise/ExerciseHistoryTable";
 import ExerciseHistoryChart from "./ExerciseHistoryChart";
+import ExerciseHistoryTable from "../../components/Exercise/ExerciseHistoryTable";
 
 const ExerciseHistoryPage = () => {
     const [groupedExercises, setGroupedExercises] = useState({});
@@ -51,6 +51,7 @@ const ExerciseHistoryPage = () => {
             setApiStatus(ERROR);
         }
     };
+    const maxComponentHeight = 'calc(45vh - 150px)'; // Adjust this value as needed
 
     const isAddedToGraph = (exerciseId: string) => {
         return graphExerciseIds.includes(exerciseId);
@@ -77,22 +78,27 @@ const ExerciseHistoryPage = () => {
     if (!groupedExercises) return <div>No exercises found</div>;
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '100vh' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', width: '50%', height: '100%', paddingRight: '16px' }}>
-                {/* Chart takes the space it needs */}
-                <div style={{ flex: 1 }}>
-                    <ExerciseHistoryChart maintainAspectRatio={true} exerciseIds={graphExerciseIds} />
+        <div style={{ display: 'flex', flexDirection: 'row', width: '100%', height: '90vh', padding: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', width: '60%', height: '100%', paddingRight: '16px', padding: '10px' }}>
+                {/* Set maximum heights for both chart and table */}
+                <div style={{ flex: 1, maxHeight: maxComponentHeight, marginBottom: '16px', padding: '10px' }}>
+                    <ExerciseHistoryChart maintainAspectRatio={false} exerciseIds={graphExerciseIds} />
                 </div>
-                {/* Table takes the remaining space */}
-                <div style={{ flex: 'auto' }}>
+                <div style={{ flex: 1, maxHeight: maxComponentHeight, margin: '20px' }}>
                     <ExerciseHistoryTable exerciseId={activeExerciseId} />
                 </div>
             </div>
-            {/* Category containers - a row with two columns */}
-            <div style={{ width: '50%', height: '100%', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', overflowY: 'auto' }}>
-                {Object.entries(groupedExercises).map(([category, exercises], index) => (
-                    <div key={category} style={{ width: '33.33%', marginBottom: '8px', flex: '0 0 33.33%' }}>
-                        <Card style={{ height: '100%', background: '#f0f0f0' }}>
+            <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: '8px',
+                width: '40%',
+                overflowY: 'auto',
+                padding: '10px'
+            }}>
+                {Object.entries(groupedExercises).map(([category, exercises]) => (
+                    <div key={category} style={{ marginBottom: '8px' }}>
+                        <Card style={{ background: '#FFA500' }}>
                             <ExerciseHistoryCategoryContainer
                                 exercises={exercises}
                                 category={category}
@@ -104,6 +110,7 @@ const ExerciseHistoryPage = () => {
                     </div>
                 ))}
             </div>
+
         </div>
     );
 

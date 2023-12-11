@@ -733,6 +733,31 @@ export interface ExerciseHistoryDTO {
      * @memberof ExerciseHistoryDTO
      */
     'TemplateExerciseId'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ExerciseHistoryDTO
+     */
+    'WorkingWeight'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface ExerciseHistoryDTOPaginatedResult
+ */
+export interface ExerciseHistoryDTOPaginatedResult {
+    /**
+     * 
+     * @type {Array<ExerciseHistoryDTO>}
+     * @memberof ExerciseHistoryDTOPaginatedResult
+     */
+    'Items'?: Array<ExerciseHistoryDTO> | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ExerciseHistoryDTOPaginatedResult
+     */
+    'TotalCount'?: number;
 }
 /**
  * 
@@ -779,19 +804,6 @@ export interface GetWorkoutResult {
      * @memberof GetWorkoutResult
      */
     'TotalCount'?: number | null;
-}
-/**
- * 
- * @export
- * @interface HistoricalExerciseResults
- */
-export interface HistoricalExerciseResults {
-    /**
-     * 
-     * @type {Array<ExerciseHistoryDTO>}
-     * @memberof HistoricalExerciseResults
-     */
-    'ExerciseHistories'?: Array<ExerciseHistoryDTO> | null;
 }
 /**
  * 
@@ -1922,6 +1934,39 @@ export const ExerciseHistoryApiAxiosParamCreator = function (configuration?: Con
     return {
         /**
          * 
+         * @param {Array<string>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        allPost: async (requestBody?: Array<string>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/all`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(requestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} exerciseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1955,11 +2000,13 @@ export const ExerciseHistoryApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * 
+         * @param {number} [pageIndex] 
+         * @param {number} [pageSize] 
          * @param {Array<string>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exerciseHistoryPost: async (requestBody?: Array<string>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        exerciseHistoryPost: async (pageIndex?: number, pageSize?: number, requestBody?: Array<string>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/exercise-history`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -1971,6 +2018,14 @@ export const ExerciseHistoryApiAxiosParamCreator = function (configuration?: Con
             const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (pageIndex !== undefined) {
+                localVarQueryParameter['pageIndex'] = pageIndex;
+            }
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['pageSize'] = pageSize;
+            }
 
 
     
@@ -1998,6 +2053,16 @@ export const ExerciseHistoryApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {Array<string>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async allPost(requestBody?: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ExerciseHistoryDTO>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.allPost(requestBody, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {string} exerciseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2008,12 +2073,14 @@ export const ExerciseHistoryApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {number} [pageIndex] 
+         * @param {number} [pageSize] 
          * @param {Array<string>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async exerciseHistoryPost(requestBody?: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<HistoricalExerciseResults>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.exerciseHistoryPost(requestBody, options);
+        async exerciseHistoryPost(pageIndex?: number, pageSize?: number, requestBody?: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExerciseHistoryDTOPaginatedResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.exerciseHistoryPost(pageIndex, pageSize, requestBody, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -2028,6 +2095,15 @@ export const ExerciseHistoryApiFactory = function (configuration?: Configuration
     return {
         /**
          * 
+         * @param {Array<string>} [requestBody] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        allPost(requestBody?: Array<string>, options?: any): AxiosPromise<Array<ExerciseHistoryDTO>> {
+            return localVarFp.allPost(requestBody, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {string} exerciseId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2037,12 +2113,14 @@ export const ExerciseHistoryApiFactory = function (configuration?: Configuration
         },
         /**
          * 
+         * @param {number} [pageIndex] 
+         * @param {number} [pageSize] 
          * @param {Array<string>} [requestBody] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        exerciseHistoryPost(requestBody?: Array<string>, options?: any): AxiosPromise<HistoricalExerciseResults> {
-            return localVarFp.exerciseHistoryPost(requestBody, options).then((request) => request(axios, basePath));
+        exerciseHistoryPost(pageIndex?: number, pageSize?: number, requestBody?: Array<string>, options?: any): AxiosPromise<ExerciseHistoryDTOPaginatedResult> {
+            return localVarFp.exerciseHistoryPost(pageIndex, pageSize, requestBody, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -2056,6 +2134,17 @@ export const ExerciseHistoryApiFactory = function (configuration?: Configuration
 export class ExerciseHistoryApi extends BaseAPI {
     /**
      * 
+     * @param {Array<string>} [requestBody] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ExerciseHistoryApi
+     */
+    public allPost(requestBody?: Array<string>, options?: AxiosRequestConfig) {
+        return ExerciseHistoryApiFp(this.configuration).allPost(requestBody, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @param {string} exerciseId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -2067,13 +2156,15 @@ export class ExerciseHistoryApi extends BaseAPI {
 
     /**
      * 
+     * @param {number} [pageIndex] 
+     * @param {number} [pageSize] 
      * @param {Array<string>} [requestBody] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ExerciseHistoryApi
      */
-    public exerciseHistoryPost(requestBody?: Array<string>, options?: AxiosRequestConfig) {
-        return ExerciseHistoryApiFp(this.configuration).exerciseHistoryPost(requestBody, options).then((request) => request(this.axios, this.basePath));
+    public exerciseHistoryPost(pageIndex?: number, pageSize?: number, requestBody?: Array<string>, options?: AxiosRequestConfig) {
+        return ExerciseHistoryApiFp(this.configuration).exerciseHistoryPost(pageIndex, pageSize, requestBody, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

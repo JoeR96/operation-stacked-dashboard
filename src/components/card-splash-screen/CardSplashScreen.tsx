@@ -12,7 +12,7 @@ interface CardSplashScreen { }
 const CardSplashScreen: React.FC<CardSplashScreen> = () => {
     const { fetchWeekAndDay, username, Day, Week, WorkoutDaysInWeek } = useUserStore();
     const userId = useAuthStore((state) => state.data?.userId);
-
+    console.log(userId)
     useEffect(() => {
         if (userId) {
             fetchWeekAndDay(userId);

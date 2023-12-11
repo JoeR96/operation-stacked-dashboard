@@ -454,6 +454,26 @@
         "tags": [
           "ExerciseHistory"
         ],
+        "parameters": [
+          {
+            "name": "pageIndex",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -491,17 +511,86 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/HistoricalExerciseResults"
+                  "$ref": "#/components/schemas/ExerciseHistoryDTOPaginatedResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HistoricalExerciseResults"
+                  "$ref": "#/components/schemas/ExerciseHistoryDTOPaginatedResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HistoricalExerciseResults"
+                  "$ref": "#/components/schemas/ExerciseHistoryDTOPaginatedResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/all": {
+      "post": {
+        "tags": [
+          "ExerciseHistory"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExerciseHistoryDTO"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExerciseHistoryDTO"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExerciseHistoryDTO"
+                  }
                 }
               }
             }
@@ -1472,6 +1561,27 @@
             "type": "string",
             "format": "uuid",
             "nullable": true
+          },
+          "WorkingWeight": {
+            "type": "number",
+            "format": "decimal"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExerciseHistoryDTOPaginatedResult": {
+        "type": "object",
+        "properties": {
+          "Items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExerciseHistoryDTO"
+            },
+            "nullable": true
+          },
+          "TotalCount": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -1506,19 +1616,6 @@
           "TotalCount": {
             "type": "integer",
             "format": "int32",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "HistoricalExerciseResults": {
-        "type": "object",
-        "properties": {
-          "ExerciseHistories": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ExerciseHistoryDTO"
-            },
             "nullable": true
           }
         },

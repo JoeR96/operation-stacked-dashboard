@@ -43,7 +43,7 @@ const EquipmentStackTable = ({ selectedStack, setSelectedStack }) => {
         <Table>
             <TableHead>
                 <TableRow>
-                    {['Id', 'Start Weight', 'Initial Increments', 'Increment Value', 'Increment Count', 'Equipment Stack Key', 'User ID', 'Edit'].map(header => (
+                    {['Id', 'Start Weight', 'Initial Increments', 'Increment Value', 'Increment Count', 'Edit'].map(header => (
                         <TableCell style={{ color: "white",fontWeight: 'bold' }} key={header}>{header}</TableCell>
                     ))}
                 </TableRow>
@@ -58,8 +58,6 @@ const EquipmentStackTable = ({ selectedStack, setSelectedStack }) => {
                         </TableCell>
                         <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.IncrementValue}</TableCell>
                         <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.IncrementCount}</TableCell>
-                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.EquipmentStackKey}</TableCell>
-                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.UserID}</TableCell>
                         <TableCell>
                             <Button variant="outlined" color="primary" onClick={() => setSelectedStack(equipment)}>
                                 Edit

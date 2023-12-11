@@ -29,26 +29,29 @@ ChartJS.register(
 
 const ExerciseHistoryChart = ({ exerciseIds, maintainAspectRatio = false }) => {
     const [chartData, setChartData] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true); // Set initial state to true
     const [error, setError] = useState(null);
     const exerciseHistoryApi = new ExerciseHistoryApi(); // Instantiate the API class
 
     // Fetch exercise history data
     const fetchExerciseHistoryData = async () => {
         try {
-            const response = await exerciseHistoryApi.exerciseHistoryPost(exerciseIds);
+            setIsLoading(true); // Set loading state to true before making the request
+            const response = await exerciseHistoryApi.allPost(exerciseIds);
+            setIsLoading(false)
             return response.data;
         } catch (error) {
             setError(error);
-            setIsLoading(false);
+            setIsLoading(false); // Set loading state to false in case of an error
         }
     };
 
     // Transform API data to chart format
     const transformDataForChart = (data) => {
         const exerciseMap = new Map();
-
-        data.ExerciseHistories.forEach((history) => {
+console.log(data)
+        data.forEach((history) => {
+            console.log(history)
             const exerciseName = history.Exercise?.ExerciseName || 'Unknown Exercise';
             const entry = {
                 x: new Date(history.CompletedDate),
@@ -83,52 +86,68 @@ const ExerciseHistoryChart = ({ exerciseIds, maintainAspectRatio = false }) => {
 
     // useEffect hook to fetch and set data
     useEffect(() => {
-        setIsLoading(true);
+        // Check if exerciseIds is empty, and if so, clear the chart data and return
+        if (exerciseIds.length === 0) {
+            setChartData(null);
+            return;
+        }
+
         fetchExerciseHistoryData()
             .then(data => {
                 if (data) {
                     const transformedChartData = transformDataForChart(data);
                     setChartData(transformedChartData);
                 }
-                setIsLoading(false);
             });
 
         // Cleanup is not needed as ref is no longer used
     }, [exerciseIds]);
 
-    if (isLoading) return <Spinner />;
-    if (error) return <div>Error fetching data: {error.message}</div>;
-    if (!chartData) return <div>No data available</div>;
+    if (exerciseIds.length === 0) {
+        return (
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <p>Please select an exercise to view its history.</p>
+            </div>
+        );
+    }
 
     return (
-        <div style={{ width: '100%', height: '400px' }}> {/* Adjust width and height as needed */}
-            <Line
-                data={chartData}
-                options={{
-                    scales: {
-                        x: {
-                            type: 'time',
-                            time: {
-                                unit: 'week',
-                                tooltipFormat: 'MMM dd'
+        <div style={{ width: '100%', height: '500px' }}>
+            {isLoading ? (
+                <Spinner />
+            ) : error ? (
+                <div>Error fetching data: {error.message}</div>
+            ) : !chartData ? (
+                <div>No data available</div>
+            ) : (
+                <Line
+                    data={chartData}
+                    options={{
+                        scales: {
+                            x: {
+                                type: 'time',
+                                time: {
+                                    unit: 'week',
+                                    tooltipFormat: 'MMM dd'
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Date'
+                                }
                             },
-                            title: {
-                                display: true,
-                                text: 'Date'
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Weight'
+                                }
                             }
                         },
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Weight'
-                            }
-                        }
-                    },
-                    responsive: true,
-                    maintainAspectRatio: maintainAspectRatio
-                }}
-            />
+                        responsive: true,
+                        maintainAspectRatio: maintainAspectRatio
+                    }}
+                />
+            )}
         </div>
     );
 };

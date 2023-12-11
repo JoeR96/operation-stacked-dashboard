@@ -7,8 +7,7 @@ const Dashboard: React.FC = () => {
 
     return (
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-            {/*<DashboardMainContent selectedTab={selectedTab} />*/}
-             <CardSplashScreen />;
+             <CardSplashScreen />
             <DashboardButtonLayout/>
         </div>
     );

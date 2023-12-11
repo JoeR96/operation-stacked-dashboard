@@ -8,15 +8,12 @@ import {useAuthStore} from "../../state/auth/authStore";
 import {Category, EquipmentType} from "../../types/types"; // Ensure Spinner is correctly imported
 
 export const ExercisesTable = ({ onCompleteClick }) => {
-    const [pageIndex, setPageIndex] = useState(0);
-    const pageSize = 10;
     const exercisApi : ExerciseApi = new ExerciseApi();
     const userId = useAuthStore(state => state.getUserId()); // Using the selector to get userId
 
     const fetchExercises = async () => {
         try {
             const response = await exercisApi.exerciseUserIdAllGet(userId)
-            console.log(response.data)
             return response.data;
         } catch (error) {
             console.error("Error fetching workouts:", error);
