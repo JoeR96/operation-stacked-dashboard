@@ -3,11 +3,13 @@ import { TextField, Button, Grid, Paper } from '@mui/material';
 import { useApi } from '../../api/constants/hooks/useApi';
 import Spinner from '../spinner/Spinner';
 import { ERROR, PENDING } from "../../api/constants/apiStatus";
+import useThemeStore from "../../state/themeStore";
 
 export const NewExerciseForm = () => {
     const [exerciseName, setExerciseName] = useState('');
     const [category, setCategory] = useState('');
     const [equipmentType, setEquipmentType] = useState('');
+    const themeColors = useThemeStore((state) => state.colors); // Get theme colors from the store
 
     const {
         apiStatus,
@@ -28,9 +30,13 @@ export const NewExerciseForm = () => {
 
     if (apiStatus === PENDING) return <Spinner />;
     if (apiStatus === ERROR) return <div>Error adding exercise: {error?.message}</div>;
-
+    const textFieldStyles = {
+        input: { color: themeColors.text },
+        notchedOutline: { borderColor: 'white' },
+        label: { color: themeColors.text },
+    };
     return (
-        <Paper style={{ padding: 16 }}>
+        <Paper style={{ padding: 16,background:'#1d1d1d' }}>
             <form onSubmit={handleSubmit}>
                 <Grid container alignItems="flex-start" spacing={2}>
                     <Grid item xs={12}>
@@ -39,6 +45,11 @@ export const NewExerciseForm = () => {
                             label="Exercise Name"
                             value={exerciseName}
                             onChange={(e) => setExerciseName(e.target.value)}
+                            InputProps={{
+                                style: textFieldStyles.input,
+                                notchedOutline: textFieldStyles.notchedOutline
+                            }}
+                            InputLabelProps={{ style: textFieldStyles.label }}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -47,6 +58,11 @@ export const NewExerciseForm = () => {
                             label="Category"
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
+                            InputProps={{
+                                style: textFieldStyles.input,
+                                notchedOutline: textFieldStyles.notchedOutline
+                            }}
+                            InputLabelProps={{ style: textFieldStyles.label }}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -55,6 +71,11 @@ export const NewExerciseForm = () => {
                             label="Equipment Type"
                             value={equipmentType}
                             onChange={(e) => setEquipmentType(e.target.value)}
+                            InputProps={{
+                                style: textFieldStyles.input,
+                                notchedOutline: textFieldStyles.notchedOutline
+                            }}
+                            InputLabelProps={{ style: textFieldStyles.label }}
                         />
                     </Grid>
                     <Grid item xs={12}>

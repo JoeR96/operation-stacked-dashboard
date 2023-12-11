@@ -1,3 +1,5 @@
+
+
 import React, { useState } from 'react';
 import { Box, Paper, Button } from '@mui/material';
 import Spinner from '../spinner/Spinner';
@@ -7,10 +9,11 @@ import { WorkoutApi } from '../../services/api';
 import { ExercisesTable } from './ExerciseTable';
 import { NewExerciseForm } from './NewExerciseForm';
 import ExerciseCompletionForm from './ExerciseCompletionForm';
-import {useAuthStore} from "../../state/auth/authStore";
+import { useAuthStore } from '../../state/auth/authStore';
 
 const ExerciseLayout = () => {
-    const userId = useAuthStore(state => state.getUserId()); // Using the selector to get userId
+    const userId = useAuthStore(state => state.getUserId());
+    const [showNewExerciseForm, setShowNewExerciseForm] = useState(false);
     const [showCompletionForm, setShowCompletionForm] = useState(false);
     const [selectedExerciseId, setSelectedExerciseId] = useState(null);
 
@@ -46,20 +49,33 @@ const ExerciseLayout = () => {
     if (apiStatus === PENDING) return <Spinner />;
     if (apiStatus === ERROR) return <div>Error completing exercise: {error?.message}</div>;
 
+    const toggleNewExerciseForm = () => {
+        setShowNewExerciseForm(!showNewExerciseForm);
+    };
+
     return (
         <Box>
+            <Button
+                variant="contained"
+                style={{ backgroundColor: '#FFA500', marginBottom: '10px' }}
+                onClick={toggleNewExerciseForm}
+            >
+                {showNewExerciseForm ? 'Hide Add Exercise Form' : 'Show Add Exercise Form'}
+            </Button>
+
+            {showNewExerciseForm && (
+                <Paper style={{ padding: 16, marginBottom: 16, backgroundColor: '#242424' }}>
+                    <NewExerciseForm />
+                </Paper>
+            )}
+
             {showCompletionForm ? (
                 <ExerciseCompletionForm
                     exerciseId={selectedExerciseId}
                     onComplete={handleCompleteExercise}
                 />
             ) : (
-                <>
-                    <Paper style={{ padding: 16, marginBottom: 16 }}>
-                        <NewExerciseForm />
-                    </Paper>
-                    <ExercisesTable userId={userId} onCompleteClick={handleCompleteClick} />
-                </>
+                <ExercisesTable userId={userId} onCompleteClick={handleCompleteClick} />
             )}
         </Box>
     );

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Button, Box } from '@mui/material';
+import {TextField, Button, Box, Grid} from '@mui/material';
+import useThemeStore from "../../state/themeStore";
 
 const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
     const [localStack, setLocalStack] = useState(stackData);
+    const themeColors = useThemeStore((state) => state.colors);
 
     useEffect(() => {
         setLocalStack(stackData);
@@ -48,99 +50,40 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
     };
 
     return (
-        <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            p={2}
-            style={{ color: 'white' }} // Set the text color to white
-        >
-            <Box mb={2}>
-                <TextField
-                    fullWidth
-                    label="Id"
-                    name="Id"
-                    value={localStack.Id}
-                    onChange={handleChange}
-                    InputProps={{ style: textFieldStyle }}
-                    InputLabelProps={inputLabelProps}
-                />
-            </Box>
-            <Box mb={2}>
-                <TextField
-                    fullWidth
-                    label="Start Weight"
-                    name="StartWeight"
-                    value={localStack.StartWeight}
-                    onChange={handleChange}
-                    InputProps={{ style: textFieldStyle }}
-                    InputLabelProps={inputLabelProps}
-                />
-            </Box>
-            <Box mb={2}>
-                <TextField
-                    fullWidth
-                    label="Initial Increments (comma-separated)"
-                    name="InitialIncrements"
-                    value={localStack.InitialIncrements}
-                    onChange={handleChange}
-                    InputProps={{ style: textFieldStyle }}
-                    InputLabelProps={inputLabelProps}
-                />
-            </Box>
-            <Box mb={2}>
-                <TextField
-                    fullWidth
-                    label="Increment Value"
-                    name="IncrementValue"
-                    value={localStack.IncrementValue}
-                    onChange={handleChange}
-                    InputProps={{ style: textFieldStyle }}
-                    InputLabelProps={inputLabelProps}
-                />
-            </Box>
-            <Box mb={2}>
-                <TextField
-                    fullWidth
-                    label="Increment Count"
-                    name="IncrementCount"
-                    value={localStack.IncrementCount}
-                    onChange={handleChange}
-                    InputProps={{ style: textFieldStyle }}
-                    InputLabelProps={inputLabelProps}
-                />
-            </Box>
-            <Box mb={2}>
-                <TextField
-                    fullWidth
-                    label="Equipment Stack Key"
-                    name="EquipmentStackKey"
-                    value={localStack.EquipmentStackKey}
-                    onChange={handleChange}
-                    InputProps={{ style: textFieldStyle }}
-                    InputLabelProps={inputLabelProps}
-                />
-            </Box>
-            <Box mb={2}>
-                <TextField
-                    fullWidth
-                    label="User ID"
-                    name="UserID"
-                    value={localStack.UserID}
-                    onChange={handleChange}
-                    InputProps={{ style: textFieldStyle }}
-                    InputLabelProps={inputLabelProps}
-                />
-            </Box>
+        <Box display="flex" flexDirection="column" alignItems="center" p={2} style={{ color: 'white' }}>
+            <Grid container spacing={2}
+                  style={{ margin: '25px' }}  // Add your desired padding here
+            >
+                {/* First Column */}
+                <Grid item xs={6}>
+                    <TextField fullWidth label="Id" name="Id" value={localStack.Id} onChange={handleChange} InputProps={{ style: textFieldStyle }} InputLabelProps={inputLabelProps} />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField fullWidth label="Increment Value" name="IncrementValue" value={localStack.IncrementValue} onChange={handleChange} InputProps={{ style: textFieldStyle }} InputLabelProps={inputLabelProps} />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField fullWidth label="Equipment Stack Key" name="EquipmentStackKey" value={localStack.EquipmentStackKey} onChange={handleChange} InputProps={{ style: textFieldStyle }} InputLabelProps={inputLabelProps} />
+                </Grid>
+
+                {/* Second Column */}
+                <Grid item xs={6}>
+                    <TextField fullWidth label="Start Weight" name="StartWeight" value={localStack.StartWeight} onChange={handleChange} InputProps={{ style: textFieldStyle }} InputLabelProps={inputLabelProps} />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField fullWidth label="Increment Count" name="IncrementCount" value={localStack.IncrementCount} onChange={handleChange} InputProps={{ style: textFieldStyle }} InputLabelProps={inputLabelProps} />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField fullWidth label="User ID" name="UserID" value={localStack.UserID} onChange={handleChange} InputProps={{ style: textFieldStyle }} InputLabelProps={inputLabelProps} />
+                </Grid>
+            </Grid>
+
             <Button
                 variant="contained"
-                color="primary"
                 onClick={() => onStackUpdate(localStack)}
+                style={{ margin: '25px', background:themeColors.primary }}  // Add your desired padding here
             >
                 Update Stack
-            </Button>
-        </Box>
+            </Button>        </Box>
     );
 }
-
 export default EditEquipmentStack;

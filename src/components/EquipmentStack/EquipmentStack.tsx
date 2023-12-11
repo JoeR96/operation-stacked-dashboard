@@ -43,7 +43,7 @@ const EquipmentStack = ({ stackData }) => {
                 <Box
                     key={index}
                     style={{
-                        margin: '1px 0',
+                        margin: '5px 0',
                         backgroundColor: index % 2 === 0 ? '#5c5c5c' : '#6d6d6d',
                         display: 'flex',
                         justifyContent: 'center',
