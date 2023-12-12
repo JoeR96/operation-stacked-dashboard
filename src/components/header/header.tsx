@@ -15,7 +15,7 @@ function Header() {
 
     const handleLogoutClick = async () => {
         try {
-            const response = await fetch('https://localhost:7099/logout', {
+            const response = await fetch('http://3.10.176.181:5001/logout', {
                 method: 'POST',
                 credentials: 'include', // Include credentials in the request
                 headers: {
@@ -39,7 +39,7 @@ function Header() {
 
 
     return (
-        <AppBar position="static" style={{ backgroundColor: themeColors.primary }}>
+        <AppBar position="fixed" style={{ backgroundColor: themeColors.primary }}>
             <Toolbar>
                 <Typography variant="h6" style={{ flexGrow: 1 }}>
                     OperationStacked

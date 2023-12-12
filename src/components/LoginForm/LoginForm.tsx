@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Paper, Typography, TextField, Button } from "../../../node_modules/@mui/material/index";
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
 import { useAuthStore } from "../../state/auth/authStore";
+import {Box} from "@mui/material";
+import sharkImage from './shark.png'; // Import the image
 
 const LoginForm = () => {
   const { setIsAuthenticated, setData, isAuthenticated } = useAuthStore();
@@ -12,7 +14,7 @@ const LoginForm = () => {
     // Verify the session cookie is set/valid
     const verifySession = async () => {
       try {
-        const response = await fetch('https://localhost:7099/verify', {
+        const response = await fetch('http://3.10.176.181:5001/verify', {
           method: 'GET',
           credentials: 'include', // Important for including session cookies in the request
           headers: {
@@ -55,8 +57,8 @@ const LoginForm = () => {
     event.preventDefault();
 
     try {
-      // const response = await fetch('http://3.10.176.181:5001/login', {
-      const response = await fetch('https://localhost:7099/login', {
+      const response = await fetch('http://3.10.176.181:5001/login', {
+      // const response = await fetch('https://localhost:7099/login', {
 
         method: 'POST',
         credentials: 'include', // Important for including session cookies in the request
@@ -83,45 +85,56 @@ const LoginForm = () => {
       console.error('Error during authentication:', error);
     }
   };
-
   return (
-    <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
-      <Paper elevation={3} style={{ padding: '2rem' }}>
-        <Typography variant="h5" gutterBottom>
-          Login
-        </Typography>
-        <form onSubmit={handleSubmit}>
-          <Grid container direction="column" spacing={2}>
-            <Grid item>
-              <TextField
-                required
-                fullWidth
-                label="Email"
-                variant="outlined"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)} // <-- Controlled component
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                required
-                fullWidth
-                label="Password"
-                type="password"
-                variant="outlined"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)} // <-- Controlled component
-              />
-            </Grid>
-            <Grid item>
-              <Button type="submit" variant="contained" color="primary">
-                Submit
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </Paper>
-    </Grid>
+   <React.Fragment>
+     <Box style={{ textAlign: 'center', marginBottom: '20px' }}>
+       <img src={sharkImage} alt="Shark" style={{ maxWidth: '50%', height: 'auto', margin: '0 auto' }} />
+     </Box>
+     <Grid container justifyContent="center" alignItems="center">
+       <Paper elevation={3} style={{ padding: '2rem', backgroundColor: '#242424' }}>
+
+         <Typography variant="h5" gutterBottom style={{ color: 'white', textAlign: 'center' }}>
+           Login
+         </Typography>
+         <form onSubmit={handleSubmit}>
+           <Grid container direction="column" spacing={2}>
+             <Grid item>
+               <TextField
+                   required
+                   fullWidth
+                   label="Email"
+                   variant="outlined"
+                   value={email}
+                   onChange={(e) => setEmail(e.target.value)}
+                   InputProps={{ style: { color: 'white' } }}
+                   InputLabelProps={{ style: { color: 'white', textAlign: 'center' }, shrink: true }}
+               />
+             </Grid>
+             <Grid item>
+               <TextField
+                   required
+                   fullWidth
+                   label="Password"
+                   type="password"
+                   variant="outlined"
+                   value={password}
+                   onChange={(e) => setPassword(e.target.value)}
+                   InputProps={{ style: { color: 'white' } }}
+                   InputLabelProps={{ style: { color: 'white', textAlign: 'center' }, shrink: true }}
+               />
+             </Grid>
+             <Grid item>
+               <Box textAlign="center">
+                 <Button type="submit" variant="contained" color="primary">
+                   Submit
+                 </Button>
+               </Box>
+             </Grid>
+           </Grid>
+         </form>
+       </Paper>
+     </Grid>
+   </React.Fragment>
   );
 };
 
