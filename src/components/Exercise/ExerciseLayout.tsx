@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import { Box, Paper, Button } from '@mui/material';
 import Spinner from '../spinner/Spinner';
@@ -7,7 +5,7 @@ import { useApi } from '../../api/constants/hooks/useApi';
 import { ERROR, PENDING } from '../../api/constants/apiStatus';
 import { WorkoutApi } from '../../services/api';
 import { ExercisesTable } from './ExerciseTable';
-import { NewExerciseForm } from './NewExerciseForm';
+import NewExerciseForm, { ExerciseForm } from './NewExerciseForm';
 import ExerciseCompletionForm from './ExerciseCompletionForm';
 import { useAuthStore } from '../../state/auth/authStore';
 
@@ -54,10 +52,12 @@ const ExerciseLayout = () => {
     };
 
     return (
-        <Box>
+        <Box
+            style={{     marginBottom: '10px', paddingTop:'100px'}}
+        >
             <Button
                 variant="contained"
-                style={{ backgroundColor: '#FFA500', marginBottom: '10px' }}
+                style={{ backgroundColor: '#FFA500', marginBottom: '10px'}}
                 onClick={toggleNewExerciseForm}
             >
                 {showNewExerciseForm ? 'Hide Add Exercise Form' : 'Show Add Exercise Form'}

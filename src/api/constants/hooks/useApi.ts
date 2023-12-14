@@ -14,6 +14,7 @@ export function useApi(
 
     const exec = async (...args: any[]) => {
     try {
+        console.log('calling api for', fn); // Outputs the name of the function
         setError(null)
         setApiStatus(PENDING)
         const data = await fn(...args)
