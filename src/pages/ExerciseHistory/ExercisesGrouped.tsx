@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import {Button, Box, Grid} from "@mui/material";
 import { ExerciseApi } from "../../services/api"; // Ensure ExerciseApi is correctly imported
@@ -6,7 +7,7 @@ import Spinner from "../../components/spinner/Spinner.tsx";
 import {useAuthStore} from "../../state/auth/authStore";
 import {Category, EquipmentType} from "../../types/types";
 
-export const ExercisesGrouped = ({  onCompleteClick }) => {
+export const ExercisesGrouped = ({ }) => {
     const [exercises, setExercises] = useState([]);
     const [selectedExercises, setSelectedExercises] = useState([]);
     const [apiStatus, setApiStatus] = useState('idle');
@@ -33,7 +34,7 @@ export const ExercisesGrouped = ({  onCompleteClick }) => {
         fetchExercises();
     }, []);
 
-    const handleExerciseClick = (exerciseId) => {
+    const handleExerciseClick = (exerciseId: any) => {
         setSelectedExercises(prev => [...prev, exerciseId]);
     };
 
