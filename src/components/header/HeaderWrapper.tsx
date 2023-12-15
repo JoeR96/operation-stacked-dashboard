@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import { useLocation } from 'react-router-dom';
-import Header from './Header';
+import Header from './header';
 
 const HeaderWrapper = () => {
     const location = useLocation();
