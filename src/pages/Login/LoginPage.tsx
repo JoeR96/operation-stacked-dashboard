@@ -1,28 +1,24 @@
-import React from 'react'
-import { useApi } from '../../api/constants/hooks/useApi.ts'
-import LoginForm from '../../components/LoginForm/LoginForm.tsx'
+// LoginPage.tsx
+import React, { useState } from 'react';
+import LoginForm from '../../components/LoginForm/LoginForm.tsx';
+import RegistrationForm from '../../components/RegistrationForm/RegistrationForm.tsx';
+import { Button } from '@mui/material';
 
 const LoginPage = () => {
+    const [showLoginForm, setShowLoginForm] = useState(true);
 
-    const {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        data: any,
-        exec: login,
-        isPending,
-        isIdle,
-        isError,
-        isSuccess,
-    } = useApi(() => login())
+    const toggleForm = () => {
+        setShowLoginForm(!showLoginForm);
+    };
 
+    return (
+        <>
+            {showLoginForm ? <LoginForm /> : <RegistrationForm />}
+            <Button onClick={toggleForm} variant="contained" color="secondary" style={{ marginTop: '20px' }}>
+                {showLoginForm ? 'Register' : 'Login'}
+            </Button>
+        </>
+    );
+};
 
-return (
-    <>
-        {isIdle && <LoginForm />}
-        {isPending && <p>Loading Data</p>}
-        {isError && <p> There is aids</p>}
-        {isSuccess && console.log('console boobs')} 
-    </>
-)
-}
-
-export default LoginPage
+export default LoginPage;

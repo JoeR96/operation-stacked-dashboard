@@ -7,12 +7,13 @@ import PrivateRoute from './PrivateRoute';
 import ExercisePage from "../pages/Login/ExercisePage.tsx";
 import EquipmentStackPage from "../pages/EquipmentStack/EquipmentStackPage.tsx";
 import WorkoutPage from "../pages/WorkoutPage/WorkoutPage";
-import ExerciseHistoryPage from "../pages/ExerciseHistory/ExerciseHistoryPage.tsx"; // Import PrivateRoute
+import ExerciseHistoryPage from "../pages/ExerciseHistory/ExerciseHistoryPage.tsx";
+import LoginPage from "../pages/Login/LoginPage"; // Import PrivateRoute
 
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<LoginForm />} />
+      <Route path="/" element={<LoginPage />} />
       <Route path="/dashboard" element={<PrivateRoute />} >
         <Route index element={<Dashboard />} />
       </Route>

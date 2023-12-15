@@ -89,7 +89,8 @@ const ExerciseHistoryTable: React.FC<ExerciseHistoryTableProps> = ({ exerciseId 
                     <TableBody>
                         {exerciseHistories.map((history) => (
                             <TableRow key={history.Id}>
-                                <TableCell align="right" style={{ color: themeColors.text }}>{history.CompletedDate}</TableCell>
+                                <TableCell align="right" style={{ color: themeColors.text }}>{new Date(history.CompletedDate).toLocaleDateString('en-GB')}
+                                </TableCell>
                                 <TableCell align="right" style={{ color: themeColors.text }}>{history.CompletedSets}</TableCell>
                                 <TableCell align="right" style={{ color: themeColors.text }}>{history.CompletedReps}</TableCell>
                                 <TableCell align="right" style={{ color: themeColors.text }}>{history.WorkingWeight} KG</TableCell>

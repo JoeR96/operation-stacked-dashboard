@@ -15,37 +15,11 @@ const ExerciseLayout = () => {
     const [showCompletionForm, setShowCompletionForm] = useState(false);
     const [selectedExerciseId, setSelectedExerciseId] = useState(null);
 
-    const workoutApi = new WorkoutApi();
-
-    const completeExercise = async (completeExerciseRequest) => {
-        try {
-            const response = await workoutApi.workoutCompletePost(completeExerciseRequest);
-            return response.data;
-        } catch (error) {
-            console.error("Error completing exercise:", error);
-            throw error;
-        }
-    };
-
-    const {
-        data: completionResult,
-        apiStatus,
-        error,
-        exec
-    } = useApi(async (completeExerciseRequest) => await completeExercise(completeExerciseRequest));
-
     const handleCompleteClick = (exerciseId) => {
         setSelectedExerciseId(exerciseId);
         setShowCompletionForm(true);
     };
 
-    const handleCompleteExercise = (completeExerciseRequest) => {
-        exec(completeExerciseRequest);
-        setShowCompletionForm(false);
-    };
-
-    if (apiStatus === PENDING) return <Spinner />;
-    if (apiStatus === ERROR) return <div>Error completing exercise: {error?.message}</div>;
 
     const toggleNewExerciseForm = () => {
         setShowNewExerciseForm(!showNewExerciseForm);
@@ -72,7 +46,6 @@ const ExerciseLayout = () => {
             {showCompletionForm ? (
                 <ExerciseCompletionForm
                     exerciseId={selectedExerciseId}
-                    onComplete={handleCompleteExercise}
                 />
             ) : (
                 <ExercisesTable userId={userId} onCompleteClick={handleCompleteClick} />

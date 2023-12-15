@@ -4,7 +4,7 @@ import { WorkoutApi } from '../../services/api'; // Import the WorkoutApi
 import DatePicker from 'react-datepicker'; // Import a date picker library
 import 'react-datepicker/dist/react-datepicker.css'; // Import date picker styles
 
-const ExerciseCompletionForm = ({ exerciseId, onComplete }) => {
+const ExerciseCompletionForm = ({ exerciseId }) => {
     const [sets, setSets] = useState([{ reps: '' }]);
     const [workingWeight, setWorkingWeight] = useState(''); // State for workingWeight
     const [isLoading, setIsLoading] = useState(false);
@@ -37,14 +37,12 @@ const ExerciseCompletionForm = ({ exerciseId, onComplete }) => {
                 exerciseId,
                 sets: sets.length,
                 reps: sets.map(set => set.reps),
-                workingWeight: parseFloat(workingWeight), // Convert to decimal/float
+                workingWeight: parseFloat(workingWeight),
                 dummyTime: dummyTime.toISOString(),
-                // ...other necessary fields
             };
             console.log('sending')
-            await workoutApi.workoutCompletePost(data); // Replace with actual API call
+            await workoutApi.workoutCompletePost(data);
             setIsLoading(false);
-            onComplete(data); // or handle the response accordingly
         } catch (error) {
             console.error("API call failed:", error);
             setIsLoading(false);
@@ -57,7 +55,7 @@ const ExerciseCompletionForm = ({ exerciseId, onComplete }) => {
     };
 
     if (isLoading) {
-        return <CircularProgress />; // Show a loading spinner
+        return <CircularProgress />;
     }
 
     return (
