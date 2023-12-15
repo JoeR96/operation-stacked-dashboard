@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Paper, Button } from '@mui/material';
-import Spinner from '../spinner/Spinner';
-import { useApi } from '../../api/constants/hooks/useApi';
-import { ERROR, PENDING } from '../../api/constants/apiStatus';
-import { WorkoutApi } from '../../services/api';
 import { ExercisesTable } from './ExerciseTable';
 import ExerciseCompletionForm from './ExerciseCompletionForm';
 import { useAuthStore } from '../../state/auth/authStore';

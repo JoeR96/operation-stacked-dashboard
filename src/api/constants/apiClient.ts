@@ -16,6 +16,7 @@ export const apiRequest = async (
     //     headers.Authorization = `Bearer ${token}`;
     // }
 
+    console.log(port)
     const config: AxiosRequestConfig = {
         method,
         url, // use the port number here
