@@ -1,3 +1,5 @@
+// noinspection TypeScriptValidateTypes
+
 import React from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import 'chartjs-adapter-moment';

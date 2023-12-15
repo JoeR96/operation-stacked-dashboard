@@ -9,9 +9,9 @@ import { useApi } from '../../api/constants/hooks/useApi';
 import { ERROR, PENDING } from '../../api/constants/apiStatus';
 
 export const ExerciseForm = () => {
-    const [exerciseName, setExerciseName] = useState('');
-    const [category, setCategory] = useState('');
-    const [equipmentType, setEquipmentType] = useState('');
+    const [exerciseName, setExerciseName] = useState<string>('');
+    const [category, setCategory] = useState<string>(''); // Assuming Category expects a string
+    const [equipmentType, setEquipmentType] = useState<string>(''); // Assuming EquipmentType expects a string
     const themeColors = useThemeStore((state) => state.colors);
     const userId = useAuthStore(state => state.getUserId()); // Using the selector to get userId
 
@@ -52,6 +52,7 @@ export const ExerciseForm = () => {
     if (apiStatus === PENDING) return <Spinner />;
     if (apiStatus === ERROR) return <div>Error adding exercise: {error?.message}</div>;
 
+    // noinspection TypeScriptValidateTypes
     return (
         <Paper style={{ padding: 16, background: '#1d1d1d' }}>
             {apiStatus === 'success' ? (
@@ -95,7 +96,7 @@ export const ExerciseForm = () => {
                             <FormControl fullWidth>
                                 <InputLabel style={textFieldStyles.label}>Equipment Type</InputLabel>
                                 <Select
-                                    value={equipmentType}F
+                                    value={equipmentType}
                                     onChange={(e) => setEquipmentType(e.target.value)}
                                     label="Equipment Type"
                                     style={textFieldStyles.input}

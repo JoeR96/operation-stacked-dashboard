@@ -5,7 +5,6 @@ import { useApi } from '../../api/constants/hooks/useApi';
 import { ERROR, PENDING } from '../../api/constants/apiStatus';
 import { WorkoutApi } from '../../services/api';
 import { ExercisesTable } from './ExerciseTable';
-import NewExerciseForm, { ExerciseForm } from './NewExerciseForm';
 import ExerciseCompletionForm from './ExerciseCompletionForm';
 import { useAuthStore } from '../../state/auth/authStore';
 
@@ -39,7 +38,7 @@ const ExerciseLayout = () => {
 
             {showNewExerciseForm && (
                 <Paper style={{ padding: 16, marginBottom: 16, backgroundColor: '#242424' }}>
-                    <NewExerciseForm />
+                    <ExerciseForm />
                 </Paper>
             )}
 

@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { ExerciseHistory, ExerciseHistoryApi } from '../../services/api'; // Adjust the import path as needed
+import {ExerciseHistory, ExerciseHistoryApi, ExerciseHistoryDTO} from '../../services/api'; // Adjust the import path as needed
 import {
     Table,
     TableBody,
@@ -18,7 +18,7 @@ interface ExerciseHistoryTableProps {
 }
 
 const ExerciseHistoryTable: React.FC<ExerciseHistoryTableProps> = ({ exerciseId }) => {
-    const [exerciseHistories, setExerciseHistories] = useState<ExerciseHistory[]>([]);
+    const [exerciseHistories, setExerciseHistories] = useState<ExerciseHistoryDTO[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [pageIndex, setPageIndex] = useState(0);
@@ -34,8 +34,8 @@ const ExerciseHistoryTable: React.FC<ExerciseHistoryTableProps> = ({ exerciseId 
 
         try {
             const response = await exerciseHistoryApi.exerciseHistoryPost(pageIndex, rowsPerPage, [exerciseId]);
-            setExerciseHistories(response.data.Items);
-            setTotalRows(response.data.Total); // Assuming the API returns the total number of rows
+            setExerciseHistories(response.data.Items as Array<ExerciseHistoryDTO>);
+            setTotalRows(response.data.TotalCount as number);
         } catch (err) {
             console.error("Error fetching exercise history:", err);
             setError(`Error fetching exercise history: ${err.message}`);
@@ -76,7 +76,7 @@ const ExerciseHistoryTable: React.FC<ExerciseHistoryTableProps> = ({ exerciseId 
             <Typography variant="h5" align="center" style={{ fontWeight: 'bold', margin: '20px 0', color: themeColors.text }}>
                 Exercise History
             </Typography>
-            <TableContainer component={Paper} style={{ backgroundColor: themeColors.background }}>
+            <TableContainer style={{ backgroundColor: themeColors.background }}>
                 <Table aria-label="exercise history table">
                     <TableHead>
                         <TableRow>
@@ -89,7 +89,8 @@ const ExerciseHistoryTable: React.FC<ExerciseHistoryTableProps> = ({ exerciseId 
                     <TableBody>
                         {exerciseHistories.map((history) => (
                             <TableRow key={history.Id}>
-                                <TableCell align="right" style={{ color: themeColors.text }}>{new Date(history.CompletedDate).toLocaleDateString('en-GB')}
+                                <TableCell align="right" style={{ color: themeColors.text }}>
+                                    {history.CompletedDate ? new Date(history.CompletedDate).toLocaleDateString('en-GB') : 'Invalid date'}
                                 </TableCell>
                                 <TableCell align="right" style={{ color: themeColors.text }}>{history.CompletedSets}</TableCell>
                                 <TableCell align="right" style={{ color: themeColors.text }}>{history.CompletedReps}</TableCell>

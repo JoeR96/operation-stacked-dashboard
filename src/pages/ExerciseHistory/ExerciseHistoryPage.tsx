@@ -6,7 +6,7 @@ import { useAuthStore } from "../../state/auth/authStore";
 import { ExerciseHistoryCategoryContainer } from "../../components/ExerciseHistory/ExerciseHistoryCategoryContainer";
 import { Card, Grid } from "@mui/material";
 import ExerciseHistoryChart from "./ExerciseHistoryChart";
-import ExerciseHistoryTable from "../../components/Exercise/ExerciseHistoryTable";
+import ExerciseHistoryTable from "../../components/ExerciseHistory/ExerciseHistoryTable";
 
 const ExerciseHistoryPage = () => {
     const [groupedExercises, setGroupedExercises] = useState({});

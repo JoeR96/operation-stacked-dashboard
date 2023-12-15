@@ -1,7 +1,12 @@
 import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 
-function CenteredWelcomeCard({ username }) {
+// Define a type for the component props
+type CenteredWelcomeCardProps = {
+    username: string;
+};
+
+function CenteredWelcomeCard({ username }: CenteredWelcomeCardProps) {
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <Card variant="outlined" sx={{ width: '23%', height: '200px', display: 'flex', flexDirection: 'column', marginBottom: '10px' }}>

@@ -4,10 +4,9 @@ import EquipmentStack from './EquipmentStack';
 import EditEquipmentStack from './EditEquipmentStack';
 
 const EditEquipmentStackContainer = ({ stackData }) => {
-    const [updatedStackData, setUpdatedStackData] = useState(stackData);
+    const [, setUpdatedStackData] = useState(stackData);
 
     const handleStackUpdate = (updatedStack) => {
-        // Notify parent components or save to a database
         setUpdatedStackData(updatedStack);
     };
 

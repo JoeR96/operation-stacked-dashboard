@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker'; // Import a date picker library
 import 'react-datepicker/dist/react-datepicker.css'; // Import date picker styles
 
 const ExerciseCompletionForm = ({ exerciseId }) => {
-    const [sets, setSets] = useState([{ reps: '' }]);
+    const [sets, setSets] = useState([{ reps: 0 }]); // Initialize reps as numbers
     const [workingWeight, setWorkingWeight] = useState(''); // State for workingWeight
     const [isLoading, setIsLoading] = useState(false);
     const [dummyTime, setDummyTime] = useState(new Date());
@@ -13,7 +13,7 @@ const ExerciseCompletionForm = ({ exerciseId }) => {
     const handleRepsChange = (index, value) => {
         const newSets = sets.map((set, i) => {
             if (i === index) {
-                return { ...set, reps: Number(value) };
+                return { ...set, reps: Number(value) }; // Convert value to number
             }
             return set;
         });
@@ -21,7 +21,7 @@ const ExerciseCompletionForm = ({ exerciseId }) => {
     };
 
     const addSet = () => {
-        setSets([...sets, { reps: '' }]);
+        setSets([...sets, { reps: 0 }]);
     };
 
     const removeSet = (index) => {
@@ -34,11 +34,11 @@ const ExerciseCompletionForm = ({ exerciseId }) => {
             setIsLoading(true);
             const workoutApi = new WorkoutApi();
             const data = {
-                exerciseId,
-                sets: sets.length,
-                reps: sets.map(set => set.reps),
-                workingWeight: parseFloat(workingWeight),
-                dummyTime: dummyTime.toISOString(),
+                ExerciseId: exerciseId,
+                Sets: sets.length,
+                Reps: sets.map(set => set.reps),
+                WorkingWeight: parseFloat(workingWeight),
+                DummyTime: dummyTime.toISOString(),
             };
             console.log('sending')
             await workoutApi.workoutCompletePost(data);

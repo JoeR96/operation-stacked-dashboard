@@ -1,17 +1,16 @@
 // DashboardMainContent.tsx
-import React, { useEffect } from 'react';
-import { useAuthStore } from '../../state/auth/authStore';
+import  { useEffect } from 'react';
+import { AuthState, useAuthStore } from '../../state/auth/authStore';
 import { useUserStore } from '../../state/userStore';
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import CircularProgressBar from '../circular-progress-bar/CircularProgressBar';
 import LineChart from '../Workout/LineChart';
-import MultiAxis from '../Workout/MultiAxis';
 
 interface CardSplashScreen { }
 
 const CardSplashScreen: React.FC<CardSplashScreen> = () => {
-    const { fetchWeekAndDay, username, Day, Week, WorkoutDaysInWeek } = useUserStore();
-    const userId = useAuthStore((state) => state.data?.userId);
+    const { fetchWeekAndDay, username, Day,  WorkoutDaysInWeek } = useUserStore();
+    const userId = useAuthStore((state : AuthState) => state.data?.userId);
     console.log(userId)
     useEffect(() => {
         if (userId) {

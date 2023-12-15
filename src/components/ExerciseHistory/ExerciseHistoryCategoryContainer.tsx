@@ -2,6 +2,14 @@
 import { Exercise, Category } from "../../types/types";
 import { Grid, Paper, Button, Typography } from '@mui/material';
 import useThemeStore from "../../state/themeStore";
+
+interface ExerciseHistoryCategoryContainerProps {
+    exercises: Exercise[];
+    category: Category;
+    onToggleGraph: (id: string) => void;
+    isAddedToGraph: (id: string) => boolean;
+    onSetActiveInHistory: (id: string) => void;
+}
 export const ExerciseHistoryCategoryContainer: React.FC<ExerciseHistoryCategoryContainerProps> = ({
                                                                                                       exercises,
                                                                                                       category,
@@ -27,7 +35,7 @@ export const ExerciseHistoryCategoryContainer: React.FC<ExerciseHistoryCategoryC
             <Paper style={{ backgroundColor: themeColors.background, padding: '10px' }}>
                 <Grid container spacing={2}>
                     {exercises.map((exercise) => (
-                        <React.Fragment key={exercise.id}>
+                        <React.Fragment key={exercise.Id}>
                             <Grid item xs={12}>
                                 <Typography style={{ fontSize: '1rem', fontWeight: 'bold', color: themeColors.text }}>
                                     {exercise.ExerciseName}
@@ -38,7 +46,7 @@ export const ExerciseHistoryCategoryContainer: React.FC<ExerciseHistoryCategoryC
                                     fullWidth
                                     variant="outlined"
                                     style={{ ...buttonStyle, backgroundColor: themeColors.primary }}
-                                    onClick={() => onSetActiveInHistory(exercise.Id)}
+                                    onClick={() => onSetActiveInHistory(exercise.Id as string)}
                                 >
                                     Set Active In History Table
                                 </Button>
@@ -48,9 +56,9 @@ export const ExerciseHistoryCategoryContainer: React.FC<ExerciseHistoryCategoryC
                                     fullWidth
                                     variant="outlined"
                                     style={{ ...buttonStyle, backgroundColor: themeColors.secondary }}
-                                    onClick={() => onToggleGraph(exercise.Id)}
+                                    onClick={() => onToggleGraph(exercise.Id as string)}
                                 >
-                                    {isAddedToGraph(exercise.Id) ? 'Remove from Graph' : 'Add to Graph'}
+                                    {isAddedToGraph(exercise.Id as string) ? 'Remove from Graph' : 'Add to Graph'}
                                 </Button>
                             </Grid>
                         </React.Fragment>
