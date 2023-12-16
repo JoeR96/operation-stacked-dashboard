@@ -14,7 +14,7 @@ const LoginForm = () => {
     // Verify the session cookie is set/valid
     const verifySession = async () => {
       try {
-        const response = await fetch('http://3.10.176.181:5001/verify', {
+        const response = await fetch('https://app.operationstacked.com/auth/verify', {
           method: 'GET',
           credentials: 'include', // Important for including session cookies in the request
           headers: {
@@ -57,7 +57,7 @@ const LoginForm = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('http://3.10.176.181:5001/login', {
+      const response = await fetch('https://app.operationstacked.com/auth/login', {
       // const response = await fetch('https://localhost:7099/login', {
 
         method: 'POST',
