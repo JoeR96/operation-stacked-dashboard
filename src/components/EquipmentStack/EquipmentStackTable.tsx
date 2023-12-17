@@ -4,14 +4,15 @@ import { ERROR, PENDING } from '../../api/constants/apiStatus';
 import { Table, TableBody, TableCell, TableHead, TableRow, Paper, Button, Dialog, Box } from '@mui/material';
 import Spinner from '../spinner/Spinner';
 import {EquipmentStackApi} from "../../services/api";
+import { useAuthStore } from '../../state/auth/authStore';
 
 const EquipmentStackTable = ({ selectedStack, setSelectedStack }) => {
     const equipmentStackApi = new EquipmentStackApi();
-
+    const authStore = useAuthStore();
+    const userId = useAuthStore(state => state.getUserId()); // Using the selector to get userId
     const fetchEquipmentStack = async () => {
         try {
-            console.log("boobs");
-            const response = await equipmentStackApi.equipmentStackUserIdAllGet("894ce6d3-6990-454d-ba92-17a61d518d8c");
+            const response = await equipmentStackApi.equipmentStackUserIdAllGet(userId);
             console.log(response.data);
 
             return response.data;
