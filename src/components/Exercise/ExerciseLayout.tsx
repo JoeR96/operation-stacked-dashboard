@@ -3,6 +3,7 @@ import { Box, Paper, Button } from '@mui/material';
 import { ExercisesTable } from './ExerciseTable';
 import ExerciseCompletionForm from './ExerciseCompletionForm';
 import { useAuthStore } from '../../state/auth/authStore';
+import ExerciseForm from './ExerciseForm';
 
 const ExerciseLayout = () => {
     const userId = useAuthStore(state => state.getUserId());
