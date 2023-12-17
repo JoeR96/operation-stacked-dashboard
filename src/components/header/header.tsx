@@ -15,7 +15,7 @@ function Header() {
 
     const handleLogoutClick = async () => {
         try {
-            const response = await fetch('http://3.10.176.181:5001/logout', {
+            const response = await fetch('https://app.operationstacked.com/auth/logout', {
                 method: 'POST',
                 credentials: 'include', // Include credentials in the request
                 headers: {
