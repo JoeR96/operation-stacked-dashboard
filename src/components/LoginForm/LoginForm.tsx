@@ -63,8 +63,7 @@ const LoginForm = () => {
         method: 'POST',
         credentials: 'include', // Important for including session cookies in the request
         headers: {
-          'Content-Type': 'application/json',
-          'accept': 'text/plain'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email, password }),
       });

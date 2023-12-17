@@ -1,21 +1,19 @@
 ﻿import React, { useState } from 'react';
 import { Grid, Paper, Typography, TextField, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../state/auth/authStore';
 import { useApi } from '../../api/constants/hooks/useApi';
 import Spinner from '../spinner/Spinner'; // Assuming Spinner is a component you have for loading state
 import { PENDING, ERROR } from '../../api/constants/apiStatus';
 
 const RegistrationForm = () => {
     const navigate = useNavigate();
-    const { setIsAuthenticated, setData } = useAuthStore();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [registrationMessage, setRegistrationMessage] = useState('');
 
     const registerUser = async () => {
         try {
-            const response = await fetch('http://3.10.176.181:5001/register', {
+            const response = await fetch('https://app.operationstacked.com/auth/register', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
