@@ -8,7 +8,7 @@ import { ExerciseApi } from "../../services/api"; // Adjust this path as needed
 import { useApi } from '../../api/constants/hooks/useApi';
 import { ERROR, PENDING } from '../../api/constants/apiStatus';
 
-export const ExerciseForm = () => {
+export const ExerciseForm = ({ onRefreshExercises }) => {
     const [exerciseName, setExerciseName] = useState<string>('');
     const [category, setCategory] = useState<string>(''); // Assuming Category expects a string
     const [equipmentType, setEquipmentType] = useState<string>(''); // Assuming EquipmentType expects a string
@@ -40,7 +40,9 @@ export const ExerciseForm = () => {
             setExerciseName('');
             setCategory('');
             setEquipmentType('');
+
         }).catch(console.error);
+        onRefreshExercises();
     };
 
     const textFieldStyles = {

@@ -10,12 +10,15 @@ const ExerciseLayout = () => {
     const [showNewExerciseForm, setShowNewExerciseForm] = useState(false);
     const [showCompletionForm, setShowCompletionForm] = useState(false);
     const [selectedExerciseId, setSelectedExerciseId] = useState(null);
+    const [refreshExercises, setRefreshExercises] = useState(false);
 
+    const refreshExercisesList = () => {
+        setRefreshExercises(prevState => !prevState);
+    };
     const handleCompleteClick = (exerciseId) => {
         setSelectedExerciseId(exerciseId);
         setShowCompletionForm(true);
     };
-
 
     const toggleNewExerciseForm = () => {
         setShowNewExerciseForm(!showNewExerciseForm);
@@ -35,7 +38,7 @@ const ExerciseLayout = () => {
 
             {showNewExerciseForm && (
                 <Paper style={{ padding: 16, marginBottom: 16, backgroundColor: '#242424' }}>
-                    <ExerciseForm />
+                    <ExerciseForm onRefreshExercises={refreshExercisesList} />
                 </Paper>
             )}
 
@@ -44,7 +47,7 @@ const ExerciseLayout = () => {
                     exerciseId={selectedExerciseId}
                 />
             ) : (
-                <ExercisesTable userId={userId} onCompleteClick={handleCompleteClick} />
+                <ExercisesTable userId={userId} onCompleteClick={handleCompleteClick} refreshState={refreshExercises} />
             )}
         </Box>
     );

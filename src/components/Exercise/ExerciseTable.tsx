@@ -7,7 +7,7 @@ import { ExerciseApi } from '../../services/api';
 import { useAuthStore } from '../../state/auth/authStore';
 import { Category, EquipmentType } from '../../types/types';
 
-export const ExercisesTable = ({ onCompleteClick }) => {
+export const ExercisesTable = ({ onCompleteClick, refreshState }) => {
     const exerciseApi = new ExerciseApi();
     const userId = useAuthStore(state => state.getUserId());
 
@@ -27,11 +27,33 @@ export const ExercisesTable = ({ onCompleteClick }) => {
         error,
         exec
     } = useApi(async () => await fetchExercises());
+    useEffect(() => {
+        exec();
+
+        console.log(refreshState)
+    }, []);
 
     useEffect(() => {
         exec();
-    }, []);
+        console.log(refreshState)
+    }, [refreshState]);
 
+    const [groupedExercises, setGroupedExercises] = useState({});
+
+    useEffect(() => {
+        exec();
+    }, [refreshState]);
+
+    useEffect(() => {
+        if (exercises && exercises.length > 0) {
+            const grouped = groupExercisesByCategory(exercises);
+            setGroupedExercises(grouped);
+        } else {
+            setGroupedExercises({});
+        }
+    }, [exercises]);
+
+    // Group exercises by category
     const groupExercisesByCategory = (exercises) => {
         return exercises.reduce((acc, exercise) => {
             const category = Category[exercise.Category] || 'Others';
@@ -43,11 +65,11 @@ export const ExercisesTable = ({ onCompleteClick }) => {
         }, {});
     };
 
+
     if (apiStatus === PENDING) return <Spinner />;
     if (apiStatus === ERROR) return <div>Error fetching exercises: {error?.message}</div>;
     if (!exercises || exercises.length === 0) return <div>No exercises found</div>;
 
-    const groupedExercises = groupExercisesByCategory(exercises);
 
     return (
         <Grid container spacing={2}>

@@ -1,5 +1,6 @@
 import create from 'zustand';
-import { apiRequest } from '../api/constants/apiClient';
+import {UserApi, WorkoutApi} from "../services/api";
+import _default from "chart.js/dist/plugins/plugin.tooltip";
 
 type UserState = {
     Week: number;
@@ -17,26 +18,24 @@ export const useUserStore = create<UserState>((set, get) => ({
     WorkoutDaysInWeek: 4,
     fetchUsername: async (userId) => {
         try {
-            const response: string = await apiRequest(
-                'GET',
-                `/user/name?cognitoUserId=${userId}`,
-                5002
-            );
-            set({ username: response });
+
+            console.log(typeof(userId))
+            const userApi = new UserApi();
+            const response = await  userApi.userNameGet(userId)
+            console.log(response)
+            set({ username: response.data });
         } catch (error) {
             console.error('Error fetching username:', error);
         }
     },
     fetchWeekAndDay: async (userId) => {
         try {
-            const response = await apiRequest(
-                'GET',
-                `/user/week-and-day/${userId}`,
-                5002
-            );
+            console.log(typeof(userId))
+            const userApi = new UserApi();
+            const response = await  userApi.userWeekAndDayUserIdGet(userId)
             if (response) {
-                set({ Week: response.Week, Day: response.Day });
-                get().fetchUsername(userId); // Fetch username after fetching week and day
+                set({ Week: response.data.Week, Day: response.data.Day });
+                get().fetchUsername(userId);
             }
         } catch (error) {
             console.error('Error fetching week and day:', error);
