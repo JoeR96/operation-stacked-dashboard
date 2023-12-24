@@ -57,7 +57,7 @@ const LoginForm = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('https://app.operationstacked.com/auth/login', {
+      const response = await fetch('https://localhost:7099/login', {
       // const response = await fetch('https://localhost:7099/login', {
 
         method: 'POST',
