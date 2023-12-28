@@ -6,6 +6,11 @@ import { ERROR, PENDING } from '../../api/constants/apiStatus';
 import { ExerciseApi } from '../../services/api';
 import { useAuthStore } from '../../state/auth/authStore';
 import { Category, EquipmentType } from '../../types/types';
+import barbellImage from './barbell.png';
+import smithMachineImage from './smithMachine.png';
+import dumbbellImage from './dumbell.png';
+import machineImage from './machine.png';
+import cableMachineImage from './cableMachine.png';
 
 export const ExercisesTable = ({ onCompleteClick, refreshState }) => {
     const exerciseApi = new ExerciseApi();
@@ -64,6 +69,22 @@ export const ExercisesTable = ({ onCompleteClick, refreshState }) => {
             return acc;
         }, {});
     };
+    const getEquipmentImage = (equipmentType) => {
+        switch (equipmentType) {
+            case EquipmentType.Barbell:
+                return barbellImage;
+            case EquipmentType.SmithMachine:
+                return smithMachineImage;
+            case EquipmentType.Dumbbell:
+                return dumbbellImage;
+            case EquipmentType.Machine:
+                return machineImage;
+            case EquipmentType.Cable:
+                return cableMachineImage;
+            default:
+                return barbellImage;
+        }
+    };
 
 
     if (apiStatus === PENDING) return <Spinner />;
@@ -78,19 +99,44 @@ export const ExercisesTable = ({ onCompleteClick, refreshState }) => {
                     <Box style={{ margin: '10px' }}>
                         <Typography variant="h5" style={{ color: "white", marginBottom: '10px' }}>{category}</Typography>
                         {exercisesInCategory.map((exercise) => (
-                            <Paper key={exercise.Id} style={{ padding: '10px', backgroundColor: "#242424", marginBottom: '10px' }}>
-                                <Typography style={{ color: "white", fontWeight: 'bold' }}>{exercise.ExerciseName}</Typography>
-                                <Typography style={{ color: "white" }}>{EquipmentType[exercise.EquipmentType]}</Typography>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => onCompleteClick(exercise.Id)}
-                                    style={{ marginTop: '10px' }}
-                                >
-                                    Complete
-                                </Button>
+                            <Paper
+                                key={exercise.Id}
+                                style={{
+                                    padding: '10px',
+                                    backgroundColor: "#242424",
+                                    marginBottom: '10px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'space-between' // Distributes space evenly
+                                }}>
+                                <div style={{ display: 'flex', alignItems: 'center' }}>
+                                    <div>
+                                        <Typography style={{ color: "white", fontWeight: 'bold' }}>{exercise.ExerciseName}</Typography>
+                                        <Typography style={{ color: "white" }}>{EquipmentType[exercise.EquipmentType]}</Typography>
+                                    </div>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={() => onCompleteClick(exercise.Id)}
+                                        style={{ marginLeft: '10px' }} // Add some space between text and button
+                                    >
+                                        Complete
+                                    </Button>
+                                </div>
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'center', // Centers the image
+                                    flex: 0.2 // Adjust this to control the space allocated for the image
+                                }}>
+                                    <img
+                                        src={getEquipmentImage(exercise.EquipmentType)}
+                                        alt={EquipmentType[exercise.EquipmentType]}
+                                        style={{ width: '30px', height: '30px' }}
+                                    />
+                                </div>
                             </Paper>
                         ))}
+
                     </Box>
                 </Grid>
             ))}

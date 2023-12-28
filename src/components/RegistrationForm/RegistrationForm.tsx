@@ -17,7 +17,7 @@ const validationSchema = Yup.object({
         .required('Required'),
 });
 
-const RegistrationForm = () => {
+const RegistrationForm = ({ onToggleForm }) => {
     const navigate = useNavigate();
     const [registrationMessage, setRegistrationMessage] = useState('');
 
@@ -73,11 +73,8 @@ const RegistrationForm = () => {
 
     return (
         <React.Fragment>
-            <Box style={{ textAlign: 'center', marginBottom: '20px' }}>
-                {/* Add your registration form logo or image here */}
-            </Box>
             <Grid container justifyContent="center" alignItems="center">
-                <Paper elevation={3} style={{ padding: '2rem', backgroundColor: '#242424' }}>
+                <Paper elevation={3} style={{ padding: '2rem', backgroundColor: '#242424', width: '100%', height: '100%' }}>
                     <Typography variant="h5" gutterBottom style={{ color: 'white', textAlign: 'center' }}>
                         Register
                     </Typography>
@@ -131,11 +128,14 @@ const RegistrationForm = () => {
                                     />
                                 </Grid>
                                 <Grid item>
-                                    <Box textAlign="center">
-                                        <Button type="submit" variant="contained" color="primary">
-                                            Register
-                                        </Button>
-                                    </Box>
+                                        <Box textAlign="center">
+                                            <Button type="submit" variant="contained" style={{ backgroundColor: '#ff8c00' }}>
+                                                Register
+                                            </Button>
+                                            <Button onClick={onToggleForm} variant="contained" color="secondary" style={{ marginLeft: '20px', backgroundColor: '#ff8c00' }}>
+                                                Login
+                                            </Button>
+                                        </Box>
                                 </Grid>
                             </Grid>
                         </form>

@@ -3,9 +3,8 @@ import { Grid, Paper, Typography, TextField, Button } from "../../../node_module
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
 import { useAuthStore } from "../../state/auth/authStore";
 import {Box} from "@mui/material";
-import sharkImage from './shark.png'; // Import the image
 
-const LoginForm = () => {
+const LoginForm = ({ onToggleForm }) => {
   const { setIsAuthenticated, setData, isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
   const [isVerified, setIsVerified] = useState(false);
@@ -57,7 +56,7 @@ const LoginForm = () => {
     event.preventDefault();
 
     try {
-      const response = await fetch('https://localhost:7099/login', {
+      const response = await fetch('https://app.operationstacked.com/auth/login', {
       // const response = await fetch('https://localhost:7099/login', {
 
         method: 'POST',
@@ -86,12 +85,8 @@ const LoginForm = () => {
   };
   return (
    <React.Fragment>
-     <Box style={{ textAlign: 'center', marginBottom: '20px' }}>
-       <img src={sharkImage} alt="Shark" style={{ maxWidth: '50%', height: 'auto', margin: '0 auto' }} />
-     </Box>
-     <Grid container justifyContent="center" alignItems="center">
-       <Paper elevation={3} style={{ padding: '2rem', backgroundColor: '#242424' }}>
-
+      <Grid container justifyContent="center" alignItems="center">
+        <Paper elevation={3} style={{ padding: '2rem', backgroundColor: '#242424', width: '100%', height: '100%' }}>
          <Typography variant="h5" gutterBottom style={{ color: 'white', textAlign: 'center' }}>
            Login
          </Typography>
@@ -123,11 +118,14 @@ const LoginForm = () => {
                />
              </Grid>
              <Grid item>
-               <Box textAlign="center">
-                 <Button type="submit" variant="contained" color="primary">
-                   Submit
-                 </Button>
-               </Box>
+                <Box textAlign="center">
+                  <Button type="submit" variant="contained" style={{backgroundColor: '#ff8c00'}}>
+                    Submit
+                  </Button>
+                  <Button onClick={onToggleForm} variant="contained"  style={{ marginLeft: '20px', backgroundColor: '#ff8c00' }}>
+                    Register
+                  </Button>
+                </Box>
              </Grid>
            </Grid>
          </form>

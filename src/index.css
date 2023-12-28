@@ -71,3 +71,20 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.login-page {
+    width: 100%; /* Full width for login page */
+    /* Other specific styles for login page if necessary */
+}
+
+.login-page body {
+    /* Override body styles when login-page class is present */
+    display: block; /* or other display properties as needed */
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+}
+
+
+/* Additional styles for the form and other elements */
