@@ -2533,6 +2533,39 @@ export const WorkoutApiAxiosParamCreator = function (configuration?: Configurati
     return {
         /**
          * 
+         * @param {Array<CompleteExerciseRequest>} [completeExerciseRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        workoutCompleteMultiplePost: async (completeExerciseRequest?: Array<CompleteExerciseRequest>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/workout/complete-multiple`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(completeExerciseRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {CompleteExerciseRequest} [completeExerciseRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2726,6 +2759,16 @@ export const WorkoutApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {Array<CompleteExerciseRequest>} [completeExerciseRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async workoutCompleteMultiplePost(completeExerciseRequest?: Array<CompleteExerciseRequest>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ExerciseCompletionResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.workoutCompleteMultiplePost(completeExerciseRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {CompleteExerciseRequest} [completeExerciseRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2790,6 +2833,15 @@ export const WorkoutApiFactory = function (configuration?: Configuration, basePa
     return {
         /**
          * 
+         * @param {Array<CompleteExerciseRequest>} [completeExerciseRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        workoutCompleteMultiplePost(completeExerciseRequest?: Array<CompleteExerciseRequest>, options?: any): AxiosPromise<ExerciseCompletionResult> {
+            return localVarFp.workoutCompleteMultiplePost(completeExerciseRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {CompleteExerciseRequest} [completeExerciseRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2847,6 +2899,17 @@ export const WorkoutApiFactory = function (configuration?: Configuration, basePa
  * @extends {BaseAPI}
  */
 export class WorkoutApi extends BaseAPI {
+    /**
+     * 
+     * @param {Array<CompleteExerciseRequest>} [completeExerciseRequest] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof WorkoutApi
+     */
+    public workoutCompleteMultiplePost(completeExerciseRequest?: Array<CompleteExerciseRequest>, options?: AxiosRequestConfig) {
+        return WorkoutApiFp(this.configuration).workoutCompleteMultiplePost(completeExerciseRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {CompleteExerciseRequest} [completeExerciseRequest] 

@@ -1,60 +1,82 @@
 import React, { useState } from 'react';
 import { Button, TextField, Typography, Box, Grid, CircularProgress } from '@mui/material';
-import { WorkoutApi } from '../../services/api'; // Import the WorkoutApi
-import DatePicker from 'react-datepicker'; // Import a date picker library
-import 'react-datepicker/dist/react-datepicker.css'; // Import date picker styles
+import { WorkoutApi } from '../../services/api';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import useThemeStore from "../../state/themeStore";
 
-const ExerciseCompletionForm = ({ exerciseId }) => {
-    const [sets, setSets] = useState([{ reps: 0 }]); // Initialize reps as numbers
-    const [workingWeight, setWorkingWeight] = useState(''); // State for workingWeight
+const ExerciseCompletionForm = () => {
+    const [exercises, setExercises] = useState([
+        { exerciseId: '', sets: [{ reps: 0 }], workingWeight: '', dummyTime: new Date() }
+    ]);
     const [isLoading, setIsLoading] = useState(false);
-    const [dummyTime, setDummyTime] = useState(new Date());
     const themeColors = useThemeStore((state) => state.colors);
+
     const textFieldStyles = {
         input: {
-            color: themeColors.text, // Set the text color
+            color: themeColors.text,
             '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'white', // Set the border color
+                borderColor: 'white',
             },
         },
         label: {
-            color: themeColors.text, // Set the label color
+            color: themeColors.text,
         },
     };
 
-    const handleRepsChange = (index, value) => {
-        const newSets = sets.map((set, i) => {
-            if (i === index) {
-                return { ...set, reps: Number(value) }; // Convert value to number
+    const handleRepsChange = (exerciseIndex, setIndex, value) => {
+        const newExercises = exercises.map((exercise, i) => {
+            if (i === exerciseIndex) {
+                const newSets = exercise.sets.map((set, j) => {
+                    if (j === setIndex) {
+                        return { ...set, reps: Number(value) };
+                    }
+                    return set;
+                });
+                return { ...exercise, sets: newSets };
             }
-            return set;
+            return exercise;
         });
-        setSets(newSets);
+        setExercises(newExercises);
     };
 
-    const addSet = () => {
-        setSets([...sets, { reps: 0 }]);
+    const addSet = (exerciseIndex) => {
+        const newExercises = exercises.map((exercise, i) => {
+            if (i === exerciseIndex) {
+                return { ...exercise, sets: [...exercise.sets, { reps: 0 }] };
+            }
+            return exercise;
+        });
+        setExercises(newExercises);
     };
 
-    const removeSet = (index) => {
-        const newSets = sets.filter((_, i) => i !== index);
-        setSets(newSets);
+    const removeSet = (exerciseIndex, setIndex) => {
+        const newExercises = exercises.map((exercise, i) => {
+            if (i === exerciseIndex) {
+                const newSets = exercise.sets.filter((_, j) => j !== setIndex);
+                return { ...exercise, sets: newSets };
+            }
+            return exercise;
+        });
+        setExercises(newExercises);
     };
 
     const submitExerciseData = async () => {
         try {
             setIsLoading(true);
             const workoutApi = new WorkoutApi();
-            const data = {
-                ExerciseId: exerciseId,
-                Sets: sets.length,
-                Reps: sets.map(set => set.reps),
-                WorkingWeight: parseFloat(workingWeight),
-                DummyTime: dummyTime.toISOString(),
-            };
-            console.log('sending')
-            await workoutApi.workoutCompletePost(data);
+            const data = exercises.map(exercise => ({
+                ExerciseId: exercise.exerciseId,
+                Sets: exercise.sets.length,
+                Reps: exercise.sets.map(set => set.reps),
+                WorkingWeight: parseFloat(exercise.workingWeight),
+                DummyTime: exercise.dummyTime.toISOString(),
+                // Other fields can be left undefined as they are optional
+            }));
+
+            console.log('sending', data);
+                await workoutApi.workoutCompleteMultiplePost(data);
+            
             setIsLoading(false);
         } catch (error) {
             console.error("API call failed:", error);
@@ -62,9 +84,14 @@ const ExerciseCompletionForm = ({ exerciseId }) => {
         }
     };
 
+
     const handleSubmit = (event) => {
         event.preventDefault();
         submitExerciseData();
+    };
+
+    const addExercise = () => {
+        setExercises([...exercises, { exerciseId: '', sets: [{ reps: 0 }], workingWeight: '', dummyTime: new Date() }]);
     };
 
     if (isLoading) {
@@ -76,15 +103,45 @@ const ExerciseCompletionForm = ({ exerciseId }) => {
             <Typography variant="h6" gutterBottom>
                 Complete Exercise
             </Typography>
-            {sets.map((set, index) => (
-                <Grid container spacing={2} key={index}>
-                    <Grid item xs={8}
-                    ><TextField
+            {exercises.map((exercise, exerciseIndex) => (
+                <Box key={exerciseIndex}>
+                    {exercise.sets.map((set, setIndex) => (
+                        <Grid container spacing={2} key={setIndex}>
+                            <Grid item xs={8}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    label={`Reps for Set ${setIndex + 1}`}
+                                    value={set.reps}
+                                    onChange={(e) => handleRepsChange(exerciseIndex, setIndex, e.target.value)}
+                                    type="number"
+                                    InputProps={{
+                                        sx: textFieldStyles.input
+                                    }}
+                                    InputLabelProps={{
+                                        sx: textFieldStyles.label
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <Button
+                                    fullWidth
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => removeSet(exerciseIndex, setIndex)}
+                                    disabled={exercise.sets.length === 1}
+                                >
+                                    Remove Set
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    ))}
+                    <TextField
                         required
                         fullWidth
-                        label={`Reps for Set ${index + 1}`}
-                        value={set.reps}
-                        onChange={(e) => handleRepsChange(index, e.target.value)}
+                        label="Working Weight"
+                        value={exercise.workingWeight}
+                        onChange={(e) => setExercises(exercises.map((ex, i) => i === exerciseIndex ? { ...ex, workingWeight: e.target.value } : ex))}
                         type="number"
                         InputProps={{
                             sx: textFieldStyles.input
@@ -92,50 +149,30 @@ const ExerciseCompletionForm = ({ exerciseId }) => {
                         InputLabelProps={{
                             sx: textFieldStyles.label
                         }}
+                        sx={{ mt: 2 }}
                     />
-
-                    </Grid>
-                    <Grid item xs={4}>
-                        <Button
-                            fullWidth
-                            variant="contained"
-                            color="error"
-                            onClick={() => removeSet(index)}
-                            disabled={sets.length === 1}
-                        >
-                            Remove Set
-                        </Button>
-                    </Grid>
-                </Grid>
+                    <DatePicker
+                        selected={exercise.dummyTime}
+                        onChange={(date) => setExercises(exercises.map((ex, i) => i === exerciseIndex ? { ...ex, dummyTime: date } : ex))}
+                        dateFormat="yyyy-MM-dd"
+                        wrapperClassName="datePicker"
+                        sx={{ mt: 2 }}
+                    />
+                    <Button
+                        variant="contained"
+                        onClick={() => addSet(exerciseIndex)}
+                        sx={{ mt: 2, mb: 2 }}
+                    >
+                        Add Set
+                    </Button>
+                </Box>
             ))}
-            <TextField
-                required
-                fullWidth
-                label="Working Weight"
-                value={workingWeight}
-                onChange={(e) => setWorkingWeight(e.target.value)}
-                type="number"
-                InputProps={{
-                    sx: textFieldStyles.input
-                }}
-                InputLabelProps={{
-                    sx: textFieldStyles.label
-                }}
-                sx={{ mt: 2 }}
-            />
-            <DatePicker
-                selected={dummyTime}
-                onChange={(date) => setDummyTime(date)}
-                dateFormat="yyyy-MM-dd"
-                wrapperClassName="datePicker"
-                sx={{ mt: 2 }}
-            />
             <Button
                 variant="contained"
-                onClick={addSet}
+                onClick={addExercise}
                 sx={{ mt: 2, mb: 2 }}
             >
-                Add Set
+                Add Exercise
             </Button>
             <Button
                 type="submit"
