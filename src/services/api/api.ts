@@ -1967,15 +1967,12 @@ export const ExerciseHistoryApiAxiosParamCreator = function (configuration?: Con
         },
         /**
          * 
-         * @param {string} exerciseId 
+         * @param {string} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteExerciseIdPost: async (exerciseId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'exerciseId' is not null or undefined
-            assertParamExists('deleteExerciseIdPost', 'exerciseId', exerciseId)
-            const localVarPath = `/delete/{exerciseId}`
-                .replace(`{${"exerciseId"}}`, encodeURIComponent(String(exerciseId)));
+        deletePost: async (body?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/delete`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1989,9 +1986,12 @@ export const ExerciseHistoryApiAxiosParamCreator = function (configuration?: Con
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(body, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2096,12 +2096,12 @@ export const ExerciseHistoryApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {string} exerciseId 
+         * @param {string} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteExerciseIdPost(exerciseId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteExerciseIdPost(exerciseId, options);
+        async deletePost(body?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deletePost(body, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2147,12 +2147,12 @@ export const ExerciseHistoryApiFactory = function (configuration?: Configuration
         },
         /**
          * 
-         * @param {string} exerciseId 
+         * @param {string} [body] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteExerciseIdPost(exerciseId: string, options?: any): AxiosPromise<void> {
-            return localVarFp.deleteExerciseIdPost(exerciseId, options).then((request) => request(axios, basePath));
+        deletePost(body?: string, options?: any): AxiosPromise<void> {
+            return localVarFp.deletePost(body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2197,13 +2197,13 @@ export class ExerciseHistoryApi extends BaseAPI {
 
     /**
      * 
-     * @param {string} exerciseId 
+     * @param {string} [body] 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ExerciseHistoryApi
      */
-    public deleteExerciseIdPost(exerciseId: string, options?: AxiosRequestConfig) {
-        return ExerciseHistoryApiFp(this.configuration).deleteExerciseIdPost(exerciseId, options).then((request) => request(this.axios, this.basePath));
+    public deletePost(body?: string, options?: AxiosRequestConfig) {
+        return ExerciseHistoryApiFp(this.configuration).deletePost(body, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
