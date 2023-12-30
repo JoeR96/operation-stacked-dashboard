@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import useThemeStore from "../../state/themeStore";
 
-const ExerciseCompletionForm = () => {
+const ExerciseCompletionForm = ({ exerciseId }) => {
     const [exercises, setExercises] = useState([
         { exerciseId: '', sets: [{ reps: 0 }], workingWeight: '', dummyTime: new Date() }
     ]);
@@ -66,7 +66,7 @@ const ExerciseCompletionForm = () => {
             setIsLoading(true);
             const workoutApi = new WorkoutApi();
             const data = exercises.map(exercise => ({
-                ExerciseId: exercise.exerciseId,
+                ExerciseId: exerciseId,
                 Sets: exercise.sets.length,
                 Reps: exercise.sets.map(set => set.reps),
                 WorkingWeight: parseFloat(exercise.workingWeight),

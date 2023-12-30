@@ -1,5 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
-import {ExerciseHistory, ExerciseHistoryApi, ExerciseHistoryDTO} from '../../services/api'; // Adjust the import path as needed
+import { ExerciseHistoryApi, ExerciseHistoryDTO } from '../../services/api'; // Adjust the import path as needed
 import {
     Table,
     TableBody,
@@ -7,9 +7,11 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Paper,
     Typography,
     TablePagination,
+    Button,
+    CircularProgress,
+    Paper
 } from '@mui/material';
 import useThemeStore from '../../state/themeStore'; // Import the theme store
 
@@ -24,13 +26,15 @@ const ExerciseHistoryTable: React.FC<ExerciseHistoryTableProps> = ({ exerciseId 
     const [pageIndex, setPageIndex] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [totalRows, setTotalRows] = useState(0); // Total number of rows for pagination
-    const themeColors = useThemeStore((state) => state.colors); // Get theme colors from the store
+    const [deleting, setDeleting] = useState<Record<string, boolean>>({}); // New state for tracking deletion
+    const themeColors = useThemeStore((state) => state.colors);
+
+    const exerciseHistoryApi = new ExerciseHistoryApi(); // Moved outside of fetchExerciseHistory for reuse
 
     const fetchExerciseHistory = async () => {
         if (!exerciseId) return;
 
         setIsLoading(true);
-        const exerciseHistoryApi = new ExerciseHistoryApi();
 
         try {
             const response = await exerciseHistoryApi.exerciseHistoryPost(pageIndex, rowsPerPage, [exerciseId]);
@@ -44,14 +48,25 @@ const ExerciseHistoryTable: React.FC<ExerciseHistoryTableProps> = ({ exerciseId 
         }
     };
 
+    const deleteExerciseHistory = async (historyId: string) => {
+        setDeleting(prev => ({ ...prev, [historyId]: true }));
+
+        try {
+            await exerciseHistoryApi.deleteExerciseIdDelete(historyId);
+            fetchExerciseHistory(); // Refresh the history after deletion
+        } catch (error) {
+            console.error("Error deleting exercise history:", error);
+            setError(`Error deleting exercise history: ${error.message}`);
+        } finally {
+            setDeleting(prev => ({ ...prev, [historyId]: false }));
+        }
+    };
+
     useEffect(() => {
         fetchExerciseHistory();
     }, [exerciseId, pageIndex, rowsPerPage]);
 
-    const handleChangePage = (event: unknown, newPage: number) => {
-        setPageIndex(newPage);
-    };
-
+    const handleChangePage = (event: unknown, newPage: number) => setPageIndex(newPage);
     const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPageIndex(0);
@@ -76,7 +91,7 @@ const ExerciseHistoryTable: React.FC<ExerciseHistoryTableProps> = ({ exerciseId 
             <Typography variant="h5" align="center" style={{ fontWeight: 'bold', margin: '20px 0', color: themeColors.text }}>
                 Exercise History
             </Typography>
-            <TableContainer style={{ backgroundColor: themeColors.background }}>
+            <TableContainer component={Paper} style={{ backgroundColor: themeColors.background }}>
                 <Table aria-label="exercise history table">
                     <TableHead>
                         <TableRow>
@@ -84,6 +99,7 @@ const ExerciseHistoryTable: React.FC<ExerciseHistoryTableProps> = ({ exerciseId 
                             <TableCell align="right" style={{ color: themeColors.text }}>Sets</TableCell>
                             <TableCell align="right" style={{ color: themeColors.text }}>Reps</TableCell>
                             <TableCell align="right" style={{ color: themeColors.text }}>Working Weight</TableCell>
+                            <TableCell align="right" style={{ color: themeColors.text }}>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -95,6 +111,18 @@ const ExerciseHistoryTable: React.FC<ExerciseHistoryTableProps> = ({ exerciseId 
                                 <TableCell align="right" style={{ color: themeColors.text }}>{history.CompletedSets}</TableCell>
                                 <TableCell align="right" style={{ color: themeColors.text }}>{history.CompletedReps}</TableCell>
                                 <TableCell align="right" style={{ color: themeColors.text }}>{history.WorkingWeight} KG</TableCell>
+                                <TableCell align="right" style={{ color: themeColors.text }}>
+                                    {deleting[history.Id] ? <CircularProgress size={24} /> : (
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            onClick={() => deleteExerciseHistory(history.Id)}
+                                            disabled={deleting[history.Id]}
+                                        >
+                                            Delete
+                                        </Button>
+                                    )}
+                                </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
