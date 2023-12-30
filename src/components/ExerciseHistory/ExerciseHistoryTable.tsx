@@ -116,7 +116,7 @@ const ExerciseHistoryTable: React.FC<ExerciseHistoryTableProps> = ({ exerciseId 
                                         <Button
                                             variant="contained"
                                             color="secondary"
-                                            onClick={() => deleteExerciseHistory(history.Id)}
+                                            onClick={() => deleteExerciseHistory(history.ExerciseId)}
                                             disabled={deleting[history.Id]}
                                         >
                                             Delete
