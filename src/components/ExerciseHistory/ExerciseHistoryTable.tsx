@@ -52,7 +52,7 @@ const ExerciseHistoryTable: React.FC<ExerciseHistoryTableProps> = ({ exerciseId 
         setDeleting(prev => ({ ...prev, [historyId]: true }));
 
         try {
-            await exerciseHistoryApi.deleteExerciseIdDelete(historyId);
+            await exerciseHistoryApi.deleteExerciseIdPost(historyId);
             fetchExerciseHistory(); // Refresh the history after deletion
         } catch (error) {
             console.error("Error deleting exercise history:", error);

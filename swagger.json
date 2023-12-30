@@ -599,7 +599,7 @@
       }
     },
     "/delete/{exerciseId}": {
-      "delete": {
+      "post": {
         "tags": [
           "ExerciseHistory"
         ],
