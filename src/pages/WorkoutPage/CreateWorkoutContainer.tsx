@@ -50,7 +50,7 @@
                             selectedExercise, // Assuming selectedExercise contains ExerciseName, EquipmentType, etc.
                             id: `item-${columns[activeColumn]?.length ?? 0}-${selectedExercise.ExerciseName}`,
                         };
-                        console.log(combinedData)
+                        console.log("combined data",combinedData)
                     addExerciseToColumn(combinedData);
                     setFormOpen(false);
                 };
@@ -145,11 +145,12 @@
                                                     >
                                                         <Grid container spacing={2}>
                                                             <Grid item xs={12} style={{ textAlign: 'center' }}>
-                                                                    {console.log(item)}
+                                                            {item.selectedExercise.ExerciseName}
                                                             </Grid>
-                                                            <Grid item xs={6} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                            {item.ExerciseName}
-
+                                                            <Grid item xs={12} style={{ textAlign: 'center' }}>
+                                                            {item.Template}
+                                                            </Grid>
+                                                            <Grid item xs={12} style={{ textAlign: 'center' }}>
                                                                 <img
                                                                     src={getEquipmentImage(item.EquipmentType)}
                                                                     alt={EquipmentType[item.EquipmentType]}
@@ -159,7 +160,7 @@
                                                             <Grid item xs={6} style={{ display: 'flex', flexDirection: 'column' }}>
                                                                 <Typography>Rest Timer: {item.RestTimer}</Typography>
                                                                 <Typography>Reps: {item.MinimumReps} - {item.MaximumReps}</Typography>
-                                                                {/* ... other details */}
+                                                                <Typography>Sets: {item.Sets} </Typography>
                                                             </Grid>
                                                         </Grid>
                                                         <IconButton 

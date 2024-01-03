@@ -117,7 +117,7 @@ export const ExercisesTable = ({ onCompleteClick, refreshState }) => {
                                     <Button
                                         variant="contained"
                                         color="primary"
-                                        onClick={() => onCompleteClick(exercise.Id)}
+                                        onClick={() => onCompleteClick(exercise)}
                                         style={{ marginLeft: '10px' }} // Add some space between text and button
                                     >
                                         Complete
