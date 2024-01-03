@@ -16,7 +16,7 @@ const ExerciseLayout = () => {
         setRefreshExercises(prevState => !prevState);
     };
     const handleCompleteClick = (exerciseId) => {
-        setSelectedExerciseId(exerciseId);
+        setSelectedExerciseId(exerciseId.Id);
         setShowCompletionForm(true);
     };
 

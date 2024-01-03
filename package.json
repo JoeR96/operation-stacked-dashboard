@@ -12,6 +12,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.2",
     "@mui/material": "^5.14.12",
     "axios": "^1.5.1",
     "chance": "^1.1.11",
@@ -25,6 +26,7 @@
     "openapi": "^1.0.1",
     "openapi-generator": "^0.1.39",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-chartjs-2": "^5.2.0",
     "react-circular-progressbar": "^2.1.0",
     "react-datepicker": "^4.24.0",

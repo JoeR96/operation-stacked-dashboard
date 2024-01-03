@@ -20,9 +20,10 @@ import type { AxiosPromise, AxiosInstance, AxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
 // https://localhost:44382/user/name?cognitoUserId=2b8d70d3-ae81-415c-b395-afe280284d4e
 
-export const BASE_PATH = "https://localhost:44382/".replace(/\/+$/, "");
-// export const BASE_PATH = "https://app.operationstacked.com/workout/".replace(/\/+$/, "");
-
+// export const BASE_PATH = "https://localhost:44382/".replace(/\/+$/, "");
+// export const BASE_PATH = "https://app.operationstacked.com/".replace(/\/+$/, "");
+ export const BASE_PATH = "https://app.operationstacked.com/workout/".replace(/\/+$/, "");
+    
 /**
  *
  * @export

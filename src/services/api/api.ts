@@ -1038,6 +1038,31 @@ export interface WeekAndDayResponse {
 /**
  * 
  * @export
+ * @interface Workout
+ */
+export interface Workout {
+    /**
+     * 
+     * @type {string}
+     * @memberof Workout
+     */
+    'Id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Workout
+     */
+    'UserId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof Workout
+     */
+    'WorkoutName'?: string | null;
+}
+/**
+ * 
+ * @export
  * @enum {string}
  */
 
@@ -2810,6 +2835,39 @@ export const WorkoutApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        workoutUserIdWorkoutsGet: async (userId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'userId' is not null or undefined
+            assertParamExists('workoutUserIdWorkoutsGet', 'userId', userId)
+            const localVarPath = `/workout/{userId}/workouts`
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -2884,6 +2942,16 @@ export const WorkoutApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.workoutUserIdWeekDayCompletedGet(userId, week, day, completed, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async workoutUserIdWorkoutsGet(userId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<Workout>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.workoutUserIdWorkoutsGet(userId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -2951,6 +3019,15 @@ export const WorkoutApiFactory = function (configuration?: Configuration, basePa
          */
         workoutUserIdWeekDayCompletedGet(userId: string, week: number, day: number, completed: boolean, options?: any): AxiosPromise<GetWorkoutResult> {
             return localVarFp.workoutUserIdWeekDayCompletedGet(userId, week, day, completed, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} userId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        workoutUserIdWorkoutsGet(userId: string, options?: any): AxiosPromise<Array<Workout>> {
+            return localVarFp.workoutUserIdWorkoutsGet(userId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -3030,6 +3107,17 @@ export class WorkoutApi extends BaseAPI {
      */
     public workoutUserIdWeekDayCompletedGet(userId: string, week: number, day: number, completed: boolean, options?: AxiosRequestConfig) {
         return WorkoutApiFp(this.configuration).workoutUserIdWeekDayCompletedGet(userId, week, day, completed, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {string} userId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof WorkoutApi
+     */
+    public workoutUserIdWorkoutsGet(userId: string, options?: AxiosRequestConfig) {
+        return WorkoutApiFp(this.configuration).workoutUserIdWorkoutsGet(userId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

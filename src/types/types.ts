@@ -813,3 +813,17 @@ export enum Category{
         }),
     };
   }
+export  interface WorkoutExerciseFormValues {
+    RestTimer: number;
+    WeightProgression: number;
+    MinimumReps: number;
+    MaximumReps: number;
+    Sets: number;
+    AttemptsBeforeDeload: number;
+    Template: ExerciseTemplate;
+  }
+  interface CombinedExerciseData extends WorkoutExerciseFormValues {
+    ExerciseName: string; 
+    EquipmentType: EquipmentType; 
+  }
+  

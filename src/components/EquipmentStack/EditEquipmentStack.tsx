@@ -54,10 +54,6 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
             <Grid container spacing={2}
                   style={{ margin: '25px' }}  // Add your desired padding here
             >
-                {/* First Column */}
-                <Grid item xs={6}>
-                    <TextField fullWidth label="Id" name="Id" value={localStack.Id} onChange={handleChange} InputProps={{ style: textFieldStyle }} InputLabelProps={inputLabelProps} />
-                </Grid>
                 <Grid item xs={6}>
                     <TextField fullWidth label="Increment Value" name="IncrementValue" value={localStack.IncrementValue} onChange={handleChange} InputProps={{ style: textFieldStyle }} InputLabelProps={inputLabelProps} />
                 </Grid>
@@ -71,9 +67,6 @@ const EditEquipmentStack = ({ stackData, onStackUpdate }) => {
                 </Grid>
                 <Grid item xs={6}>
                     <TextField fullWidth label="Increment Count" name="IncrementCount" value={localStack.IncrementCount} onChange={handleChange} InputProps={{ style: textFieldStyle }} InputLabelProps={inputLabelProps} />
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField fullWidth label="User ID" name="UserID" value={localStack.UserID} onChange={handleChange} InputProps={{ style: textFieldStyle }} InputLabelProps={inputLabelProps} />
                 </Grid>
             </Grid>
 

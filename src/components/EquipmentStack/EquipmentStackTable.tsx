@@ -44,7 +44,7 @@ const EquipmentStackTable = ({ selectedStack, setSelectedStack }) => {
         <Table>
             <TableHead>
                 <TableRow>
-                    {['Id', 'Start Weight', 'Initial Increments', 'Increment Value', 'Increment Count', 'Edit'].map(header => (
+                    {['Name', 'Start Weight', 'Initial Increments', 'Increment Value', 'Increment Count', 'Edit'].map(header => (
                         <TableCell style={{ color: "white",fontWeight: 'bold' }} key={header}>{header}</TableCell>
                     ))}
                 </TableRow>
@@ -52,7 +52,7 @@ const EquipmentStackTable = ({ selectedStack, setSelectedStack }) => {
             <TableBody>
                 {equipmentStack?.map((equipment) => (
                     <TableRow key={equipment.Id}>
-                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.Id}</TableCell>
+                        <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.EquipmentStackKey}</TableCell>
                         <TableCell style={{ color: "white",fontWeight: 'bold' }}>{equipment.StartWeight}</TableCell>
                         <TableCell style={{ color: "white", fontWeight: 'bold' }}>
                             {equipment.InitialIncrements ? equipment.InitialIncrements.join(', ') : '0'}
