@@ -297,6 +297,12 @@ export enum Category{
     UrlEncoded = "application/x-www-form-urlencoded",
     Text = "text/plain",
   }
+
+  export enum WeightProgression {
+    OnePointTwoFiveKg = 1.25,
+    TwoPointFiveKg = 2.5,
+    FiveKg = 5
+}
   
   export class HttpClient<SecurityDataType = unknown> {
     public baseUrl: string = "";

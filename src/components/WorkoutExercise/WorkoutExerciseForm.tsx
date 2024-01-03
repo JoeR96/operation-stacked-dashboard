@@ -2,11 +2,11 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { TextField, Button, Grid, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
+import { WeightProgression } from '../../types/types';
 
 // Assuming ExerciseTemplate is an enum or similar
 enum ExerciseTemplate {
   LinearProgression = 'Linear Progression',
-  // Other templates can be added here
 }
 
 // Define the form's validation schema
@@ -24,12 +24,12 @@ const WorkoutExerciseForm = ({ exercise, onSubmit, day, order }) => {
   return (
     <Formik
       initialValues={{
-        RestTimer: 0,
-        WeightProgression: 0,
-        MinimumReps: 0,
-        MaximumReps: 0,
-        Sets: 0,
-        AttemptsBeforeDeload: 0,
+        RestTimer: 30,
+        WeightProgression: WeightProgression.OnePointTwoFiveKg, 
+        MinimumReps: 8,
+        MaximumReps: 12,
+        Sets: 3,
+        AttemptsBeforeDeload: 2,
         Template: ExerciseTemplate.LinearProgression,
       }}
       validationSchema={WorkoutExerciseFormSchema}
@@ -41,9 +41,25 @@ const WorkoutExerciseForm = ({ exercise, onSubmit, day, order }) => {
             <Grid item xs={12}>
               <Field name="RestTimer" as={TextField} label="Rest Timer" fullWidth />
             </Grid>
+            
             <Grid item xs={12}>
-              <Field name="WeightProgression" as={TextField} label="Weight Progression" fullWidth />
-            </Grid>
+  <FormControl fullWidth>
+    <InputLabel>Weight Progression</InputLabel>
+    <Field name="WeightProgression" as={Select} label="Weight Progression">
+      {Object.entries(WeightProgression)
+        .filter(([key, value]) => typeof value === 'number') // Keep only numeric values
+        .map(([key, value]) => (
+          <MenuItem key={key} value={value}>
+            {value} kg
+          </MenuItem>
+        ))
+      }
+    </Field>
+  </FormControl>
+</Grid>
+
+
+
             <Grid item xs={12}>
               <Field name="MinimumReps" as={TextField} label="Minimum Reps" fullWidth />
             </Grid>
