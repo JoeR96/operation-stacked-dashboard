@@ -19,7 +19,7 @@ const WorkoutExerciseFormSchema = Yup.object().shape({
     AttemptsBeforeDeload: Yup.number().required('Attempts before deload is required'),
 });
 
-const WorkoutExerciseForm = ({ exercise, onSubmit, day, order }) => {
+const WorkoutExerciseForm = ({ exercise, onSubmit, onClose }) => {
     return (
         <Formik
             initialValues={{
@@ -110,9 +110,12 @@ const WorkoutExerciseForm = ({ exercise, onSubmit, day, order }) => {
                             </Tooltip>
                         </Grid>
 
-                        <Grid item xs={12}>
+                        <Grid item xs={12} style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
                                 Submit
+                            </Button>
+                            <Button onClick={onClose} variant="contained" color="secondary">
+                                Cancel
                             </Button>
                         </Grid>
                     </Grid>

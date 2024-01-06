@@ -8,8 +8,8 @@ import EquipmentStackPage from "../pages/EquipmentStack/EquipmentStackPage.tsx";
 import WorkoutPage from "../pages/WorkoutPage/WorkoutPage";
 import ExerciseHistoryPage from "../pages/ExerciseHistory/ExerciseHistoryPage.tsx";
 import LoginPage from "../pages/Login/LoginPage";
-import CreateWorkoutContainer from '../pages/WorkoutPage/CreateWorkoutContainer.tsx';
 import MainContent from './RouteWrapper.tsx';
+import CreateWorkoutContainer from "../components/drag-and-drop/CreateWorkoutContainer.tsx";
 
 const AppRoutes: React.FC = () => {
   return (
